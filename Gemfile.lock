@@ -1,0 +1,10 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    builder (3.0.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  builder
