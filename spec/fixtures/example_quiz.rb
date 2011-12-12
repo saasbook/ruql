@@ -1,5 +1,5 @@
 Quiz.quiz "I. Introduction", :time_limit => 60 do
-  multiple_choice :points => 1 do
+  choice_answer :multiple => false, :points => 1 do
     text %q{A computer program is said to learn from experience E with
           respect to some task T and some performance measure P if its
           performance on T, as measured by P, improves with experience E.
@@ -20,5 +20,3 @@ Quiz.quiz "I. Introduction", :time_limit => 60 do
   end
 
 end
-    
-

@@ -1,7 +1,7 @@
-class Quiz
-  require 'builder'
-  attr_reader :xml
+require 'builder'
 
+class Quiz
+  
   class MultipleChoiceQuestion
     attr_accessor :text, :answer, :score
   end
@@ -17,24 +17,34 @@ class Quiz
   end
 
   def initialize(title, options)
-    @xml = Builder::XmlMarkup.new
+    @output = ''
+    @xml = Builder::XmlMarkup.new(:target => @output)
     @xml.instruct!
-    @xml.declare! '!DOCTYPE', 'quiz', 'SYSTEM', '"quiz.dtd"'
+    @xml.declare! :DOCTYPE, :quiz, :SYSTEM, "quiz.dtd"
     @title = title
-    options = default_options.merge(options)
-    @xml.metadata do
-      @xml.type 'quiz'
-      @xml.title title
+    @options = default_options.merge(options)
+    @xml.quiz do
+      emit_metadata
     end
   end
 
-  def render
-    @xml.to_s
-  end
-
+  def render ; @output ; end
+  
   def self.quiz(title, options={})
     quiz = Quiz.new(title, options)
     debugger
+  end
+
+  private
+
+  def emit_metadata
+    @xml.metadata do
+      @xml.type 'quiz'
+      @xml.title @title
+      @options.each_pair do |k,v|
+        @xml.__send__(k.to_s.gsub(/_/,'-').to_sym, v)
+      end
+    end
   end
 
 end

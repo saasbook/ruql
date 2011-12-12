@@ -26,6 +26,7 @@
 #NOTE: Currently you cannot combine any of the options
 #TODO: make it possible to combine count, value, attributes
 
+require 'rspec/expectations'
 
 class ElementCountProxy
   
@@ -57,10 +58,9 @@ class ElementCountProxy
   
 end
 
-class HaveXmlElement
-  
-  def initialize(expected,options={})
-    @expected = expected
+RSpec::Matchers.define :have_xml_element do |expected,options={}|
+  require 'rexml/document'
+  match do |actual|
     @value = options.delete(:value)      
     @match_value = @value || false
     @count = options.delete(:count)
@@ -69,47 +69,42 @@ class HaveXmlElement
     @attribute_value = options.values.first
     @match_attribute_name = @attribute_name || false
     @match_attribute_value = @attribute_value || false
-  end
-
-  def matches?(actual)
-    @actual = actual
     begin
       document = REXML::Document.new(actual)
       if @match_value
-        compare_values(document.elements[@expected.to_s].text,@value)
+        compare_values(document.elements[expected.to_s].text,@value)
       elsif @match_attribute_value          
-        compare_values(document.elements[@expected.to_s].attributes[@attribute_name],@attribute_value)
+        compare_values(document.elements[expected.to_s].attributes[@attribute_name],@attribute_value)
       elsif @match_attribute_name          
-        document.elements[@expected.to_s].attributes[@attribute_name] ? true : false
+        document.elements[expected.to_s].attributes[@attribute_name] ? true : false
       elsif @count && @count > 0
         if counted_element && counted_element == 'element' 
-          document.elements[@expected.to_s].elements.size == @count ? true : false
+          document.elements[expected.to_s].elements.size == @count ? true : false
         elsif counted_element
-          document.elements[@expected.to_s].elements[counted_element].size == @count ? true : false
+          document.elements[expected.to_s].elements[counted_element].size == @count ? true : false
         else
-          document.elements[@expected.to_s].size == @count ? true : false 
+          document.elements[expected.to_s].size == @count ? true : false 
         end
       else          
-        document.elements[@expected.to_s] ? true : false
+        document.elements[expected.to_s]
       end
-    rescue => e
+   rescue => e
       false
     end
   end
 
-  def containing(count,child=nil)
+  chain :containing do |count,child=nil|
     @count = count
     @count_proxy = ElementCountProxy.new(self,child)
-    return @count_proxy
   end
 
-  def with_value(value)
+  chain  :with_value do |value|
     @match_value = true
     @value = value
     return self
   end
   
-  def with_attribute(name,value=nil)
+  chain :with_attribute do |name,value=nil|
     if name.is_a?(Hash)
       arr = name.to_a.flatten
       name = arr[0]
@@ -122,24 +117,22 @@ class HaveXmlElement
     return self
   end
 
-  def failure_message
-    "expected \n\n#{@actual}\n to have XML element #{@expected.inspect}#{message_extension}, but it didn't"
+  failure_message_for_should do |actual|
+    "expected \n\n#{actual}\n to have XML element #{expected.inspect}#{message_extension}, but it didn't"
   end
 
-  def negative_failure_message
-    "expected \n\n#{@actual}\n to not have XML element #{@expected.inspect}#{message_extension}, but it did"
+  failure_message_for_should_not do |actual|
+    "expected \n\n#{actual}\n to not have XML element #{expected.inspect}#{message_extension}, but it did"
   end
   
   def counted_element
-    @count_proxy.element
+    count_proxy.element
   end
   
   def counted_element_name
-    @count_proxy.element_name
+    count_proxy.element_name
   end
 
-  protected
-  
   def compare_values(target,source)
     if source.is_a? Regexp
       target.to_s.match source
@@ -160,15 +153,3 @@ class HaveXmlElement
   end
 
 end
-
-def have_xml_element(expected,options={})
-  HaveXmlElement.new(expected,options)
-end
-
-
-RSpec::Matchers.define :have_xml_element do |elt,options={}|
-  match do |subj|
-    HaveXmlElement.new(elt,options).matches?(subj)
-  end
-end
-
