@@ -7,16 +7,25 @@ Quiz.quiz "I. Introduction", :time_limit => 60 do
           data, and have it learn to predict weather. What would be a
           reasonable choice for P?}
 
-    distractor 'The weather prediction task'
-    explanation 'The task described is weather prediction, so this is Task T.'
+    distractor 'The weather prediction task',
+    :explanation => 'The task described is weather prediction, so this is Task T.'
 
-    distractor 'The process of the algorithm examining a large amount of historical weather data.'
-    explanation 'It is by examining the historical weather data that the learning algorithm improves its performance, so this is the experience E.'
+    distractor 'The process of the algorithm examining a large amount of historical weather data.',
+    :explanation => 'It is by examining the historical weather data that the learning algorithm improves its performance, so this is the experience E.'
 
-    answer %q{The probability of it correctly predicting a future date's weather.}
-    explanation %q{This would be a reasonable measure P of measuring our weather predictions' accuracy.}
+    answer %q{The probability of it correctly predicting a future date's weather.},
+    :explanation => %q{This would be a reasonable measure P of measuring our weather predictions' accuracy.}
 
     distractor 'None of the above.'
   end
 
 end
+
+# Other constructs recognized inside a question:
+#  hint 'A hint for the question'
+# Constructs that can include questions:
+#  group 'Group of questions' do
+#    background 'Background info for all questions'
+#    <question>
+#    <question>
+#  end

@@ -2,10 +2,6 @@ require 'builder'
 
 class Quiz
   
-  class MultipleChoiceQuestion
-    attr_accessor :text, :answer, :score
-  end
-
   def default_options
     {
       :open_time => Time.now,
