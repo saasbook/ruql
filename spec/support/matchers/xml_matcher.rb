@@ -114,7 +114,6 @@ RSpec::Matchers.define :have_xml_element do |expected,options={}|
     @match_attribute_value = value.nil? ? false : true
     @attribute_name = name
     @attribute_value = value
-    return self
   end
 
   failure_message_for_should do |actual|
