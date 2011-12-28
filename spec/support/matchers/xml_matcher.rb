@@ -60,6 +60,7 @@ end
 
 RSpec::Matchers.define :have_xml_element do |expected,options={}|
   require 'rexml/document'
+  require 'active_support/core_ext/string'
   match do |actual|
     @value = options.delete(:value)      
     @match_value = @value || false
@@ -71,12 +72,13 @@ RSpec::Matchers.define :have_xml_element do |expected,options={}|
     @match_attribute_value = @attribute_value || false
     begin
       document = REXML::Document.new(actual)
+      matching_elts = document.get_elements(expected.to_s)
       if @match_value
-        compare_values(document.elements[expected.to_s].text,@value)
+        matching_elts.any? { |e| compare_values(e.text,@value) }
       elsif @match_attribute_value          
-        compare_values(document.elements[expected.to_s].attributes[@attribute_name],@attribute_value)
+        matching_elts.any? { |e| compare_values(e.attributes[@attribute_name],@attribute_value) }
       elsif @match_attribute_name          
-        document.elements[expected.to_s].attributes[@attribute_name] ? true : false
+        matching_elts.any? { |e| e.attributes[@attribute_name] }
       elsif @count && @count > 0
         if counted_element && counted_element == 'element' 
           document.elements[expected.to_s].elements.size == @count ? true : false
@@ -89,6 +91,7 @@ RSpec::Matchers.define :have_xml_element do |expected,options={}|
         document.elements[expected.to_s]
       end
    rescue => e
+      puts "*** warning: #{e.message}"
       false
     end
   end
@@ -101,7 +104,6 @@ RSpec::Matchers.define :have_xml_element do |expected,options={}|
   chain  :with_value do |value|
     @match_value = true
     @value = value
-    return self
   end
   
   chain :with_attribute do |name,value=nil|
