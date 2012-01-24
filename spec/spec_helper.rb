@@ -1,3 +1,3 @@
 require 'ruby-debug'
-Dir[File.dirname(__FILE__) + "../lib/"].each { |f| require f }
-Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
+Dir[File.join(File.dirname(__FILE__), '..', 'lib', '*.rb')].each { |f|  load f }
+Dir[File.join(File.dirname(__FILE__), '/support', '**', '*.rb')].each {|f| load f}

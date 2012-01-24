@@ -4,20 +4,21 @@ class Quiz
 
   @@default_options = 
     {
-      :open_time => Time.now,
-      :soft_close_time => Time.now + 24*60*60,
-      :hard_close_time => Time.now + 24*60*60,
-      :maximum_submissions => 1,
-      :duration => 0,
-      :retry_delay => 600,
-      :version => 'First version',
-      :default_question_group_break => 'continue-previous-section',
-      :randomise_question_group_order => false,
-      :randomise_question_order => false,
-      :randomise_option_order => false,
-      :feedback_immediate => 'all_explanations',
-      :feedback_after_hard_deadline => 'all_explanations',
-    }
+    :open_time => Time.now,
+    :soft_close_time => Time.now + 24*60*60,
+    :hard_close_time => Time.now + 24*60*60,
+    :maximum_submissions => 1,
+    :duration => 3600,
+    :retry_delay => 600,
+    :parameters =>  {
+      :show_explanations => {
+        :question => 'before_soft_close_time',
+        :option => 'before_soft_close_time',
+        :score => 'before_soft_close_time',
+      }
+    },
+    :maximum_score => 1,
+  }
 
   attr_reader :renderer, :questions, :options, :output
   attr_accessor :title
@@ -31,7 +32,7 @@ class Quiz
   end
 
   def render
-    @output = @renderer.render_quiz
+    @output = @renderer.render_quiz(self)
   end
   
   def self.quiz(title, options={}, &block)

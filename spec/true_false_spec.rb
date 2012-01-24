@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'question'
-require 'true_false'
 
 describe 'question with true answer' do
   before :each do ; @q = TrueFalse.new('true', true, 'why') ; end

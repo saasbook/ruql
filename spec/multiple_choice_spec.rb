@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'question'
-require 'multiple_choice'
 
 describe 'Multiple choice question' do
   context 'when created' do
@@ -23,18 +21,4 @@ describe 'Multiple choice question' do
       end
     end
   end
-  context 'rendering full question' do
-    subject {
-      @q = MultipleChoice.new :multiple => true, :randomize => true
-      @q.text 'question'
-      @q.answer 'answer', :explanation => 'correct'
-      @q.distractor 'wrong'
-      @q.distractor 'wrong with explanation', :explanation => 'wrong'
-      @q.to_xml
-      @q.string
-    }
-    it { should have_xml_element('question/text') }
-    it { should have_xml_element('//option-group').containing(2, 'option') }
-    it { should have_xml_element('//option/text', :value => 'wrong') }
-  end    
 end
