@@ -2,7 +2,7 @@ require 'builder'
 
 class Quiz
 
-  def default_options
+  @@default_options = 
     {
       :open_time => Time.now,
       :soft_close_time => Time.now + 24*60*60,
@@ -18,35 +18,25 @@ class Quiz
       :feedback_immediate => 'all_explanations',
       :feedback_after_hard_deadline => 'all_explanations',
     }
-  end
 
-  def initialize(title, options)
+  attr_reader :renderer, :questions, :options, :output
+  attr_accessor :title
+
+  def initialize(title, renderer, options={})
     @output = ''
-    @xml = Builder::XmlMarkup.new(:target => @output)
+    @questions = []
     @title = title
-    @options = default_options.merge(options)
-    self.do_prologue
+    @options = @@default_options.merge(options)
+    @renderer = Object.const_get(renderer.capitalize + 'Renderer').send(:new,self)
   end
 
-  def render ; @output ; end
+  def render
+    @output = @renderer.render_quiz
+  end
   
   def self.quiz(title, options={}, &block)
     quiz = Quiz.new(title, options)
     quiz.instance_eval(&block) if block_given?
     quiz.render
-  end
-
-  def do_prologue
-    @xml.instruct!
-    @xml.declare! :DOCTYPE, :quiz, :SYSTEM, "quiz.dtd"
-    @xml.quiz do
-      @xml.metadata do
-        @xml.type 'quiz'
-        @xml.title @title
-        @options.each_pair do |k,v|
-          @xml.__send__(k.to_s.gsub(/_/,'-').to_sym, v)
-        end
-      end
-    end
   end
 end

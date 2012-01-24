@@ -1,10 +1,18 @@
 require 'spec_helper'
 require 'quiz'
+require 'xml_renderer'
 require 'ruby-debug'
 
 describe Quiz do
+  describe 'when created with XML renderer' do
+    subject { Quiz.new('Foo', 'xml') }
+    its(:title) { should == 'Foo' }
+    its(:renderer) { should be_an_instance_of XmlRenderer }
+    its(:questions) { should be_empty }
+  end
+  
   describe 'should include XML elements' do
-    subject { Quiz.new('Foo', :maximum_submissions => 2, :start => '2011-01-01 00:00', :time_limit => 60).render }
+    subject { Quiz.new('Foo', 'xml', :maximum_submissions => 2, :start => '2011-01-01 00:00', :time_limit => 60).render }
     {'title' => 'Foo',
       'maximum-submissions' => '2',
       'type' => 'quiz' }.each_pair do |element, value|
@@ -14,10 +22,4 @@ describe Quiz do
       it { should have_xml_element "quiz/metadata/#{element}" }
     end
   end
-  describe 'parsing questions' do
-    it 'should not raise error' do
-      lambda { Quiz.quiz('foo') {  } }.should_not raise_error
-    end
-  end
-        
 end
