@@ -1,12 +1,11 @@
 class Question
   require 'builder'
   attr_accessor :question_text, :answers, :randomize, :points
-  attr_reader :builder, :string
   
   def initialize(*args)
-    @answers = []
-    @string = ''
-    @points = args[-1].kind_of?(Hash) ? args[-1][:points].to_i : 1
+    options = if args[-1].kind_of?(Hash) then args[-1] else {} end
+    @answers = options[:answers] || []
+    @points = [options[:points].to_i, 1].max
   end
 
   def text(s) ; @question_text = s ; end

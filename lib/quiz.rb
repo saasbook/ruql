@@ -5,6 +5,7 @@ $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__)))
 
 # renderers
 require 'xml_renderer'
+require 'html5_renderer'
 
 # question types
 require 'question'
@@ -32,19 +33,27 @@ class Quiz
     :maximum_score => 1,
   }
 
-  attr_reader :renderer, :questions, :options, :output
+  attr_reader :renderer
+  attr_reader :questions
+  attr_reader :options
+  attr_reader :output
   attr_accessor :title
 
-  def initialize(title, renderer, options={})
+  def initialize(title, options={})
     @output = ''
     @questions = []
     @title = title
     @options = @@default_options.merge(options)
-    @renderer = Object.const_get(renderer.to_s.capitalize + 'Renderer').send(:new,self)
   end
 
-  def render
-    @output = @renderer.render_quiz(self)
+  def self.get_renderer(renderer)
+    Object.const_get(renderer.to_s.capitalize + 'Renderer') rescue nil
+  end      
+
+  def render_with(renderer,options={})
+    @renderer = Quiz.get_renderer(renderer).send(:new,self,options)
+    @renderer.render_quiz
+    @output = @renderer.output
   end
   
   # this should really be done using mixins.
@@ -57,7 +66,6 @@ class Quiz
   def self.quiz(*args,&block)
     quiz = Quiz.new(*args)
     quiz.instance_eval(&block)
-    quiz.render
-    puts quiz.output
+    quiz
   end
 end

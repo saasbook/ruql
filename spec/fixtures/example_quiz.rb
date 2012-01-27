@@ -1,5 +1,5 @@
-Quiz.quiz "I. Introduction", :xml, :time_limit => 60 do
-  choice_answer do
+quiz "I. Introduction", :time_limit => 60 do
+  choice_answer :randomize => true do
     text 'question 1'
     distractor 'wrong answer a'
     distractor 'wrong answer b', :explanation => 'b is wrong'

@@ -1,8 +1,8 @@
 class XmlRenderer
   require 'builder'
 
-  attr_reader :output, :quiz
-  def initialize(quiz=nil)
+  attr_reader :output
+  def initialize(quiz,options={})
     @output = ''
     @b = Builder::XmlMarkup.new(:target => @output, :indent => 2)
     @quiz = quiz
@@ -13,14 +13,14 @@ class XmlRenderer
     m.call(thing)
   end
   
-  def render_quiz(quiz)
+  def render_quiz
     # entire quiz can be in one question group, as long as we specify
     # that ALL question from the group must be used to make the quiz.
     xml_quiz do
       # after preamble...
       @b.question_groups do
-        @b.question_group(:select => quiz.questions.length) do
-          quiz.questions.each do |question|
+        @b.question_group(:select => @quiz.questions.length) do
+          @quiz.questions.each do |question|
             self.render(question)
           end
         end
@@ -86,8 +86,8 @@ class XmlRenderer
     @b.quiz do
       @b.metadata do
         @b.type 'quiz'
-        @b.title quiz.title
-        options_to_xml quiz.options
+        @b.title @quiz.title
+        options_to_xml @quiz.options
       end
       @b.preamble
       @b.data do 

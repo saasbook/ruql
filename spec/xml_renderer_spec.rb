@@ -7,7 +7,6 @@ describe XmlRenderer do
   end
   describe 'when created' do
     subject { XmlRenderer.new(:fake_quiz) }
-    its(:quiz) { should == :fake_quiz }
     its(:output) { should == '' }
   end
   describe 'calling renderers' do
@@ -26,7 +25,7 @@ describe XmlRenderer do
       it { should_not have_xml_element 'option/explanation' }
     end
     describe 'distractor with explanation' do
-      subject { XmlRenderer.new.render_multiple_choice_answer(Question::Answer.new('wrong', false, 'why')) }
+      subject { XmlRenderer.new(:fake).render_multiple_choice_answer(Question::Answer.new('wrong', false, 'why')) }
       it { should have_xml_element 'option/explanation', :value => c('why') }
     end
     describe 'multiple choice question with answers' do
