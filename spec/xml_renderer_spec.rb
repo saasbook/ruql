@@ -27,7 +27,7 @@ describe XmlRenderer do
     end
     describe 'distractor with explanation' do
       subject { XmlRenderer.new.render_multiple_choice_answer(Question::Answer.new('wrong', false, 'why')) }
-      it { should have_xml_element 'option/explanation', :value => 'why' }
+      it { should have_xml_element 'option/explanation', :value => c('why') }
     end
     describe 'multiple choice question with answers' do
       subject {

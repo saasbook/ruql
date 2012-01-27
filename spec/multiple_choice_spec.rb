@@ -7,7 +7,7 @@ describe 'Multiple choice question' do
       its(:question_text) { should == 'question text' }
     end
     context 'with no text and block with text attr inside' do
-      subject { MultipleChoice.new() do |q| ; q.text 'New' ; end }
+      subject { q = MultipleChoice.new() ; q.text 'New' ; q }
       its(:question_text) { should ==  'New' }
     end
   end
