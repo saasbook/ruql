@@ -5,24 +5,26 @@ class Html5Renderer
 
   def initialize(quiz,options={})
     @css = options.delete(:c) || options.delete(:css)
+    @show_solutions = options.delete(:s) || options.delete(:solutions)
     @output = ''
     @quiz = quiz
     @h = Builder::XmlMarkup.new(:target => @output, :indent => 2)
   end
 
   def render_quiz
-    @h.html
-    @h.head do
-      @h.title @quiz.title
-      @h.link(:rel => 'stylesheet', :type =>'text/css', :href=>@css) if @css
-    end
-    @h.body do
-      quiz_header
-      @quiz.questions.each_with_index do |q,i|
-        case q
-        when MultipleChoice then render_multiple_choice(q,i)
-        else
-          raise "Unknown question type: #{q}"
+    @h.html do
+      @h.head do
+        @h.title @quiz.title
+        @h.link(:rel => 'stylesheet', :type =>'text/css', :href=>@css) if @css
+      end
+      @h.body do
+        quiz_header
+        @quiz.questions.each_with_index do |q,i|
+          case q
+          when MultipleChoice, TrueFalse then render_multiple_choice(q,i)
+          else
+            raise "Unknown question type: #{q}"
+          end
         end
       end
     end
@@ -34,11 +36,27 @@ class Html5Renderer
       answers = (q.randomize ? q.answers.sort_by { rand } : q.answers)
       @h.ol :class => 'answers' do
         answers.each do |answer|
-          @h.li answer.answer_text
+          if @show_solutions
+            render_answer_for_solutions(answer)
+          else
+            @h.li answer.answer_text
+          end
         end
       end
     end
     self
+  end
+
+  def render_answer_for_solutions(answer)
+    args = {:class => (answer.correct? ? 'correct' : 'incorrect')}
+    if answer.has_explanation?
+      @h.li(args) do
+        @h.p answer.answer_text
+        @h.p answer.explanation, {:class => 'explanation'}
+      end
+    else
+      @h.li answer.answer_text, args
+    end
   end
 
   def render_question_text(question,index)

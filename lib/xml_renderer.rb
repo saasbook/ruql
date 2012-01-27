@@ -28,7 +28,7 @@ class XmlRenderer
     end
     @output
   end
-  
+
   def render_multiple_choice(question)
     @b.question :type => 'GS_Choice_Answer_Question', :id => question.object_id.to_s(16) do
       @b.metadata {
@@ -55,6 +55,7 @@ class XmlRenderer
       }
     end
   end
+  alias :render_true_false :render_multiple_choice
 
   def render_multiple_choice_answer(answer)
     option_args = {}

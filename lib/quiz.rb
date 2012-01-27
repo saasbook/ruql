@@ -41,7 +41,7 @@ class Quiz
 
   def initialize(title, options={})
     @output = ''
-    @questions = []
+    @questions = options[:questions] || []
     @title = title
     @options = @@default_options.merge(options)
   end
@@ -60,6 +60,11 @@ class Quiz
   def choice_answer(opts={}, &block)
     q = MultipleChoice.new('',opts)
     q.instance_eval(&block)
+    @questions << q
+  end
+
+  def truefalse(*args)
+    q = TrueFalse.new(*args)
     @questions << q
   end
 
