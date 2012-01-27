@@ -1,11 +1,12 @@
 class Question
   require 'builder'
-  attr_accessor :question_text, :answers, :randomize
+  attr_accessor :question_text, :answers, :randomize, :points
   attr_reader :builder, :string
   
   def initialize(*args)
     @answers = []
     @string = ''
+    @points = args[-1].kind_of?(Hash) ? args[-1][:points].to_i : 1
   end
 
   def text(s) ; @question_text = s ; end

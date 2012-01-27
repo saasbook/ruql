@@ -4,7 +4,7 @@ class XmlRenderer
   attr_reader :output, :quiz
   def initialize(quiz=nil)
     @output = ''
-    @b = Builder::XmlMarkup.new(:target => @output)
+    @b = Builder::XmlMarkup.new(:target => @output, :indent => 2)
     @quiz = quiz
   end
 
@@ -14,37 +14,53 @@ class XmlRenderer
   end
   
   def render_quiz(quiz)
+    # entire quiz can be in one question group, as long as we specify
+    # that ALL question from the group must be used to make the quiz.
     xml_quiz do
-      quiz.questions.each do |question|
-        self.render(question)
+      # after preamble...
+      @b.question_groups do
+        @b.question_group(:select => quiz.questions.length) do
+          quiz.questions.each do |question|
+            self.render(question)
+          end
+        end
       end
     end
     @output
   end
   
   def render_multiple_choice(question)
-    @b.question :type => 'GS_Choice_Answer_Question' do
+    @b.question :type => 'GS_Choice_Answer_Question', :id => question.object_id.to_s(16) do
       @b.metadata {
         @b.parameters {
           @b.rescale_score 1
           @b.choice_type (question.multiple ? 'checkbox' : 'radio')
         }
       }
+      # since we want all the options to appear, we create N option
+      # groups each containig 1 option, and specify that option to
+      # always be selected for inclusion in the quiz.  If the original
+      # question specified 'random', use the 'randomize' attribute on
+      # option_groups to scramble the order in which displayed;
+      # otherwise, display in same order as answers appear in source.
       @b.data {
         @b.text { @b.cdata!(question.question_text) }
-        @b.option_groups {
-          @b.option_group(:select => 'all') {
-            question.answers.each { |a| self.render_answer(a) }
-          }
+        @b.option_groups(:randomize => !!question.randomize) {
+          question.answers.each do |a|
+            @b.option_group(:select => 'all') {
+              self.render_multiple_choice_answer a
+            }
+          end
         }
       }
     end
   end
 
-  def render_answer(answer)
+  def render_multiple_choice_answer(answer)
     option_args = {}
     option_args['selected_score'] = answer.correct? ? 1 : 0
     option_args['unselected_score'] = 1 - option_args['selected_score']
+    option_args['id'] = answer.object_id.to_s(16)
     @b.option(option_args) do
       @b.text { @b.cdata!(answer.answer_text) }
       @b.explanation { @b.cdata!(answer.explanation) } if answer.has_explanation?
@@ -67,8 +83,6 @@ class XmlRenderer
   
 
   def xml_quiz
-    @b.instruct!
-    @b.declare! :DOCTYPE, :quiz, :SYSTEM, "quiz.dtd"
     @b.quiz do
       @b.metadata do
         @b.type 'quiz'
@@ -77,14 +91,10 @@ class XmlRenderer
       end
       @b.preamble
       @b.data do 
-        @b.question_groups do
-          @b.__send__('question-group', :select => '1') do
-            @b.questions do
-              yield
-            end
-          end
+        yield
       end
     end
   end
-  end
+
 end
+

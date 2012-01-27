@@ -1,4 +1,16 @@
+require 'ruby-debug'
 require 'builder'
+
+$LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__)))
+
+# renderers
+require 'xml_renderer'
+
+# question types
+require 'question'
+require 'answer'
+require 'multiple_choice'
+require 'true_false'
 
 class Quiz
 
@@ -28,16 +40,24 @@ class Quiz
     @questions = []
     @title = title
     @options = @@default_options.merge(options)
-    @renderer = Object.const_get(renderer.capitalize + 'Renderer').send(:new,self)
+    @renderer = Object.const_get(renderer.to_s.capitalize + 'Renderer').send(:new,self)
   end
 
   def render
     @output = @renderer.render_quiz(self)
   end
   
-  def self.quiz(title, options={}, &block)
-    quiz = Quiz.new(title, options)
-    quiz.instance_eval(&block) if block_given?
+  # this should really be done using mixins.
+  def choice_answer(opts={}, &block)
+    q = MultipleChoice.new('',opts)
+    q.instance_eval(&block)
+    @questions << q
+  end
+
+  def self.quiz(*args,&block)
+    quiz = Quiz.new(*args)
+    quiz.instance_eval(&block)
     quiz.render
+    puts quiz.output
   end
 end
