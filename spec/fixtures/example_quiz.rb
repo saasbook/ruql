@@ -1,4 +1,4 @@
-quiz "I. Introduction", :time_limit => 60 do
+quiz "I. Introduction", :duration => 1800 do
   choice_answer :randomize => true do # means: randomize order of choices
     text 'question 1'
     distractor 'wrong answer a'

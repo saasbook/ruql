@@ -57,8 +57,13 @@ class Quiz
   end
   
   # this should really be done using mixins.
-  def choice_answer(opts={}, &block)
-    q = MultipleChoice.new('',opts)
+  def choice_answer(*args, &block)
+    if args.first.is_a?(Hash) # no question text
+      q = MultipleChoice.new('',*args)
+    else
+      text = args.shift
+      q = MultipleChoice.new(text, *args)
+    end
     q.instance_eval(&block)
     @questions << q
   end

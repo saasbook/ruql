@@ -8,6 +8,7 @@ class TrueFalse < Question
     self.distractor (!correct_answer).to_s.capitalize, :explanation => explanation
   end
 
+  def multiple ; false ; end
   def incorrect_answer ; self.answers.reject(&:correct).first ; end
   def explanation ; incorrect_answer.explanation ; end
     
