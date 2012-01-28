@@ -1,35 +1,54 @@
 class Html5Renderer
   require 'builder'
+  require 'erb'
   
   attr_reader :output
 
   def initialize(quiz,options={})
-    @css = options.delete(:c) || options.delete(:css)
-    @show_solutions = options.delete(:s) || options.delete(:solutions)
+    @css = options.delete('c') || options.delete('css')
+    @show_solutions = options.delete('s') || options.delete('solutions')
+    @template = options.delete('t') || options.delete('template')
     @output = ''
     @quiz = quiz
     @h = Builder::XmlMarkup.new(:target => @output, :indent => 2)
   end
 
   def render_quiz
-    @h.html do
-      @h.head do
-        @h.title @quiz.title
-        @h.link(:rel => 'stylesheet', :type =>'text/css', :href=>@css) if @css
+    if @template
+      render_with_template do
+        render_questions
+        @output
       end
-      @h.body do
-        quiz_header
-        @quiz.questions.each_with_index do |q,i|
-          case q
-          when MultipleChoice, TrueFalse then render_multiple_choice(q,i)
-          else
-            raise "Unknown question type: #{q}"
-          end
+    else
+      @h.html do
+        @h.head do
+          @h.title @quiz.title
+          @h.link(:rel => 'stylesheet', :type =>'text/css', :href=>@css) if @css
+        end
+        @h.body do
+          render_questions
         end
       end
     end
     self
   end
+
+  def render_with_template
+    title = @quiz.title
+    output = ERB.new(IO.read(@template)).result(binding)
+    @output = output
+  end
+    
+  def render_questions
+    @quiz.questions.each_with_index do |q,i|
+      case q
+      when MultipleChoice, TrueFalse then render_multiple_choice(q,i)
+      else
+        raise "Unknown question type: #{q}"
+      end
+    end
+  end
+
 
   def render_multiple_choice(q,index)
     render_question_text(q, index) do

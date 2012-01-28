@@ -10,14 +10,19 @@ describe Html5Renderer do
       Html5Renderer.new(Quiz.new(''), opts).render_quiz.output
     end
     it 'should include CSS link with -c option' do
-      rendering_with(:c => 'foo.html').
+      rendering_with('c' => 'foo.html').
         should match /<link rel="stylesheet" type="text\/css" href="foo.html"/
     end
     it 'should include CSS link with --css option' do
-      rendering_with(:css => 'foo.html').
+      rendering_with('css' => 'foo.html').
         should match /<link rel="stylesheet" type="text\/css" href="foo.html"/
     end
+    it 'should use ERB template if directed' do
+      rendering_with('template' => File.join(File.dirname(__FILE__),'fixtures','template.html.erb')).
+        should match /<body id="template">/
+    end
   end
+    
   describe 'rendering solutions' do
     before :each do
       @a = [
@@ -26,7 +31,7 @@ describe Html5Renderer do
         Answer.new('cc',false)]
       @q = MultipleChoice.new('question', :answers => @a)
       @quiz = Quiz.new('foo', :questions => [@q])
-      @output = Html5Renderer.new(@quiz,{:solutions => true}).render_quiz.output
+      @output = Html5Renderer.new(@quiz,{'solutions' => true}).render_quiz.output
     end
     it 'should highlight correct answer' do
       @output.should have_xml_element "//li[@class='correct']/p", :value => 'aa'
