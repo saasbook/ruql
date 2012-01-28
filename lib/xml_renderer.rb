@@ -33,7 +33,7 @@ class XmlRenderer
     @b.question :type => 'GS_Choice_Answer_Question', :id => question.object_id.to_s(16) do
       @b.metadata {
         @b.parameters {
-          @b.rescale_score 1
+          @b.rescale_score question.points
           @b.choice_type (question.multiple ? 'checkbox' : 'radio')
         }
       }
@@ -48,7 +48,7 @@ class XmlRenderer
         @b.option_groups(:randomize => !!question.randomize) {
           question.answers.each do |a|
             @b.option_group(:select => 'all') {
-              self.render_multiple_choice_answer a
+              self.render_multiple_choice_answer a, question.multiple
             }
           end
         }
@@ -57,10 +57,11 @@ class XmlRenderer
   end
   alias :render_true_false :render_multiple_choice
 
-  def render_multiple_choice_answer(answer)
+  def render_multiple_choice_answer(answer, multiple_allowed)
     option_args = {}
     option_args['selected_score'] = answer.correct? ? 1 : 0
-    option_args['unselected_score'] = 1 - option_args['selected_score']
+    option_args['unselected_score'] =
+      multiple_allowed ? 1 - option_args['selected_score'] : 0
     option_args['id'] = answer.object_id.to_s(16)
     @b.option(option_args) do
       @b.text { @b.cdata!(answer.answer_text) }
