@@ -2,6 +2,7 @@ class Answer
   attr_accessor :answer_text, :explanation
   attr_reader :correct
   attr_reader :builder
+  attr_reader :question
 
   def correct? ; !!correct ; end
   def has_explanation? ; !!explanation ; end

@@ -61,9 +61,9 @@ class Html5Renderer
       @h.ol :class => 'answers' do
         answers.each do |answer|
           if @show_solutions
-            render_answer_for_solutions(answer)
+            render_answer_for_solutions(answer, q.raw?)
           else
-            @h.li answer.answer_text
+            if q.raw? then @h.li { |l| l << answer.answer_text } else @h.li answer.answer_text end
           end
         end
       end
@@ -71,15 +71,14 @@ class Html5Renderer
     self
   end
 
-  def render_answer_for_solutions(answer)
+  def render_answer_for_solutions(answer,raw)
     args = {:class => (answer.correct? ? 'correct' : 'incorrect')}
-    if answer.has_explanation?
-      @h.li(args) do
-        @h.p answer.answer_text
-        @h.p answer.explanation, {:class => 'explanation'}
+    @h.li(args) do
+      if raw then @h.p { |p| p << answer.answer_text } else @h.p answer.answer_text  end
+      if answer.has_explanation?
+        if raw then @h.p(:class => 'explanation') { |p| p << answer.explanation }
+        else @h.p(answer.explanation, :class => 'explanation') end
       end
-    else
-      @h.li answer.answer_text, args
     end
   end
 
@@ -87,7 +86,9 @@ class Html5Renderer
     @h.li :class => 'question', :id => "question-#{index}" do
       @h.div :class => 'text' do
         question.question_text.each_line do |p|
-          @h.p p
+          @h.p do |par|
+            par << p # preserves HTML markup
+          end
         end
       end
       yield # render answers

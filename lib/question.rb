@@ -6,8 +6,11 @@ class Question
     options = if args[-1].kind_of?(Hash) then args[-1] else {} end
     @answers = options[:answers] || []
     @points = [options[:points].to_i, 1].max
+    @raw = options[:raw]
   end
 
+  def raw? ; !!@raw ; end
+  
   def text(s) ; @question_text = s ; end
   
   def explanation(text)

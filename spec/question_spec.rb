@@ -9,6 +9,10 @@ describe Question do
       Question.new(:points => 3).points.should == 3
     end
   end
+  describe 'raw question' do
+    subject { Question.new(:raw => true) }
+    it { should be_raw }
+  end
   describe 'default explanation' do
     before(:each) do
       @q = Question.new

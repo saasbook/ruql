@@ -62,6 +62,19 @@ describe Html5Renderer do
       end
     end
   end
+
+  describe 'rendering raw content' do
+    before :each do
+      @q = MultipleChoice.new '<tt>xx</tt>', :raw => true
+      @q.answer '<b>cc</b>'
+    end
+    it 'should not escape HTML in the question' do
+      Html5Renderer.new(:fake).render_multiple_choice(@q,1).output.should match /<tt>xx<\/tt>/
+    end
+    it 'should not escape HTML in the answer' do
+      Html5Renderer.new(:fake).render_multiple_choice(@q,1).output.should match /<b>cc<\/b>/
+    end
+  end
   
   describe 'rendering multiple-choice question' do
     before :each do
