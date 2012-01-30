@@ -85,9 +85,13 @@ class Html5Renderer
   def render_question_text(question,index)
     @h.li :class => 'question', :id => "question-#{index}" do
       @h.div :class => 'text' do
-        question.question_text.each_line do |p|
-          @h.p do |par|
-            par << p # preserves HTML markup
+        if question.raw?
+          @h.p { |p| p << question.question_text }
+        else
+          question.question_text.each_line do |p|
+            @h.p do |par|
+              par << p # preserves HTML markup
+            end
           end
         end
       end
