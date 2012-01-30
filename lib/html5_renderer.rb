@@ -46,7 +46,7 @@ class Html5Renderer
     @h.ol :class => 'questions' do
       @quiz.questions.each_with_index do |q,i|
         case q
-        when MultipleChoice, TrueFalse then render_multiple_choice(q,i)
+        when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(q,i)
         else
           raise "Unknown question type: #{q}"
         end
@@ -90,10 +90,13 @@ class Html5Renderer
     }
     @h.li html_args  do
       @h.div :class => 'text' do
+        qtext = "[#{question.points} point#{'s' if question.points>1}] " <<
+          ('Select ALL that apply: ' if question.multiple).to_s <<
+          question.question_text
         if question.raw?
-          @h.p { |p| p << question.question_text }
+          @h.p { |p| p << qtext }
         else
-          question.question_text.each_line do |p|
+          qtext.each_line do |p|
             @h.p do |par|
               par << p # preserves HTML markup
             end

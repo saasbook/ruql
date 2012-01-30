@@ -11,6 +11,7 @@ require 'html5_renderer'
 require 'question'
 require 'answer'
 require 'multiple_choice'
+require 'select_multiple'
 require 'true_false'
 
 class Quiz
@@ -67,6 +68,17 @@ class Quiz
     else
       text = args.shift
       q = MultipleChoice.new(text, *args)
+    end
+    q.instance_eval(&block)
+    @questions << q
+  end
+
+  def select_multiple(*args, &block)
+    if args.first.is_a?(Hash) # no question text
+      q = SelectMultiple.new('',*args)
+    else
+      text = args.shift
+      q = SelectMultiple.new(text, *args)
     end
     q.instance_eval(&block)
     @questions << q
