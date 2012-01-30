@@ -56,6 +56,10 @@ class Quiz
     @output = @renderer.output
   end
   
+  def points ; questions.map(&:points).inject { |sum,points| sum + points } ; end
+
+  def num_questions ; questions.length ; end
+  
   # this should really be done using mixins.
   def choice_answer(*args, &block)
     if args.first.is_a?(Hash) # no question text

@@ -34,17 +34,22 @@ class Html5Renderer
   end
 
   def render_with_template
+    # 3 local variables that can should be in scope in the template:
     title = @quiz.title
+    total_points = @quiz.points
+    num_questions = @quiz.num_questions
     output = ERB.new(IO.read(File.expand_path @template)).result(binding)
     @output = output
   end
     
   def render_questions
-    @quiz.questions.each_with_index do |q,i|
-      case q
-      when MultipleChoice, TrueFalse then render_multiple_choice(q,i)
-      else
-        raise "Unknown question type: #{q}"
+    @h.ol :class => 'questions' do
+      @quiz.questions.each_with_index do |q,i|
+        case q
+        when MultipleChoice, TrueFalse then render_multiple_choice(q,i)
+        else
+          raise "Unknown question type: #{q}"
+        end
       end
     end
   end
@@ -79,7 +84,7 @@ class Html5Renderer
   end
 
   def render_question_text(question,index)
-    @h.div :class => 'question', :id => "question-#{index}" do
+    @h.li :class => 'question', :id => "question-#{index}" do
       @h.div :class => 'text' do
         question.question_text.each_line do |p|
           @h.p p

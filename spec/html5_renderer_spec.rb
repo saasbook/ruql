@@ -41,7 +41,28 @@ describe Html5Renderer do
       @output.should have_xml_element "//li[@class='incorrect']/p[@class='explanation']", :value => 'Nope'
     end
   end
-      
+
+  describe 'local variable' do
+    require 'tempfile'
+    def write_template(str)
+      f = Tempfile.new('spec')
+      f.write str
+      f.close
+      return f.path
+    end
+    before :each do
+      @atts = {:title => 'My Quiz', :points => 20, :num_questions => 5} 
+      @quiz = mock('quiz', @atts.merge(:questions => []))
+    end
+    %w(title total_points num_questions).each do |var|
+      it "should set '#{var}'" do
+        value = @atts[var]
+        Html5Renderer.new(@quiz, 't' => write_template("#{var}: <%= #{value} %>")).render_quiz.output.
+          should match /#{var}: #{value}/
+      end
+    end
+  end
+  
   describe 'rendering multiple-choice question' do
     before :each do
       @a = [Answer.new('aa',true),Answer.new('bb',false), Answer.new('cc',false)]

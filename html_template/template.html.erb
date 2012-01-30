@@ -1,21 +1,32 @@
 <html>
   <head>
-    <title>I. Introduction</title>
+    <title><%= title %></title>
     <style type="text/css">
-    .header { text-align: right; padding-right: 8em; }
+    body { font-family: Times, serif; }
+    .header { text-align: right; font-weight: bold; padding-right: 30%; line-height: 300%; }
     h1 { text-align: center; }
-    ol.answers { list-style-type: upper-alpha; }
+    ol.questions { list-style-type: number; }
+    li.question { border-bottom: 1px solid grey; padding-bottom: 2ex; }
+    ol.answers { list-style-type: lower-alpha; }
+    .instructions { clear: both; border: 1px solid black; align: center; padding: 2ex; margin: 2ex; }
     </style>
   </head>
   <body>
     <div class="header">
-      <div>Name:</div>
-      <div>SID:</div>
+      <div id="name">Name:</div>
+      <div id="sid">SID:</div>
     </div>
-    <h1>Quiz 1</h1>
-    <p class="instructions">
-      INSERT INSTRUCTIONS HERE.
-    </p>
+    <h1><%= title %></h1>
+    <div class="instructions">
+      <ul>
+        <li>No books, notes, or electronic devices allowed.  </li>
+        <li><%= num_questions %> questions, all worth the same unless
+          otherwise noted.
+          <%= total_points %> points total.</li>
+        <li>Time limit is 30 minutes.</li>
+      </ul>
+      <b>Good skill!</b>
+    </div>
     <%= yield %>
   </body>
 </html>
