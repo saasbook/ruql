@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require './lib/quiz.rb'
+require File.expand_path(File.dirname(__FILE__)) + '/lib/quiz.rb'
 require 'getopt/long'
 
 def usage

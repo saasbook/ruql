@@ -35,7 +35,7 @@ class Html5Renderer
 
   def render_with_template
     title = @quiz.title
-    output = ERB.new(IO.read(@template)).result(binding)
+    output = ERB.new(IO.read(File.expand_path @template)).result(binding)
     @output = output
   end
     
