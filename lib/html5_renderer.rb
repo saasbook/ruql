@@ -83,7 +83,12 @@ class Html5Renderer
   end
 
   def render_question_text(question,index)
-    @h.li :class => 'question', :id => "question-#{index}" do
+    html_args = {
+      :id => "question-#{index}",
+      :class => ['question', question.class.to_s.downcase, (question.multiple ? 'multiple' : '')]
+        .join(' ')
+    }
+    @h.li html_args  do
       @h.div :class => 'text' do
         if question.raw?
           @h.p { |p| p << question.question_text }

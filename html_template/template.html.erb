@@ -7,7 +7,8 @@
     h1 { text-align: center; }
     ol.questions { list-style-type: number; }
     li.question { border-bottom: 1px solid grey; padding-bottom: 2ex; }
-    ol.answers { list-style-type: lower-alpha; }
+    li   ol.answers { list-style-type: lower-alpha; }
+    li.multiple ol.answers { list-style-type: circle;  }
     .instructions { clear: both; border: 1px solid black; align: center; padding: 2ex; margin: 2ex; }
     </style>
   </head>
@@ -20,10 +21,14 @@
     <div class="instructions">
       <ul>
         <li>No books, notes, or electronic devices allowed.  </li>
+        <li>Time limit is 30 minutes.</li>
         <li><%= num_questions %> questions, all worth the same unless
           otherwise noted.
           <%= total_points %> points total.</li>
-        <li>Time limit is 30 minutes.</li>
+        <li>For 'select all that apply' questions that have N choices,
+          you get 1/N of the points for each RIGHT answer that you check, plus
+          1/N of the points for each WRONG answer that you correctly
+          leave unchecked.</li>
       </ul>
       <b>Good skill!</b>
     </div>
