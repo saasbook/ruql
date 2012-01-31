@@ -57,7 +57,11 @@ class Html5Renderer
 
   def render_multiple_choice(q,index)
     render_question_text(q, index) do
-      answers = (q.randomize ? q.answers.sort_by { rand } : q.answers)
+      answers =
+        if q.class == TrueFalse then q.answers.sort.reverse # True always first
+        elsif q.randomize then q.answers.sort_by { rand }
+        else q.answers
+        end
       @h.ol :class => 'answers' do
         answers.each do |answer|
           if @show_solutions
