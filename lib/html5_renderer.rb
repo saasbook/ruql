@@ -43,6 +43,7 @@ class Html5Renderer
   end
     
   def render_questions
+    render_random_seed
     @h.ol :class => 'questions' do
       @quiz.questions.each_with_index do |q,i|
         case q
@@ -125,4 +126,7 @@ class Html5Renderer
     self
   end
 
+  def render_random_seed
+    @h.comment! "Seed: #{@quiz.seed}"
+  end
 end

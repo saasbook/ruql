@@ -38,6 +38,7 @@ class Quiz
   attr_reader :questions
   attr_reader :options
   attr_reader :output
+  attr_reader :seed
   attr_accessor :title
 
   def initialize(title, options={})
@@ -45,6 +46,7 @@ class Quiz
     @questions = options[:questions] || []
     @title = title
     @options = @@default_options.merge(options)
+    @seed = srand
   end
 
   def self.get_renderer(renderer)
@@ -52,6 +54,7 @@ class Quiz
   end      
 
   def render_with(renderer,options={})
+    srand @seed
     @renderer = Quiz.get_renderer(renderer).send(:new,self,options)
     @renderer.render_quiz
     @output = @renderer.output
@@ -60,6 +63,10 @@ class Quiz
   def points ; questions.map(&:points).inject { |sum,points| sum + points } ; end
 
   def num_questions ; questions.length ; end
+
+  def random_seed(num)
+    @seed = num.to_i
+  end
   
   # this should really be done using mixins.
   def choice_answer(*args, &block)
