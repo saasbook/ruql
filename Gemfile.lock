@@ -1,0 +1,27 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    archive-tar-minitar (0.5.2)
+    builder (3.0.0)
+    columnize (0.3.6)
+    getopt (1.4.1)
+    linecache19 (0.5.12)
+      ruby_core_source (>= 0.1.4)
+    ruby-debug-base19 (0.11.25)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby_core_source (>= 0.1.4)
+    ruby-debug19 (0.11.6)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby-debug-base19 (>= 0.11.19)
+    ruby_core_source (0.1.5)
+      archive-tar-minitar (>= 0.5.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  builder
+  getopt
+  ruby-debug19
