@@ -9,8 +9,11 @@ class XmlRenderer
   end
 
   def render(thing)
-    m = self.method("render_" + thing.class.to_s.gsub(/\B[A-Z]/, '_\&').downcase)
-    m.call(thing)
+    case thing
+    when MultipleChoice,SelectMultiple,TrueFalse then render_multiple_choice(thing)
+    else
+      raise "Unknown question type: #{thing}"
+    end
   end
   
   def render_quiz
