@@ -48,6 +48,7 @@ class Html5Renderer
       @quiz.questions.each_with_index do |q,i|
         case q
         when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(q,i)
+        when FillIn then render_fill_in(q, i)
         else
           raise "Unknown question type: #{q}"
         end
@@ -76,6 +77,32 @@ class Html5Renderer
     self
   end
 
+  def render_fill_in(q, idx)
+    render_question_text(q, idx) do
+      if @show_solutions
+        answer = q.answers[0]
+        if answer.has_explanation?
+          if q.raw? then @h.p(:class => 'explanation') { |p| p << answer.explanation }
+          else @h.p(answer.explanation, :class => 'explanation') end
+        end
+        answers = (answer.answer_text.kind_of?(Array) ? answer.answer_text : [answer.answer_text])
+        @h.ol :class => 'answers' do
+          answers.each do |answer|
+            if answer.kind_of?(Regexp)
+              answer = answer.inspect
+              if !q.case_sensitive
+                answer += 'i'
+              end
+            end
+            @h.li do
+              if q.raw? then @h.p { |p| p << answer } else @h.p answer end
+            end
+          end
+        end
+      end
+    end
+  end
+
   def render_answer_for_solutions(answer,raw)
     args = {:class => (answer.correct? ? 'correct' : 'incorrect')}
     @h.li(args) do
@@ -97,7 +124,9 @@ class Html5Renderer
       @h.div :class => 'text' do
         qtext = "[#{question.points} point#{'s' if question.points>1}] " <<
           ('Select ALL that apply: ' if question.multiple).to_s <<
-          question.question_text
+          if question.class == FillIn then question.question_text.gsub(/\-+/, '_____________________________')
+          else question.question_text
+          end
         if question.raw?
           @h.p { |p| p << qtext }
         else

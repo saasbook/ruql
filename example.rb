@@ -15,18 +15,18 @@ quiz 'Example quiz', :time_limit => 45 do
   #  - provide a string or regexp to check answer
   #  - a "blank" is three or more hyphens in a row
   #  - all regexps are case-INSENSITIVE unless :case_sensitive => true is passed
-
+  #  - order matters unless :order => false is passed
   fill_in :points => 2 do
     text 'The capital of California is ---'
     answer 'sacramento'
   end
 
-  # multiple blanks, order matters: answer must be an array 
+  # multiple blanks, order matters: answer must be an array
   fill_in do
     text 'The --- brown fox jumped over the lazy ---'
-    answer [/fox/, /dog/]
+    answer [/fox/, /dog/], :explanation => 'This sentence contains all of the letters of the English Alphabet'
   end
-  
+
   # multiple blanks, order doesn't matter but no answer can be reused
   fill_in :order => false do
     text 'Two of the Three Stooges are --- and ---'
@@ -34,7 +34,6 @@ quiz 'Example quiz', :time_limit => 45 do
   end
 
   # true/false questions - explanation is optional
-
   truefalse true, 'The week has 7 days.'
   truefalse false, 'The earth is flat.', :explanation => 'No, just looks that way'
 
@@ -42,8 +41,7 @@ quiz 'Example quiz', :time_limit => 45 do
   #  - can provide a generic 'explanation' clause and/or override it
   # with specific explanations to accompany right or wrong answers.
   # - if :randomize => true is given, order of choices will be randomized
-  #   (default is to preserve order) 
-
+  #   (default is to preserve order)
   choice_answer :points => 3, :randomize => true do
     text  "What is the largest US state?"
     explanation "Not big enough." # for distractors without their own explanation
@@ -54,7 +52,6 @@ quiz 'Example quiz', :time_limit => 45 do
 
   # multiple choice question with HTML markup in question text or answer
   # choices (eg for code)
-
   choice_answer :raw => true do
     text %Q{What does the following code do:
 <pre>
@@ -64,10 +61,9 @@ quiz 'Example quiz', :time_limit => 45 do
     distractor 'Throws an exception', :explanation => "Don't be an idiot."
     answer 'Prints a friendly message'
   end
-    
+
   # "select all that are true" question
   # Just like choice_answer, but multiple 'answer' clauses allowed
-
   select_multiple do
     text "Which are American political parties?"
     answer "Democrats"
