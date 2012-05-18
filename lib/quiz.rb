@@ -13,6 +13,7 @@ require 'answer'
 require 'multiple_choice'
 require 'select_multiple'
 require 'true_false'
+require 'fill_in'
 
 class Quiz
 
@@ -93,6 +94,17 @@ class Quiz
 
   def truefalse(*args)
     q = TrueFalse.new(*args)
+    @questions << q
+  end
+
+  def fill_in(*args, &block)
+    if args.first.is_a?(Hash) # no question text
+      q = FillIn.new('', *args)
+    else
+      text = args.shift
+      q = FillIn.new(text, *args)
+    end
+    q.instance_eval(&block)
     @questions << q
   end
 

@@ -11,6 +11,7 @@ class XmlRenderer
   def render(thing)
     case thing
     when MultipleChoice,SelectMultiple,TrueFalse then render_multiple_choice(thing)
+    when FillIn then render_fill_in(thing)
     else
       raise "Unknown question type: #{thing}"
     end
@@ -30,6 +31,48 @@ class XmlRenderer
       end
     end
     @output
+  end
+
+  def render_fill_in(question)
+    @b.question :type => 'GS_Short_Answer_Question_Simple', :id => question.object_id.to_s(16) do
+      @b.metadata {
+        @b.parameters {
+          @b.rescale_score question.points
+          @b.type 'regexp'
+        }
+      }
+      # since we want all the options to appear, we create N option
+      # groups each containig 1 option, and specify that option to
+      # always be selected for inclusion in the quiz.  If the original
+      # question specified 'random', use the 'randomize' attribute on
+      # option_groups to scramble the order in which displayed;
+      # otherwise, display in same order as answers appear in source.
+      @b.data {
+        @b.text { @b.cdata!(question.question_text) }
+        @b.option_groups(:randomize => !!question.randomize) {
+          @b.option_group(:select => 'all') {
+            question.answers.each do |answer|
+              option_args = {}
+              option_args['selected_score'] = answer.correct? ? 1 : 0
+              option_args['unselected_score'] =
+                question.multiple ? 1 - option_args['selected_score'] : 0
+              option_args['id'] = answer.object_id.to_s(16)
+              @b.option(option_args) do
+                answer_text = answer.answer_text
+                if answer_text.kind_of?(Regexp)
+                  answer_text = answer_text.inspect
+                  if !question.case_sensitive
+                    answer_text += 'i'
+                  end
+                end
+                @b.text { @b.cdata!(answer_text) }
+                @b.explanation { @b.cdata!(answer.explanation) } if answer.has_explanation?
+              end
+            end
+          }
+        }
+      }
+    end
   end
 
   def render_multiple_choice(question)
