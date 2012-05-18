@@ -51,10 +51,10 @@ describe Html5Renderer do
       return f.path
     end
     before :each do
-      @atts = {:title => 'My Quiz', :points => 20, :num_questions => 5} 
-      @quiz = mock('quiz', @atts.merge(:questions => []))
+      @atts = {:title => 'My Quiz', :points => 20, :num_questions => 5, :duration => 1200} 
+      @quiz = mock('quiz', @atts.merge(:questions => [], :options => {:duration => @atts[:duration]}))
     end
-    %w(title total_points num_questions).each do |var|
+    %w(title total_points num_questions duration).each do |var|
       it "should set '#{var}'" do
         value = @atts[var]
         Html5Renderer.new(@quiz, 't' => write_template("#{var}: <%= #{value} %>")).render_quiz.output.

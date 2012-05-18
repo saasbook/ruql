@@ -1,7 +1,7 @@
-# A quiz has a mandatory name and optional time limit in minutes.
+# A quiz has a mandatory name and optional duration (time limit) in seconds.
 # There's also various other obscure options not documented here.
 
-quiz 'Example quiz', :time_limit => 45 do
+quiz 'Example quiz', :duration => 2700 do
 
   # Examples of quiz questions.
   # All questions have an optional :points => n that determines the
