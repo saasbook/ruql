@@ -16,22 +16,36 @@ quiz 'Example quiz', :time_limit => 45 do
   #  - a "blank" is three or more hyphens in a row
   #  - all regexps are case-INSENSITIVE unless :case_sensitive => true is passed
   #  - order matters unless :order => false is passed
+  #
+  # Some restrictions that Coursera places on fill in blank questions right now:
+  #  - Only a single blank is allowed
+  #  - Correct answers should be included in a single regex and merged by using |
   fill_in :points => 2 do
     text 'The capital of California is ---'
     answer 'sacramento'
   end
 
-  # multiple blanks, order matters: answer must be an array
+  # short answer fill in blanks question with an explanation
+  # for an incorrect answer
   fill_in do
-    text 'The --- brown fox jumped over the lazy ---'
-    answer [/fox/, /dog/], :explanation => 'This sentence contains all of the letters of the English Alphabet'
+    text 'The visionary founder of Apple is ---'
+    answer /^ste(ve|phen)\s+jobs$/, :explanation => 'Got it!'
+    distractor /^steve\s+wozniak/, :explanation => 'Almost, but not quite.'
   end
 
+  # multiple blanks, order matters: answer must be an array
+  # NOTE: unsupported by Coursera at this time.
+  #fill_in do
+  #  text 'The --- brown fox jumped over the lazy ---'
+  #  answer [/fox/, /dog/], :explanation => 'This sentence contains all of the letters of the English Alphabet'
+  #end
+
   # multiple blanks, order doesn't matter but no answer can be reused
-  fill_in :order => false do
-    text 'Two of the Three Stooges are --- and ---'
-    answer %w(moe larry curly)
-  end
+  # NOTE: unsupported by Coursera at this time.
+  #fill_in :order => false do
+  #  text 'Two of the Three Stooges are --- and ---'
+  #  answer %w(moe larry curly)
+  #end
 
   # true/false questions - explanation is optional
   truefalse true, 'The week has 7 days.'
