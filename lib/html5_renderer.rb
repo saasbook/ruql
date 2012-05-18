@@ -34,10 +34,11 @@ class Html5Renderer
   end
 
   def render_with_template
-    # 3 local variables that can should be in scope in the template:
+    # local variables that can be used in the template:
     title = @quiz.title
     total_points = @quiz.points
     num_questions = @quiz.num_questions
+    duration = @quiz.options[:duration]
     output = ERB.new(IO.read(File.expand_path @template)).result(binding)
     @output = output
   end

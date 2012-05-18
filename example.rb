@@ -1,7 +1,7 @@
-# A quiz has a mandatory name and optional time limit in minutes.
+# A quiz has a mandatory name and optional duration (time limit) in seconds.
 # There's also various other obscure options not documented here.
 
-quiz 'Example quiz', :time_limit => 45 do
+quiz 'Example quiz', :duration => 2700 do
 
   # Examples of quiz questions.
   # All questions have an optional :points => n that determines the
@@ -35,8 +35,8 @@ quiz 'Example quiz', :time_limit => 45 do
 
   # true/false questions - explanation is optional
 
-  truefalse true, 'The week has 7 days.'
-  truefalse false, 'The earth is flat.', :explanation => 'No, just looks that way'
+  truefalse 'The week has 7 days.', true
+  truefalse 'The earth is flat.', false, :explanation => 'No, just looks that way'
 
   # multiple choice questions (one correct answer):
   #  - can provide a generic 'explanation' clause and/or override it
