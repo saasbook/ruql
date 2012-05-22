@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'question with true answer' do
-  before :each do ; @q = TrueFalse.new('true', true, 'why') ; end
+  before :each do ; @q = TrueFalse.new('true', true, :explanation => 'why') ; end
   it 'should have True as correct answer' do
     @q.correct_answer.answer_text.should == 'True'
   end
