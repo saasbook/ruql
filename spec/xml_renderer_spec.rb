@@ -11,8 +11,9 @@ describe XmlRenderer do
   end
   describe 'calling renderers' do
     before(:each) do ; @x = XmlRenderer.new(:fake_quiz) ; end
-    it 'should call MultipleChoice renderer for multiple choice question' do
-      q = mock('multiple choice question', :class => 'MultipleChoice')
+    it 'should call MultipleChoice renderer for SelectMultiple question' do
+      q = SelectMultiple.new('question', :answers =>
+        [Answer.new('y1', true), Answer.new('n1', false), Answer.new('y2',true)])
       @x.should_receive(:render_multiple_choice).with(q)
       @x.render(q)
     end
