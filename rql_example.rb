@@ -1,3 +1,5 @@
+# Examples of the RQL question format.
+
 # A quiz has a mandatory name and optional time limit in minutes.
 # There's also various other obscure options not documented here.
 

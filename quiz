@@ -9,8 +9,19 @@ Usage: #{$0} filename.rb renderer [options]
 filename.rb contains questions expressed in the quiz DSL
 
 renderer choices are:
-  xml    - Coursera HTML format for online auto-grading
   html5  - HTML 5 suitable for Web display/printing
+  edxml  - XML for OpenEdX platform in-course questions
+  xml    - [obsolete] Coursera HTML format for online auto-grading
+
+The EdXML renderer supports these options:
+  -n <name>, --name=<name>
+      Only render the question(s) that have :name => 'name'.
+  NOTE: Some markup that is legal in RQL questions will break the EdX parser.
+     Manually check your questions as you enter them into EdX.  Code seems to
+     be particularly troublesome.
+  NOTE: The 'points' and 'randomize' attributes of questions are not honored for
+     EdX because the XML representation of those attributes isn't
+     exposed by the EdX XML editor.
 
 The HTML5 renderer supports these options:
   -c <href>, --css=<href>
@@ -24,6 +35,8 @@ The HTML5 renderer supports these options:
         total_points - total number of points 
   -s, --solutions
       generate solutions (showing correct answers and explanations)
+  NOTE: If there is more than one quiz (collection of questions) in the file,
+      a complete <html>...</html> block is produced in the output for EACH quiz.
 
 eos
   exit
@@ -38,9 +51,10 @@ def main
     ['-c', '--css', Getopt::REQUIRED],
     ['-t', '--template', Getopt::REQUIRED],
     ['-s', '--solutions', Getopt::BOOLEAN],
+    ['-n', '--name', Getopt::REQUIRED],
     )
-  quiz = Quiz.instance_eval "#{IO.read(filename)}"
-  puts quiz.render_with(renderer, opts)
+  Quiz.instance_eval "#{IO.read(filename)}"
+  Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
 end
 
 usage if ARGV.length < 2

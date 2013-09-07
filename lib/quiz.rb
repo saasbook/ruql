@@ -1,4 +1,3 @@
-require 'ruby-debug'
 require 'builder'
 
 $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__)))
@@ -6,6 +5,7 @@ $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__)))
 # renderers
 require 'xml_renderer'
 require 'html5_renderer'
+require 'edxml_renderer'
 
 # question types
 require 'question'
@@ -16,7 +16,8 @@ require 'true_false'
 require 'fill_in'
 
 class Quiz
-
+  @@quizzes = []
+  def self.quizzes ; @@quizzes ;  end
   @@default_options = 
     {
     :open_time => Time.now,
@@ -111,6 +112,6 @@ class Quiz
   def self.quiz(*args,&block)
     quiz = Quiz.new(*args)
     quiz.instance_eval(&block)
-    quiz
+    @@quizzes << quiz
   end
 end

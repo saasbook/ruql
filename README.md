@@ -2,17 +2,39 @@ Ruby-based Quiz Generator and DSL
 =================================
 
 This is a simple app (soon to be packaged as a gem) that takes a set of
-questions (a "quiz") written in a DSL embedded in Ruby, and produces one
+questions (a "quiz") written in RQL ("Ruby quiz language" or "Ruby
+question language" - a DSL embedded in Ruby), and produces one
 of several possible output formats.
 
 Creating Quiz Questions
 =======================
 
-1. Clone this repo and run 'bundle install' in its root directory
-2. Create a file of questions following the example in example.rb
+1. Clone this repo and run 'bundle install' in its root directory to get
+all the gems
+2. Create a file of questions following the example in rql_example.rb
 
+A 'quiz' is a collection of questions surrounded by
+
+    quiz do
+      # (questions here)
+    end
+
+So you can create a quiz by putting the quiz in its own file and
+copying-and-pasting the questions you want into it.  (Yes, that's ugly.
+Soon, questions will have unique IDs and you'll be able to 
 The total number of points possible is automatically determined by
 summing the points per question.  
+
+Using questions with the EdX platform
+=====================================
+
+In an edX course, add an inline question to a course unit (multiple
+choice, text or numeric input, or option dropdown), then in the Edit
+view select "Advanced Editor", which shows the raw XML of the question.
+
+Place the Ruby-DSL-encoded question in its own quiz 
+
+
 
 Creating a Printable Version of a Quiz
 ======================================
