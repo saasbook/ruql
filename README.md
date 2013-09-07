@@ -2,7 +2,7 @@ Ruby-based Quiz Generator and DSL
 =================================
 
 This is a simple app (soon to be packaged as a gem) that takes a set of
-questions (a "quiz") written in RQL ("Ruby quiz language" or "Ruby
+questions (a "quiz") written in RuQL ("Ruby quiz language" or "Ruby
 question language" - a DSL embedded in Ruby), and produces one
 of several possible output formats.
 
@@ -11,7 +11,7 @@ Creating Quiz Questions
 
 1. Clone this repo and run 'bundle install' in its root directory to get
 all the gems
-2. Create a file of questions following the example in rql_example.rb
+2. Create a file of questions following the example in ruql_example.rb
 
 A 'quiz' is a collection of questions surrounded by
 

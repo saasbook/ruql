@@ -16,7 +16,7 @@ renderer choices are:
 The EdXML renderer supports these options:
   -n <name>, --name=<name>
       Only render the question(s) that have :name => 'name'.
-  NOTE: Some markup that is legal in RQL questions will break the EdX parser.
+  NOTE: Some markup that is legal in RuQL questions will break the EdX parser.
      Manually check your questions as you enter them into EdX.  Code seems to
      be particularly troublesome.
   NOTE: The 'points' and 'randomize' attributes of questions are not honored for

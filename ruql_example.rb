@@ -1,4 +1,4 @@
-# Examples of the RQL question format.
+# Examples of the RuQL question format.
 
 # A quiz has a mandatory name and optional time limit in minutes.
 # There's also various other obscure options not documented here.
