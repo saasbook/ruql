@@ -28,12 +28,17 @@ summing the points per question.
 Using questions with the EdX platform
 =====================================
 
-In an edX course, add an inline question to a course unit (multiple
-choice, text or numeric input, or option dropdown), then in the Edit
-view select "Advanced Editor", which shows the raw XML of the question.
+To quickly add an inline question (multiple choice, text or numeric
+input, or option dropdown) to a course unit in EdX Studio:
 
-Place the Ruby-DSL-encoded question in its own quiz 
-
+1. Create the question in RuQL with an attribute `:name => "some-name"`
+and put it in some file `questions.rb` 
+2. On the command line say `ruql questions.rb edxml -n some-name`
+3. Copy the resulting XML to the Clipboard.  In Studio, select "Advanced
+Editor" view for the question, which shows the raw XML of the question.
+Replace that raw XML with the output from `ruql`.
+4. Visually check that the question looks right in Studio, since some
+markup that is legal in RuQL doesn't format correctly in Studio.
 
 
 Creating a Printable Version of a Quiz
