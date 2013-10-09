@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe XmlRenderer do
+describe XMLRenderer do
   def c(str) 
     @b ||= Builder::XmlMarkup.new
     @b.cdata!(str)
   end
   describe 'when created' do
-    subject { XmlRenderer.new(:fake_quiz) }
+    subject { XMLRenderer.new(:fake_quiz) }
     its(:output) { should == '' }
   end
   describe 'calling renderers' do
-    before(:each) do ; @x = XmlRenderer.new(:fake_quiz) ; end
+    before(:each) do ; @x = XMLRenderer.new(:fake_quiz) ; end
     it 'should call MultipleChoice renderer for SelectMultiple question' do
       q = SelectMultiple.new('question', :answers =>
         [Answer.new('y1', true), Answer.new('n1', false), Answer.new('y2',true)])
@@ -22,7 +22,7 @@ describe XmlRenderer do
     subject do
       q = MultipleChoice.new('question', :multiple => false, :answers =>
         [Answer.new('y', true), Answer.new('n1', false), Answer.new('n2',false)])
-      XmlRenderer.new(:fake_quiz).render_multiple_choice(q)
+      XMLRenderer.new(:fake_quiz).render_multiple_choice(q)
     end
     ['n1','n2'].each do |wrong|
       it { should have_xml_element(
@@ -35,7 +35,7 @@ describe XmlRenderer do
     subject do
       q = MultipleChoice.new('question', :multiple => true, :answers =>
         [Answer.new('y1', true), Answer.new('n1', false), Answer.new('y2',true)])
-      XmlRenderer.new(:fake_quiz).render_multiple_choice(q)
+      XMLRenderer.new(:fake_quiz).render_multiple_choice(q)
     end
     it { should have_xml_element(
         "//option[@selected_score='0',@unselected_score='1']/text", :value =>c('n1'))}
@@ -46,13 +46,13 @@ describe XmlRenderer do
   end
   describe 'rendering' do
     describe 'correct answer without explanation' do
-      subject { XmlRenderer.new(:fake_quiz).render_multiple_choice_answer(Answer.new('correct', true), nil) }
+      subject { XMLRenderer.new(:fake_quiz).render_multiple_choice_answer(Answer.new('correct', true), nil) }
       it { should have_xml_element('option').with_attribute('selected-score', '1') }
       it { should have_xml_element('option/text', :value => c('correct')) }
       it { should_not have_xml_element 'option/explanation' }
     end
     describe 'distractor with explanation' do
-      subject { XmlRenderer.new(:fake).render_multiple_choice_answer(Answer.new('wrong', false, 'why'), nil) }
+      subject { XMLRenderer.new(:fake).render_multiple_choice_answer(Answer.new('wrong', false, 'why'), nil) }
       it { should have_xml_element 'option/explanation', :value => c('why') }
     end
     describe 'multiple choice question with answers' do
@@ -62,7 +62,7 @@ describe XmlRenderer do
         @q.answer 'answer', :explanation => 'correct'
         @q.distractor 'wrong'
         @q.distractor 'wrong with explanation', :explanation => 'wrong'
-        XmlRenderer.new(:fake_quiz).render(@q)
+        XMLRenderer.new(:fake_quiz).render(@q)
       }
       it { should have_xml_element('question/data/text') }
       it { should have_xml_element('//option_group').containing(2, 'option') }

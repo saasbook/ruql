@@ -1,4 +1,4 @@
-class EdxmlRenderer
+class EdXmlRenderer
   require 'builder'
 
   attr_reader :output

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title><%= title %></title>
+    <title><%= quiz.title %></title>
     <style type="text/css" media="all">
     body { font-family: Times, serif; }
     .header { text-align: right; font-weight: bold; padding-right: 30%; line-height: 300%; }
@@ -23,13 +23,13 @@
       <div id="name">Name:</div>
       <div id="sid">SID:</div>
     </div>
-    <h1><%= title %></h1>
+    <h1><%= quiz.title %></h1>
     <div class="instructions">
       <ul>
         <li>No books, notes, or electronic devices allowed.  </li>
         <li>Time limit is 30 minutes.</li>
-        <li><%= num_questions %> multiple-choice questions, points indicated per question,
-          <%= total_points %> points total.  Points per question are intended 
+        <li><%= quiz.num_questions %> multiple-choice questions, points indicated per question,
+          <%= quiz.total_points %> points total.  Points per question are intended 
           to reflect approximate times they should take, at about 1 point per minute.</li>
         <li>For 'select all that apply' questions worth N points,
           you get 1/N of the points for each RIGHT answer that you check, plus

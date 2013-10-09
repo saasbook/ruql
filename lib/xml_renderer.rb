@@ -1,4 +1,4 @@
-class XmlRenderer
+class XMLRenderer
   require 'builder'
 
   attr_reader :output

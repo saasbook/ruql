@@ -1,4 +1,6 @@
+# basic gems/libs we rely on
 require 'builder'
+require 'logger'
 
 $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__)))
 
@@ -6,6 +8,7 @@ $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__)))
 require 'xml_renderer'
 require 'html5_renderer'
 require 'edxml_renderer'
+require 'auto_qcm_renderer'
 
 # question types
 require 'question'
@@ -41,6 +44,7 @@ class Quiz
   attr_reader :options
   attr_reader :output
   attr_reader :seed
+  attr_reader :logger
   attr_accessor :title
 
   def initialize(title, options={})
@@ -49,10 +53,13 @@ class Quiz
     @title = title
     @options = @@default_options.merge(options)
     @seed = srand
+    @logger = Logger.new(STDERR)
+    @logger.level = Logger.const_get (options.delete('l') ||
+      options.delete('log') || 'warn').upcase
   end
 
   def self.get_renderer(renderer)
-    Object.const_get(renderer.to_s.capitalize + 'Renderer') rescue nil
+    Object.const_get(renderer.to_s + 'Renderer') rescue nil
   end      
 
   def render_with(renderer,options={})

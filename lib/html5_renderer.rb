@@ -33,11 +33,16 @@ class Html5Renderer
     self
   end
 
+  %w(title total_points num_questions).each do |meth|
+    define_method meth do
+      @quiz.logger.warn "DEPRECATION WARNING: use 'quiz.#{meth}' instead of #{meth}' in template"
+      @quiz.send(meth)
+    end
+  end
   def render_with_template
-    # 3 local variables that can should be in scope in the template:
-    title = @quiz.title
-    total_points = @quiz.points
-    num_questions = @quiz.num_questions
+    # local variables that should be in scope in the template 
+    quiz = @quiz
+    # the ERB template includes 'yield' where questions should go:
     output = ERB.new(IO.read(File.expand_path @template)).result(binding)
     @output = output
   end
