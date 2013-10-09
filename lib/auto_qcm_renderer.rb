@@ -15,11 +15,13 @@ class AutoQCMRenderer
   def render_quiz
     quiz = @quiz                # make quiz object available in template's scope
     with_erb_template(IO.read(File.expand_path @template)) do
+      output = ''
       render_random_seed
       @quiz.questions.each_with_index do |q,i|
-        render_question q,i
-        @output
+        next_question = render_question q,i
+        output << next_question
       end
+      output
     end
   end
 
@@ -33,27 +35,31 @@ class AutoQCMRenderer
     when MultipleChoice then render(q, index)
     when SelectMultiple,TrueFalse then render(q, index, 'mult')
     else
-      quiz.logger.error "Question #{index} (#{q.text[0,15]}...): AutoQCM can only handle multiple_choice, truefalse, or select_multiple questions"
+      @quiz.logger.error "Question #{index} (#{q.question_text[0,15]}...): AutoQCM can only handle multiple_choice, truefalse, or select_multiple questions"
       ''
     end
   end
 
+  def render_random_seed
+    @output << "\n%% Random seed: #{@quiz.seed}\n"
+  end
+  
   def render(question, index, type='')
     output = ''
     output << "\\begin{question#{type}}{q#{index}}\n"
     output << "  \\scoring{b=#{question.points},m=#{@penalty*question.points}}\n"
-    output << to_tex(question.text)
+    output << "  " << to_tex(question.question_text) << "\n"
 
     # answers - ignore randomization
 
-    output << '  \begin{choices}'
+    output << "  \\begin{choices}\n"
     question.answers.each do |answer|
-      answer_text = to_tex(answer.text)
+      answer_text = to_tex(answer.answer_text)
       answer_type = if answer.correct? then 'correct' else 'wrong' end
       output << "    \\#{answer_type}choice{#{answer_text}}\n"
     end
-    output << '  \end{choices}'
-    output << '\end{question}'
+    output << "  \\end{choices}\n"
+    output << "\\end{question}\n\n"
     output
   end
 

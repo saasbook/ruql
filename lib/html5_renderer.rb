@@ -33,12 +33,6 @@ class Html5Renderer
     self
   end
 
-  %w(title total_points num_questions).each do |meth|
-    define_method meth do
-      @quiz.logger.warn "DEPRECATION WARNING: use 'quiz.#{meth}' instead of #{meth}' in template"
-      @quiz.send(meth)
-    end
-  end
   def render_with_template
     # local variables that should be in scope in the template 
     quiz = @quiz

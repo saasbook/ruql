@@ -44,7 +44,7 @@ The HTML5 renderer supports these options:
       the template: 
         <%= quiz.title %> - the quiz title
         <%= quiz.num_questions %> - total number of questions
-        <%= quiz.total_points %> - total number of points 
+        <%= quiz.points %> - total number of points for whole quiz
   -s, --solutions
       generate solutions (showing correct answers and explanations)
   NOTE: If there is more than one quiz (collection of questions) in the file,
