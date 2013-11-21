@@ -9,6 +9,7 @@ require 'xml_renderer'
 require 'html5_renderer'
 require 'edxml_renderer'
 require 'auto_qcm_renderer'
+require 'json_renderer'
 
 # question types
 require 'question'

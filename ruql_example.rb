@@ -50,8 +50,8 @@ quiz 'Example quiz', :time_limit => 45 do
   #end
 
   # true/false questions - explanation is optional
-  truefalse true, 'The week has 7 days.'
-  truefalse false, 'The earth is flat.', :explanation => 'No, just looks that way'
+  truefalse 'The week has 7 days.', true
+  truefalse 'The earth is flat.', false, :explanation => 'No, just looks that way'
 
   # multiple choice questions (one correct answer):
   #  - can provide a generic 'explanation' clause and/or override it
