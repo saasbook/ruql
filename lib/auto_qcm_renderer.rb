@@ -41,7 +41,9 @@ class AutoQCMRenderer
   end
 
   def render_random_seed
-    @output << "\n%% Random seed: #{@quiz.seed}\n"
+    seed = @quiz.seed
+    @output << "\n%% Random seed: #{seed}\n"
+    @output << "\\AMCrandomseed{#{seed}}\n\n"
   end
   
   def render(question, index, type='')
