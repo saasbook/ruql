@@ -179,15 +179,18 @@ future tools that can use this information.
 free-text comment to be added to a question.
 
 
+Generating a quiz from a RuQL file
+==================================
+
 Using questions with Open EdX
-=============================
+-----------------------------
 
 To quickly add an inline question (multiple choice, text or numeric
 input, or option dropdown) to a course unit in EdX Studio:
 
 1. Create the question in RuQL with an attribute `:name => "some-name"`
 and put it in some file `questions.rb` 
-2. Run `ruql questions.rb edxml -n some-name`
+2. Run `ruql questions.rb EdXml -n some-name`
 3. Copy the resulting XML to the Clipboard.  In Studio, select "Advanced
 Editor" view for the question, which shows the raw XML of the question.
 Replace that raw XML with the output from `ruql`.
@@ -195,34 +198,48 @@ Replace that raw XML with the output from `ruql`.
 markup that is legal in RuQL doesn't format correctly in Studio.
 
 
-Creating a Printable Version of a Quiz
-======================================
+Creating an HTML 5 or Printable Version of a Quiz
+-------------------------------------------------
 
-3. Run the generator as follows (it's unwieldy now but it'll get
-better):
+Run `ruql questionfile.rb Html5 --template=template.html.erb`
 
-To generate an HTML version suitable for viewing in a browser:
-(./quiz with no arguments shows brief help)
+The optional template should be an `.html.erb` template in which `yield`
+is rendered where the questions should go.  If you omit the `template`
+argument, you'll get the `html5.html.erb` file template that comes in
+the `templates` directory of the gem.
 
-./quiz questionfile.rb html5 --template=./html_template/template.html.erb > questionfile.html
+If you also specify `--solutions` on the command line, you can generate
+an HTML5 version that includes identification of the correct answer.
+NOTE that if you do this, the HTML5 tags will clearly identify the correct
+answer--this format is meant for printing, not for online use, since a
+simple "view page source" would show the correct answers!
 
-If you also specify --solutions on command line, you can generate an
-HTML5 version that includes identification of the correct answer.
-(NOTE: the HTML5 tags clearly identify the correct answer--this format
-is meant for printing, not for online use, since a simple "view page
-source" would show the correct answers!)
+Creating an AutoQCM quiz
+------------------------
 
-You can replace the existing html.erb template with your own; take a
-look at it to see how it works.
+The [AutoQCM](home.gna.org/auto-qcm/) tool uses LaTeX to create a
+multiple-choice quiz with answer bubbles, and includes software to
+automatically score scanned multiple-choice answer sheets it creates.
 
-Creating a Coursera-Compatible Version of a Quiz
-================================================
+You can generate (mostly) AutoQCM-compatible LaTeX input sources from a
+set of RuQL questions:
 
-To generate a version that can be ingested by Coursera's online
-quiz-taking machinery:
+`ruql questionfile.rb AutoQCM  --template=my_template.tex.erb`
 
-./quiz questionfile.rb xml > questionfile.xml
+The template file will be run through `erb` and should render `yield`
+where the questions should be.  A template file is *mandatory* for
+AutoQCM.  If you omit the template argument, you'll get the
+`autoqcm.tex.erb` template in the gem's `templates` directory.
 
-Please add to this documentation using the Wiki or by adding inline RDoc
-comments to the code!
+The command-line option `--penalty=0.8` takes a number that indicates
+what fraction of the question's total points should be deducted as a
+penalty for wrong answer.  For example, a question worth 4 points with a
+penalty of 0.25 means the student receives -1 point for the question, as
+opposed to zero points for leaving it blank.  Default if omitted is
+zero.  This information is just embedded in the file that will be passed
+to AutoQCM.
 
+There are additional renderers not described here.  The renderer
+misleadingly called 'XmlRenderer' once upon a time generated
+Coursera-compatible markup, but that was long ago.  The JSON renderer
+outputs questions in the [MOOCdb](http://moocrp.herokuapp.com) format.

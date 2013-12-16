@@ -1,5 +1,4 @@
 class Question
-  require 'builder'
   attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment
   
   def initialize(*args)

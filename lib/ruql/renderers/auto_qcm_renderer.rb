@@ -1,5 +1,5 @@
-require 'tex_output.rb'         # TexOutput module
 require 'erb'
+require 'ruql/tex_output'
 
 class AutoQCMRenderer
   include TexOutput
@@ -8,7 +8,9 @@ class AutoQCMRenderer
   def initialize(quiz, options={})
     @output = ''
     @quiz = quiz
-    @template = options.delete('t') || options.delete('template') || raise("You must provide a .tex.erb template file with -t or --template")
+    @template = options.delete('t') ||
+      options.delete('template') ||
+      File.join(Gem.loaded_specs['ruql'].full_gem_path, 'templates/autoqcm.tex.erb')
     @penalty = (options.delete('p') || options.delete('penalty') || '0').to_f
   end
 

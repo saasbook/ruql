@@ -1,4 +1,3 @@
-require 'question'
 class MultipleChoice < Question
 
   attr_accessor :multiple

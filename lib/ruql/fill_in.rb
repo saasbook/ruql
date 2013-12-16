@@ -1,4 +1,3 @@
-require 'question'
 class FillIn < Question
 
     attr_accessor :order

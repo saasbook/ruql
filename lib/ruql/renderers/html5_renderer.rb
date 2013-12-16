@@ -7,7 +7,9 @@ class Html5Renderer
   def initialize(quiz,options={})
     @css = options.delete('c') || options.delete('css')
     @show_solutions = options.delete('s') || options.delete('solutions')
-    @template = options.delete('t') || options.delete('template')
+    @template = options.delete('t') ||
+      options.delete('template') ||
+      File.join(Gem.loaded_specs['ruql'].full_gem_path, 'templates/html5.html.erb')
     @output = ''
     @quiz = quiz
     @h = Builder::XmlMarkup.new(:target => @output, :indent => 2)
