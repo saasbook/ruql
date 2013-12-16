@@ -1,6 +1,37 @@
 require 'spec_helper'
 
 describe Question do
+  describe 'tags' do
+    it 'should be empty array by default' do
+      Question.new.question_tags.should be_empty
+    end
+    describe 'setting' do
+      before(:each) { @q = Question.new }
+      it 'single string tag' do
+        @q.tags 'string'
+        @q.question_tags.should include 'string'
+      end
+      it 'single nonstring gets converted to string' do
+        @q.tags 25
+        @q.question_tags.should include '25'
+      end
+      it 'array of strings or nonstrings' do
+        @q.tags 'tag', 30
+        @q.question_tags.should include('tag')
+        @q.question_tags.should include('30')
+      end
+    end
+  end
+  describe 'comment' do
+    it 'should be empty by default' do
+      Question.new.question_comment.should == ''
+    end
+    it 'should be settable to a string' do
+      @q = Question.new
+      @q.comment 'comment'
+      @q.question_comment.should == 'comment'
+    end
+  end
   describe 'points' do
     it 'should be 1 by default' do
       Question.new.points.should == 1

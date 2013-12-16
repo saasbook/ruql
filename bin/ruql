@@ -1,11 +1,13 @@
 #!/usr/bin/env ruby
 
+require 'ruql'
 require 'getopt/long'
 
 def usage
+  name = $0.gsub( Regexp.new '^[^/]+/', '')
   STDERR.puts <<eos
-Usage: #{$0} filename.rb renderer [options]
-filename.rb contains questions expressed in the quiz DSL
+Usage: #{name} filename.rb renderer [options]
+filename.rb contains questions expressed in RuQL
 
 renderer choices are:
   Html5   - HTML 5 suitable for Web display/printing

@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Armando Fox"]
   s.email       = 'fox@cs.berkeley.edu'
   s.files       = %w(ruql
-                     answer question renderer
+                     quiz answer question renderer
                      select_multiple fill_in multiple_choice true_false
                      tex_output 
                      auto_qcm_renderer edxml_renderer html5_renderer
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.executables << 'ruql'
   # dependencies
   s.add_runtime_dependency 'builder'
-  s.homepage    = 'http://rubygems.org/gems/ruql'
+  s.add_runtime_dependency 'getopt'
+  s.homepage    = 'http://github.com/saasbook/ruql'
   s.license       = 'BSD'
 end
