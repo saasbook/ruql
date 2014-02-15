@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
                      select_multiple fill_in multiple_choice true_false
                      tex_output).
     map { |s| "lib/ruql/#{s}.rb" }
-  s.files += %w(auto_qcm_renderer edxml_renderer html5_renderer
+  s.files += %w(auto_qcm_renderer edxml_renderer html5_renderer html_form_renderer
                      json_renderer xml_renderer).
     map { |s| "lib/ruql/renderers/#{s}.rb" }
   # add the templates

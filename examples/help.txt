@@ -1,21 +1,12 @@
-#!/usr/bin/env ruby
-
-require 'ruql'
-require 'getopt/long'
-
-def usage
-  name = $0.gsub( Regexp.new '^[^/]+/', '')
-  STDERR.puts <<eos
-Usage: #{name} filename.rb renderer [options]
+Usage: #<Enumerator:0x979a960> filename.rb renderer [options]
 filename.rb contains questions expressed in RuQL
 
 renderer choices are:
-  Html5    - HTML 5 suitable for Web display/printing
-  HtmlForm - HTML forms
-  EdXml    - XML for OpenEdX platform in-course questions
-  AutoQCM  - LaTeX for use with AutoQCM (http://home.gna.org/auto-qcm)
-  Coursera - [obsolete] Coursera HTML/XML format for online auto-grading
-  JSON     - [partially implemented] JSON format
+  Html5   - HTML 5 suitable for Web display/printing
+  EdXml   - XML for OpenEdX platform in-course questions
+  AutoQCM - LaTeX for use with AutoQCM (http://home.gna.org/auto-qcm)
+  Coursera- [obsolete] Coursera HTML/XML format for online auto-grading
+  JSON    - [partially implemented] JSON format
 
 Global options:
   -l <loglevel>, --log=<loglevel>
@@ -61,27 +52,4 @@ The AutoQCM renderer supports these options:
       substitutions that can occur in the quiz body.
 
 The JSON renderer currently supports no options
-
-eos
-  exit
-end
-
-def main
-  filename = ARGV.shift
-  raise "Cannot read #{filename}" unless File.readable? filename
-  renderer = ARGV.shift
-  raise "Unknown renderer '#{renderer}'" unless Quiz.get_renderer(renderer)
-  opts = Getopt::Long.getopts(
-    ['-c', '--css', Getopt::REQUIRED],
-    ['-t', '--template', Getopt::REQUIRED],
-    ['-s', '--solutions', Getopt::BOOLEAN],
-    ['-n', '--name', Getopt::REQUIRED],
-    ['-l', '--log', Getopt::REQUIRED],
-    )
-  Quiz.instance_eval "#{IO.read(filename)}"
-  Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
-end
-
-usage if ARGV.length < 2
-main
 
