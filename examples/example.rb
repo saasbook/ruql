@@ -1,7 +1,7 @@
 quiz 'Example quiz' do
   
   fill_in :points => 2 do
-    text 'The capital of California is ---.'
+    text 'The capital of California is ---'
     answer 'sacramento'
   end
   

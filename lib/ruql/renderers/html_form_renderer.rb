@@ -125,18 +125,19 @@ class HtmlFormRenderer
       @h.div :class => 'text' do
         qtext = "[#{question.points} point#{'s' if question.points>1}] " <<
           ('Select ALL that apply: ' if question.multiple).to_s <<
-          if question.class == FillIn then question.question_text.gsub(/\-+/, '_____________________________')
+          if question.class == FillIn then question.question_text.gsub(/\-+/, '')
           else question.question_text
           end
-        if question.raw?
-          @h.p { |p| p << qtext }
-        else
+        #if question.raw?
+        #  @h.p { |p| p << qtext }
+        #else
           qtext.each_line do |p|
-            @h.p do |par|
+            @h.form do |par|
               par << p # preserves HTML markup
+              @h.input :class => 'prueba' if (question.class == FillIn)
             end
           end
-        end
+        #end
       end
       yield # render answers
     end
