@@ -45,13 +45,15 @@ class HtmlFormRenderer
     
   def render_questions
     render_random_seed
-    @h.ol :class => 'questions' do
-      @quiz.questions.each_with_index do |q,i|
-        case q
-        when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(q,i)
-        when FillIn then render_fill_in(q, i)
-        else
-          raise "Unknown question type: #{q}"
+    @h.form do
+      @h.ol :class => 'questions' do
+        @quiz.questions.each_with_index do |q,i|
+          case q
+          when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(q,i)
+          when FillIn then render_fill_in(q, i)
+          else
+            raise "Unknown question type: #{q}"
+          end
         end
       end
     end
@@ -132,7 +134,7 @@ class HtmlFormRenderer
         #  @h.p { |p| p << qtext }
         #else
           qtext.each_line do |p|
-            @h.form do |par|
+            @h.p do |par|
               par << p # preserves HTML markup
               @h.input :class => 'prueba' if (question.class == FillIn)
             end
