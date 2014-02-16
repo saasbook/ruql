@@ -49,13 +49,15 @@ class HtmlFormRenderer
       @h.ol :class => 'questions' do
         @quiz.questions.each_with_index do |q,i|
           case q
-          when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(q,i)
+          when SelectMultiple then render_select_multiple(q,i)
+          when MultipleChoice, TrueFalse then render_multiple_choice(q,i)
           when FillIn then render_fill_in(q, i)
           else
             raise "Unknown question type: #{q}"
           end
         end
       end
+      @h.input(:type => 'submit', :value => 'Enviar')
     end
   end
 
@@ -72,7 +74,11 @@ class HtmlFormRenderer
           if @show_solutions
             render_answer_for_solutions(answer, q.raw?)
           else
-            if q.raw? then @h.li { |l| l << answer.answer_text } else @h.li answer.answer_text end
+            #if q.raw? then @h.li { |l| l << answer.answer_text } else @h.li answer.answer_text end
+            @h.input(:type => 'radio', :name => 'a', :class => 'select') { |p| 
+              p << answer.answer_text
+              p << '</br>'
+            }
           end
         end
       end
@@ -80,6 +86,29 @@ class HtmlFormRenderer
     self
   end
 
+  def render_select_multiple(q,index)
+    render_question_text(q, index) do
+      answers =
+        if q.randomize then q.answers.sort_by { rand }
+    else q.answers
+    end
+    @h.ol :class => 'answers' do
+      answers.each do |answer|
+        if @show_solutions
+          render_answer_for_solutions(answer, q.raw?)
+        else
+          #if q.raw? then @h.li { |l| l << answer.answer_text } else @h.li answer.answer_text end
+          @h.input(:type => 'checkbox', :name => 'b', :class => 'check') { |p| 
+            p << answer.answer_text
+            p << '</br>'
+          }
+        end
+      end
+    end
+  end
+  self
+  end
+  
   def render_fill_in(q, idx)
     render_question_text(q, idx) do
       if @show_solutions
@@ -136,7 +165,7 @@ class HtmlFormRenderer
           qtext.each_line do |p|
             @h.p do |par|
               par << p # preserves HTML markup
-              @h.input :class => 'prueba' if (question.class == FillIn)
+              @h.input(:type => 'text', :class => 'fillin') if (question.class == FillIn)
             end
           end
         #end

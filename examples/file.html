@@ -28,8 +28,8 @@
       <ul>
         <li>No books, notes, or electronic devices allowed.  </li>
         <li>Time limit is 30 minutes.</li>
-        <li>4 multiple-choice questions, points indicated per question,
-          5 points total.  Points per question are intended 
+        <li>6 multiple-choice questions, points indicated per question,
+          7 points total.  Points per question are intended 
           to reflect approximate times they should take, at about 1 point per minute.</li>
         <li>For 'select all that apply' questions worth N points,
           you get 1/N of the points for each RIGHT answer that you check, plus
@@ -39,53 +39,93 @@
       </ul>
       <b>Good skill!</b>
     </div>
-    <!-- Seed: 80220267355589458789976444939472372896 -->
-<ol class="questions">
-  <li id="question-0" class="question fillin ">
-    <div class="text">
-      <form>
-[2 points] The capital of California is         <input class="prueba"/>
-      </form>
-    </div>
-  </li>
-  <li id="question-1" class="question multiplechoice ">
-    <div class="text">
-      <form>
-[1 point] What is the largest US state?      </form>
-    </div>
-    <ol class="answers">
-      <li>Alaska</li>
-      <li>Hawaii</li>
-      <li>Texas</li>
-    </ol>
-  </li>
-  <li id="question-2" class="question selectmultiple multiple">
-    <div class="text">
-      <form>
-[1 point] Select ALL that apply: Which are American political parties?      </form>
-    </div>
-    <ol class="answers">
-      <li>Democrats</li>
-      <li>Republicans</li>
-      <li>Greens</li>
-      <li>Tories</li>
-      <li>Social Democrats</li>
-    </ol>
-  </li>
-  <li id="question-3" class="question selectmultiple multiple">
-    <div class="text">
-      <form>
-[1 point] Select ALL that apply: Which are American political parties?      </form>
-    </div>
-    <ol class="answers">
-      <li>Democrats</li>
-      <li>Republicans</li>
-      <li>Greens</li>
-      <li>Tories</li>
-      <li>Social Democrats</li>
-    </ol>
-  </li>
-</ol>
+    <!-- Seed: 215448148932884805409343067177977560123 -->
+<form>
+  <ol class="questions">
+    <li id="question-0" class="question fillin ">
+      <div class="text">
+        <p>
+[2 points] The capital of California is           <input type="text" class="fillin"/>
+        </p>
+      </div>
+    </li>
+    <li id="question-1" class="question multiplechoice ">
+      <div class="text">
+        <p>
+[1 point] What is the largest US state?        </p>
+      </div>
+      <ol class="answers">
+        <input type="radio" name="a" class="select">
+Texas</br>        </input>
+        <input type="radio" name="a" class="select">
+Alaska</br>        </input>
+        <input type="radio" name="a" class="select">
+Hawaii</br>        </input>
+      </ol>
+    </li>
+    <li id="question-2" class="question selectmultiple multiple">
+      <div class="text">
+        <p>
+[1 point] Select ALL that apply: Which are American political parties?        </p>
+      </div>
+      <ol class="answers">
+        <input type="checkbox" name="b" class="check">
+Democrats</br>        </input>
+        <input type="checkbox" name="b" class="check">
+Republicans</br>        </input>
+        <input type="checkbox" name="b" class="check">
+Greens</br>        </input>
+        <input type="checkbox" name="b" class="check">
+Tories</br>        </input>
+        <input type="checkbox" name="b" class="check">
+Social Democrats</br>        </input>
+      </ol>
+    </li>
+    <li id="question-3" class="question selectmultiple multiple">
+      <div class="text">
+        <p>
+[1 point] Select ALL that apply: Which are American political parties?        </p>
+      </div>
+      <ol class="answers">
+        <input type="checkbox" name="b" class="check">
+Democrats</br>        </input>
+        <input type="checkbox" name="b" class="check">
+Republicans</br>        </input>
+        <input type="checkbox" name="b" class="check">
+Greens</br>        </input>
+        <input type="checkbox" name="b" class="check">
+Tories</br>        </input>
+        <input type="checkbox" name="b" class="check">
+Social Democrats</br>        </input>
+      </ol>
+    </li>
+    <li id="question-4" class="question truefalse ">
+      <div class="text">
+        <p>
+[1 point] True or False: The week has 7 days.        </p>
+      </div>
+      <ol class="answers">
+        <input type="radio" name="a" class="select">
+True</br>        </input>
+        <input type="radio" name="a" class="select">
+False</br>        </input>
+      </ol>
+    </li>
+    <li id="question-5" class="question truefalse ">
+      <div class="text">
+        <p>
+[1 point] True or False: The earth is flat.        </p>
+      </div>
+      <ol class="answers">
+        <input type="radio" name="a" class="select">
+True</br>        </input>
+        <input type="radio" name="a" class="select">
+False</br>        </input>
+      </ol>
+    </li>
+  </ol>
+  <input type="submit" value="Enviar"/>
+</form>
 
   </body>
 </html>
