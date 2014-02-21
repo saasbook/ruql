@@ -36,9 +36,11 @@ The EdXML renderer supports these options:
   NOTE: The 'points' and 'randomize' attributes of questions are not honored by
      some systems.
 
-The HTML5 renderer supports these options:
+The HTML5 and HTML Forms renderers supports these options:
   -c <href>, --css=<href>
       embed <href> for stylesheet into generated HTML5
+  -j <src>, --js=<src>
+      embed <src> for JavaScrips
   -t <file.html.erb>, --template=<file.html.erb>
       Use file.html.erb as HTML template rather than generating our own file.
       file.html.erb should have <%= yield %> where questions should go.
@@ -73,6 +75,7 @@ def main
   raise "Unknown renderer '#{renderer}'" unless Quiz.get_renderer(renderer)
   opts = Getopt::Long.getopts(
     ['-c', '--css', Getopt::REQUIRED],
+    ['-j', '--js', Getopt::REQUIRED],
     ['-t', '--template', Getopt::REQUIRED],
     ['-s', '--solutions', Getopt::BOOLEAN],
     ['-n', '--name', Getopt::REQUIRED],

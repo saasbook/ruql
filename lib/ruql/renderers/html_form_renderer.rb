@@ -6,10 +6,11 @@ class HtmlFormRenderer
 
   def initialize(quiz,options={})
     @css = options.delete('c') || options.delete('css')
+    @js = options.delete('j') || options.delete('js')
     @show_solutions = options.delete('s') || options.delete('solutions')
     @template = options.delete('t') ||
-      options.delete('template') ||
-      File.join(Gem.loaded_specs['ruql'].full_gem_path, 'templates/htmlform.html.erb')
+      options.delete('template') #||
+      #File.join(Gem.loaded_specs['ruql'].full_gem_path, 'templates/htmlform.html.erb')
     @output = ''
     @quiz = quiz
     @h = Builder::XmlMarkup.new(:target => @output, :indent => 2)
@@ -25,7 +26,8 @@ class HtmlFormRenderer
       @h.html do
         @h.head do
           @h.title @quiz.title
-          @h.link(:rel => 'stylesheet', :type =>'text/css', :href=>@css) if @css
+          @h.link(:rel => 'stylesheet', :type =>'text/css', :href =>@css) if @css
+          @h.script(:type => 'text/javascript', :src => @js) if @js
         end
         @h.body do
           render_questions

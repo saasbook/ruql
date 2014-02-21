@@ -1,131 +1,95 @@
 <html>
   <head>
     <title>Example quiz</title>
-    <style type="text/css" media="all">
-    body { font-family: Times, serif; }
-    .header { text-align: right; font-weight: bold; padding-right: 30%; line-height: 300%; }
-    h1 { text-align: center; }
-    ol.questions { list-style-type: number; }
-    li.question { page-break-inside: avoid; border-bottom: 1px solid grey; padding-bottom: 2ex; }
-    li.multiplechoice  ol.answers { list-style-type: lower-alpha; }
-    li.multiplechoice  ol.answers li { padding-bottom: 0.5ex; }
-    li.selectmultiple  ol.answers { vertical-align: center; list-style-type: none; list-style-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAD///+l2Z/dAAAAEklEQVQImWNgAIL6/w+ogoEAAKI4Kp2NVIeDAAAAAElFTkSuQmCC');  }
-    li.truefalse ol.answers { list-style-type: none; }
-    li.truefalse ol.answers li { width: 15%; display: inline-block; }
-    .correct { color: green }
-    .incorrect { color: red }
-    .explanation { font-style: italic }
-    .instructions { clear: both; border: 1px solid black; align: center; padding: 2ex; margin: 2ex; }
-    </style>
+    <script type="text/javascript" src="prueba.js"/>
   </head>
   <body>
-    <div class="header">
-      <div id="name">Name:</div>
-      <div id="sid">SID:</div>
-    </div>
-    <h1>Example quiz</h1>
-    <div class="instructions">
-      <ul>
-        <li>No books, notes, or electronic devices allowed.  </li>
-        <li>Time limit is 30 minutes.</li>
-        <li>6 multiple-choice questions, points indicated per question,
-          7 points total.  Points per question are intended 
-          to reflect approximate times they should take, at about 1 point per minute.</li>
-        <li>For 'select all that apply' questions worth N points,
-          you get 1/N of the points for each RIGHT answer that you check, plus
-          1/N of the points for each WRONG answer that you correctly
-          leave unchecked.  That is, equal weight is given to deciding
-          whether each choice is part of the right answer or not.</li> 
-      </ul>
-      <b>Good skill!</b>
-    </div>
-    <!-- Seed: 215448148932884805409343067177977560123 -->
-<form>
-  <ol class="questions">
-    <li id="question-0" class="question fillin ">
-      <div class="text">
-        <p>
-[2 points] The capital of California is           <input type="text" class="fillin"/>
-        </p>
-      </div>
-    </li>
-    <li id="question-1" class="question multiplechoice ">
-      <div class="text">
-        <p>
-[1 point] What is the largest US state?        </p>
-      </div>
-      <ol class="answers">
-        <input type="radio" name="a" class="select">
-Texas</br>        </input>
-        <input type="radio" name="a" class="select">
-Alaska</br>        </input>
-        <input type="radio" name="a" class="select">
-Hawaii</br>        </input>
+    <!-- Seed: 319904732783592520196408733590324410551 -->
+    <form>
+      <ol class="questions">
+        <li id="question-0" class="question fillin ">
+          <div class="text">
+            <p>
+[2 points] The capital of California is               <input type="text" class="fillin"/>
+            </p>
+          </div>
+        </li>
+        <li id="question-1" class="question multiplechoice ">
+          <div class="text">
+            <p>
+[1 point] What is the largest US state?            </p>
+          </div>
+          <ol class="answers">
+            <input type="radio" name="a" class="select">
+Texas</br>            </input>
+            <input type="radio" name="a" class="select">
+Alaska</br>            </input>
+            <input type="radio" name="a" class="select">
+Hawaii</br>            </input>
+          </ol>
+        </li>
+        <li id="question-2" class="question selectmultiple multiple">
+          <div class="text">
+            <p>
+[1 point] Select ALL that apply: Which are American political parties?            </p>
+          </div>
+          <ol class="answers">
+            <input type="checkbox" name="b" class="check">
+Democrats</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Republicans</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Greens</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Tories</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Social Democrats</br>            </input>
+          </ol>
+        </li>
+        <li id="question-3" class="question selectmultiple multiple">
+          <div class="text">
+            <p>
+[1 point] Select ALL that apply: Which are American political parties?            </p>
+          </div>
+          <ol class="answers">
+            <input type="checkbox" name="b" class="check">
+Democrats</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Republicans</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Greens</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Tories</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Social Democrats</br>            </input>
+          </ol>
+        </li>
+        <li id="question-4" class="question truefalse ">
+          <div class="text">
+            <p>
+[1 point] True or False: The week has 7 days.            </p>
+          </div>
+          <ol class="answers">
+            <input type="radio" name="a" class="select">
+True</br>            </input>
+            <input type="radio" name="a" class="select">
+False</br>            </input>
+          </ol>
+        </li>
+        <li id="question-5" class="question truefalse ">
+          <div class="text">
+            <p>
+[1 point] True or False: The earth is flat.            </p>
+          </div>
+          <ol class="answers">
+            <input type="radio" name="a" class="select">
+True</br>            </input>
+            <input type="radio" name="a" class="select">
+False</br>            </input>
+          </ol>
+        </li>
       </ol>
-    </li>
-    <li id="question-2" class="question selectmultiple multiple">
-      <div class="text">
-        <p>
-[1 point] Select ALL that apply: Which are American political parties?        </p>
-      </div>
-      <ol class="answers">
-        <input type="checkbox" name="b" class="check">
-Democrats</br>        </input>
-        <input type="checkbox" name="b" class="check">
-Republicans</br>        </input>
-        <input type="checkbox" name="b" class="check">
-Greens</br>        </input>
-        <input type="checkbox" name="b" class="check">
-Tories</br>        </input>
-        <input type="checkbox" name="b" class="check">
-Social Democrats</br>        </input>
-      </ol>
-    </li>
-    <li id="question-3" class="question selectmultiple multiple">
-      <div class="text">
-        <p>
-[1 point] Select ALL that apply: Which are American political parties?        </p>
-      </div>
-      <ol class="answers">
-        <input type="checkbox" name="b" class="check">
-Democrats</br>        </input>
-        <input type="checkbox" name="b" class="check">
-Republicans</br>        </input>
-        <input type="checkbox" name="b" class="check">
-Greens</br>        </input>
-        <input type="checkbox" name="b" class="check">
-Tories</br>        </input>
-        <input type="checkbox" name="b" class="check">
-Social Democrats</br>        </input>
-      </ol>
-    </li>
-    <li id="question-4" class="question truefalse ">
-      <div class="text">
-        <p>
-[1 point] True or False: The week has 7 days.        </p>
-      </div>
-      <ol class="answers">
-        <input type="radio" name="a" class="select">
-True</br>        </input>
-        <input type="radio" name="a" class="select">
-False</br>        </input>
-      </ol>
-    </li>
-    <li id="question-5" class="question truefalse ">
-      <div class="text">
-        <p>
-[1 point] True or False: The earth is flat.        </p>
-      </div>
-      <ol class="answers">
-        <input type="radio" name="a" class="select">
-True</br>        </input>
-        <input type="radio" name="a" class="select">
-False</br>        </input>
-      </ol>
-    </li>
-  </ol>
-  <input type="submit" value="Enviar"/>
-</form>
-
+      <input type="submit" value="Enviar"/>
+    </form>
   </body>
 </html>
