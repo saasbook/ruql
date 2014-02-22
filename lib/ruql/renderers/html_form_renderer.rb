@@ -40,6 +40,7 @@ class HtmlFormRenderer
   def render_with_template
     # local variables that should be in scope in the template 
     quiz = @quiz
+    title = "foo" unless @title
     # the ERB template includes 'yield' where questions should go:
     output = ERB.new(IO.read(File.expand_path @template)).result(binding)
     @output = output

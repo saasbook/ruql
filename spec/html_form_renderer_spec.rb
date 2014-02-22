@@ -22,6 +22,20 @@ describe HtmlFormRenderer do
         should match /<body id="template">/
     end
   end
+  
+  describe 'with JavaScript files' do
+    def rendering_with(opts)
+      HtmlFormRenderer.new(Quiz.new(''), opts).render_quiz.output
+    end
+    it 'should include JS link with -j option' do
+      rendering_with('j' => 'foo.js').
+      should match /<script type="text\/javascript" src="foo.js"/
+    end
+    it 'should include JS link with --js option' do
+      rendering_with('js' => 'foo.js').
+      should match /<script type="text\/javascript" src="foo.js"/
+    end
+  end
     
   describe 'rendering solutions' do
     before :each do
