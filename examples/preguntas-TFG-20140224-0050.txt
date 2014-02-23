@@ -1,0 +1,32 @@
+// question: 0  name: Switch category to $course$/Por defecto en Página Principal
+$CATEGORY: $course$/Por defecto en Página Principal
+
+
+// question: 2  name: Opción múltiple
+::Opción múltiple::[html]<p>What is the largest US state?</p>{
+	=<p>Alaska</p>
+	~<p>Hawaii</p>
+	~<p>Texas</p>
+}
+
+
+// question: 3  name: Opción múltiple (Multirespuesta)
+::Opción múltiple (Multirespuesta)::[html]<p>Which are American political parties?</p>{
+	~%33.33333%<p>Democrats</p>
+	~%33.33333%<p>Republicans</p>
+	~%33.33333%<p>Greens</p>
+	~<p>Tories</p>
+	~<p>Social Democrats</p>
+}
+
+
+// question: 1  name: Respuesta corta
+::Respuesta corta::[html]<p>The capital of California is...</p>{
+	=%100%Sacramento#
+}
+
+
+// question: 4  name: Verdadero/Falso
+::Verdadero/Falso::[html]<p>The week has 7 days.</p>{TRUE}
+
+
