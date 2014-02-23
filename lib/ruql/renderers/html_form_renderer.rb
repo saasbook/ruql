@@ -27,7 +27,8 @@ class HtmlFormRenderer
         @h.head do
           @h.title @quiz.title
           @h.link(:rel => 'stylesheet', :type =>'text/css', :href =>@css) if @css
-          @h.script(:type => 'text/javascript', :src => @js) if @js
+          @h.script(:type => 'text/javascript', :src => @js) do
+          end if @js
         end
         @h.body do
           render_questions
