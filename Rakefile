@@ -8,6 +8,10 @@ task :js do
   sh "ruql examples/example.rb HtmlForm -j prueba.js > examples/file.html"
 end
 
+task :css do
+  sh "ruql examples/example.rb HtmlForm -c estilo.css > examples/file.html"
+end
+
 task :install do
   sh "gem build ruql.gemspec"
   sh "sudo gem install ./ruql-0.0.2.gem"
