@@ -68,7 +68,7 @@ class Html5Renderer
       @h.ol :class => 'answers' do
         answers.each do |answer|
           if @show_solutions
-            render_answer_for_solutions(answer, q.raw?)
+            render_answer_for_solutions(answer, q.raw?, q.class == TrueFalse)
           else
             if q.raw? then @h.li { |l| l << answer.answer_text } else @h.li answer.answer_text end
           end
@@ -104,8 +104,11 @@ class Html5Renderer
     end
   end
 
-  def render_answer_for_solutions(answer,raw)
+  def render_answer_for_solutions(answer,raw,is_true_false = nil)
     args = {:class => (answer.correct? ? 'correct' : 'incorrect')}
+    if is_true_false 
+      answer = answer.correct? ? "CORRECT: #{answer}" : "INCORRECT: #{answer}"
+    end
     @h.li(args) do
       if raw then @h.p { |p| p << answer.answer_text } else @h.p answer.answer_text  end
       if answer.has_explanation?

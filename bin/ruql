@@ -4,7 +4,7 @@ require 'ruql'
 require 'getopt/long'
 
 def usage
-  name = $0.gsub( Regexp.new '^[^/]+/', '')
+  name = File.basename $0
   STDERR.puts <<eos
 Usage: #{name} filename.rb renderer [options]
 filename.rb contains questions expressed in RuQL
