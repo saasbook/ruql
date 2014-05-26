@@ -107,7 +107,8 @@ class Html5Renderer
   def render_answer_for_solutions(answer,raw,is_true_false = nil)
     args = {:class => (answer.correct? ? 'correct' : 'incorrect')}
     if is_true_false 
-      answer = answer.correct? ? "CORRECT: #{answer}" : "INCORRECT: #{answer}"
+      answer.answer_text.prepend(
+        answer.correct? ? "CORRECT: " : "INCORRECT: ")
     end
     @h.li(args) do
       if raw then @h.p { |p| p << answer.answer_text } else @h.p answer.answer_text  end
