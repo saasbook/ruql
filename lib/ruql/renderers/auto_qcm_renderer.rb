@@ -1,5 +1,6 @@
 require 'erb'
 require 'ruql/tex_output'
+require 'debugger'
 
 class AutoQCMRenderer
   include TexOutput
@@ -34,8 +35,8 @@ class AutoQCMRenderer
 
   def render_question(q,index)
     case q
+    when SelectMultiple,TrueFalse then render(q, index, 'mult') # These are subclasses of MultipleChoice, should go first
     when MultipleChoice then render(q, index)
-    when SelectMultiple,TrueFalse then render(q, index, 'mult')
     else
       @quiz.logger.error "Question #{index} (#{q.question_text[0,15]}...): AutoQCM can only handle multiple_choice, truefalse, or select_multiple questions"
       ''
@@ -48,7 +49,7 @@ class AutoQCMRenderer
     @output << "\\AMCrandomseed{#{seed}}\n\n"
   end
   
-  def render(question, index, type='')
+  def render(question, index, type='')    
     output = ''
     output << "\\begin{question#{type}}{q#{index}}\n"
     output << "  \\scoring{b=#{question.points},m=#{@penalty*question.points}}\n"
@@ -63,7 +64,7 @@ class AutoQCMRenderer
       output << "    \\#{answer_type}choice{#{answer_text}}\n"
     end
     output << "  \\end{choices}\n"
-    output << "\\end{question}\n\n"
+    output << "\\end{question#{type}}\n\n"
     output
   end
 
