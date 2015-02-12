@@ -1,6 +1,5 @@
 require 'erb'
 require 'ruql/tex_output'
-require 'debugger'
 
 class AutoQCMRenderer
   include TexOutput
@@ -13,6 +12,8 @@ class AutoQCMRenderer
       options.delete('template') ||
       File.join(Gem.loaded_specs['ruql'].full_gem_path, 'templates/autoqcm.tex.erb')
     @penalty = (options.delete('p') || options.delete('penalty') || '0').to_f
+    @show_solutions = options.delete('s') || options.delete('solutions')
+    
   end
 
   def render_quiz
@@ -53,6 +54,11 @@ class AutoQCMRenderer
     output = ''
     output << "\\begin{question#{type}}{q#{index}}\n"
     output << "  \\scoring{b=#{question.points},m=#{@penalty*question.points}}\n"
+    if type == 'mult'
+      question.question_text = "Select ALL that apply. " + question.question_text
+    elsif type == ''
+      question.question_text = "Choose ONE answer. " + question.question_text
+    end
     output << "  " << to_tex(question.question_text) << "\n"
 
     # answers - ignore randomization
@@ -62,6 +68,14 @@ class AutoQCMRenderer
       answer_text = to_tex(answer.answer_text)
       answer_type = if answer.correct? then 'correct' else 'wrong' end
       output << "    \\#{answer_type}choice{#{answer_text}}\n"
+      if @show_solutions and answer.explanation
+        explanation = to_tex(answer.explanation)
+        if answer_type == 'wrong'
+          output << "{\\color{red}\\tab #{explanation}}"
+        else
+          output << "{\\color[rgb]{0,.5,0}\\tab #{explanation}}"
+        end
+      end
     end
     output << "  \\end{choices}\n"
     output << "\\end{question#{type}}\n\n"

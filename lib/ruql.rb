@@ -11,6 +11,7 @@ require 'ruql/renderers/html_form_renderer'
 require 'ruql/renderers/edxml_renderer'
 require 'ruql/renderers/auto_qcm_renderer'
 require 'ruql/renderers/json_renderer'
+require 'ruql/renderers/qualtrics_renderer'
 
 # question types
 require 'ruql/quiz'
