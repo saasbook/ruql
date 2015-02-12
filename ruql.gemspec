@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
                      tex_output).
     map { |s| "lib/ruql/#{s}.rb" }
   s.files += %w(auto_qcm_renderer edxml_renderer html5_renderer html_form_renderer
-                     json_renderer xml_renderer).
+                     json_renderer qualtrics_renderer xml_renderer).
     map { |s| "lib/ruql/renderers/#{s}.rb" }
   # add the templates
   s.files += Dir["templates/*.erb"]

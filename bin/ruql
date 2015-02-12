@@ -16,6 +16,7 @@ renderer choices are:
   AutoQCM  - LaTeX for use with AutoQCM (http://home.gna.org/auto-qcm)
   Coursera - [obsolete] Coursera HTML/XML format for online auto-grading
   JSON     - [partially implemented] JSON format
+  Qualtrics -[partially implemented] Qualtrics survey (txt) format
 
 Global options:
   -l <loglevel>, --log=<loglevel>
@@ -64,6 +65,10 @@ The AutoQCM renderer supports these options:
 
 The JSON renderer currently supports no options
 
+The Qualtrics renderer supports these options:
+  -t <file.txt.erb>, --template=<file.txt.erb>
+  The file should have <%= yield %> where questions should go. Since this just creates survey questions, grading information is ignored.Currently supports the same type of questions as the AutoQCM renderer.
+
 eos
   exit
 end
@@ -80,7 +85,7 @@ def main
     ['-s', '--solutions', Getopt::BOOLEAN],
     ['-n', '--name', Getopt::REQUIRED],
     ['-l', '--log', Getopt::REQUIRED],
-    )
+    )    
   Quiz.instance_eval "#{IO.read(filename)}"
   Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
 end
