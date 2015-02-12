@@ -53,6 +53,10 @@ class QualtricsRenderer
       output << "[[Choice]]\n"
       output << "#{answer.answer_text}\n"
     end
+    if type == 'Multiple'
+      output << "[[Choice]]\n"
+      output << "<i>None of these answers are correct.</i>\n"
+    end
     output
   end
 
