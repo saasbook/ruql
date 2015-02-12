@@ -3,6 +3,7 @@ module TexOutput
   def add_newlines(str)
     str.gsub(Regexp.new('<pre>(.*?)</pre>', Regexp::MULTILINE | Regexp::IGNORECASE) ) do |code_section|
       code_section.gsub!("\n"){"\\\\"}
+      code_section.gsub!("  "){"\\hspace*{2em}"}      
     end
   end
   
