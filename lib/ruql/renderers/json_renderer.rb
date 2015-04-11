@@ -12,7 +12,7 @@ class JSONRenderer
   def render_quiz
     @quiz.questions.each do |question|
       case question
-        when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(question)
+        when MultipleChoice, SelectMultiple, TrueFalse then render_non_fill_in(question)
         when FillIn then render_fill_in(question) # not currently supported
         else
           raise "Unknown question type: #{question}"
@@ -21,8 +21,9 @@ class JSONRenderer
     @output = JSON.pretty_generate(@json_array)
   end
 
-  def render_multiple_choice(question)
+  def render_non_fill_in(question)
     question_hash = {
+      "question_type" => question.class.to_s, #assign as value of the class
       "text" => question.question_text,
       "answers" => answers_to_json_array(question.answers)
     }
