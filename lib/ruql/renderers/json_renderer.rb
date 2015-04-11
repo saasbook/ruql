@@ -44,6 +44,9 @@ class JSONRenderer
 
   def render_fill_in(q)
     # fill-in-the-blank questions not currently supported
+    question_hash = {
+      "text" => question.question_text
+    }
   end
 
 end
