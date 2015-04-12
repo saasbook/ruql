@@ -1,4 +1,5 @@
 class Question
+  include JSON
   attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment
 
   def initialize(*args)
@@ -43,5 +44,4 @@ class Question
   def correct_answer ;  @answers.detect(&:correct?)  ;  end
 
   def correct_answers ;  @answers.collect(&:correct?) ; end
-
 end

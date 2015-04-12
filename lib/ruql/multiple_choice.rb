@@ -1,5 +1,4 @@
 class MultipleChoice < Question
-
   attr_accessor :multiple
   
   def initialize(text='', opts={})

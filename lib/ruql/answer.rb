@@ -1,5 +1,5 @@
 class Answer
-  include Comparable
+  include Comparable, JSON
   attr_accessor :answer_text, :explanation
   attr_reader :correct
   attr_reader :builder

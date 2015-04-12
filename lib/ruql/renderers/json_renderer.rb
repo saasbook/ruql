@@ -10,45 +10,6 @@ class JSONRenderer
   end
 
   def render_quiz
-    @quiz.questions.each do |question|
-      case question
-        when MultipleChoice, SelectMultiple, TrueFalse then render_non_fill_in(question)
-        when FillIn then render_fill_in(question) # not currently supported
-        else
-          raise "Unknown question type: #{question}"
-      end
-    end
-    @output = JSON.pretty_generate(@json_array)
+    @output = @quiz.questions.map {|question| JSON.pretty_generate(question.to_JSON)}
   end
-
-  def render_non_fill_in(question)
-    question_hash = {
-      "question_type" => question.class.to_s, #assign as value of the class
-      "text" => question.question_text,
-      "answers" => answers_to_json_array(question.answers)
-    }
-    @json_array.push(question_hash)
-  end
-
-  def answers_to_json_array(answers)
-    answers_array = []
-    answers.each do |answer|
-      answer_json = {
-        "text" => answer.answer_text,
-        "explanation" => answer.explanation,
-        "correct" => answer.correct
-      }
-      answers_array.push(answer_json)
-    end
-    answers_array
-  end
-
-  #eventually I should implement this but looks like low priority since we have not been given questions of this format --Aaron 
-  def render_fill_in(q)
-    # fill-in-the-blank questions not currently supported
-    question_hash = {
-      "text" => question.question_text
-    }
-  end
-
 end
