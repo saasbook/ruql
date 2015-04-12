@@ -1,5 +1,4 @@
 class Question
-  include JSON
   attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment
 
   def initialize(*args)
@@ -44,4 +43,17 @@ class Question
   def correct_answer ;  @answers.detect(&:correct?)  ;  end
 
   def correct_answers ;  @answers.collect(&:correct?) ; end
+
+  def answer_helper(obj)
+    if obj.is_a? Array and obj.size and obj[0].is_a? Answer
+      return obj.map {|answer| answer.to_JSON}
+    end
+    obj
+  end
+
+  def to_JSON
+      h = Hash[instance_variables.collect { |var| [var, answer_helper(instance_variable_get(var))] }]
+      h[:question_type] = self.class.to_s
+      return h
+  end
 end

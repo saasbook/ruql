@@ -1,5 +1,5 @@
 class Answer
-  include Comparable, JSON
+  include Comparable
   attr_accessor :answer_text, :explanation
   attr_reader :correct
   attr_reader :builder
@@ -12,5 +12,9 @@ class Answer
     @answer_text = answer_text
     @correct = !!correct # ensure boolean
     @explanation = explanation
+  end
+  
+  def to_JSON
+    Hash[instance_variables.collect { |var| [var, instance_variable_get(var)] }]
   end
 end
