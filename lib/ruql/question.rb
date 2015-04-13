@@ -66,6 +66,7 @@ class Question
     hash.reject{|key| key == 'answers' or key == 'question_type'}.each do |key, value|
       question.send((key + '=').to_sym, value)
     end
+    question.answers = hash['answers'].map{|answer_hash| Answer.from_JSON(answer_hash)}
     question
   end
 
