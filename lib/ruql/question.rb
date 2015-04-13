@@ -1,6 +1,6 @@
 class Question
-  attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment
-
+  attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment, :raw
+  
   def initialize(*args)
     options = if args[-1].kind_of?(Hash) then args[-1] else {} end
     @answers = options[:answers] || []
@@ -51,9 +51,22 @@ class Question
     obj
   end
 
+  #creates a JSON hash of the object with its object name. we should convert this to a mixin for answer and question. aaron
   def to_JSON
-      h = Hash[instance_variables.collect { |var| [var, answer_helper(instance_variable_get(var))] }]
-      h[:question_type] = self.class.to_s
+      h = Hash[instance_variables.collect { |var| [var.to_s.delete('@'), answer_helper(instance_variable_get(var))] }]
+      h['question_type'] = self.class.to_s
       return h
   end
+
+  #factory method to return correct type of question
+  def self.from_JSON(hash_str)
+    hash = JSON.parse(hash_str)
+    #create the appropriate class of the object from the hash's class name
+    question = Object.const_get(hash.fetch('question_type')).new()
+    hash.reject{|key| key == 'answers' or key == 'question_type'}.each do |key, value|
+      question.send((key + '=').to_sym, value)
+    end
+    question
+  end
+
 end

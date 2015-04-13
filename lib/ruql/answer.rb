@@ -15,6 +15,6 @@ class Answer
   end
   
   def to_JSON
-    Hash[instance_variables.collect { |var| [var, instance_variable_get(var)] }]
+    Hash[instance_variables.collect { |var| [var.to_s.delete('@'), instance_variable_get(var)] }]
   end
 end
