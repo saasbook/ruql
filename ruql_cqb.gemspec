@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
   s.date        = '2016-02-13'
   s.summary     = "Ruby question language"
   s.description = "Ruby-embedded DSL for creating short-answer quiz questions"
-  s.authors     = ["Armando Fox"]
-  s.email       = 'fox@cs.berkeley.edu'
+  s.authors     = ["Armando Fox", "Aaron Zhang"]
+  s.email       = 'aaron.zhang@berkeley.edu'
   s.files = []
   s.files       << 'lib/ruql.rb'
   s.files +=  %w(quiz answer dropdown fill_in multiple_choice
