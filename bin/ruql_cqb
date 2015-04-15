@@ -1,0 +1,95 @@
+#!/usr/bin/env ruby
+
+require 'ruql'
+require 'getopt/long'
+
+def usage
+  name = File.basename $0
+  STDERR.puts <<eos
+Usage: #{name} filename.rb renderer [options]
+filename.rb contains questions expressed in RuQL
+
+renderer choices are:
+  Html5    - HTML 5 suitable for Web display/printing
+  HtmlForm - HTML forms
+  EdXml    - XML for OpenEdX platform in-course questions
+  AutoQCM  - LaTeX for use with AutoQCM (http://home.gna.org/auto-qcm)
+  Coursera - [obsolete] Coursera HTML/XML format for online auto-grading
+  JSON     - [partially implemented] JSON format
+  Qualtrics -[partially implemented] Qualtrics survey (txt) format
+
+Global options:
+  -l <loglevel>, --log=<loglevel>
+     In increasing verbosity, they are 'error' (nonfatal), 'warn', 'info',
+     'debug'; default is 'warn'
+  -p <penalty>, --penalty <penalty>
+     The penalty for WRONG answers, as a fraction of the penalty for
+     RIGHT answers.  For a 2-point question, penalty=0.25 means 1/2 point
+     (0.25 * 2) deducted for WRONG answer.  Default is 0.  Not all
+     output formats are able to do something useful with this.
+
+The EdXML renderer supports these options:
+  -n <name>, --name=<name>
+      Only render the question(s) that have :name => 'name'.
+  NOTE: Some markup that is legal in RuQL questions will break the EdX parser.
+     Manually check your questions as you enter them into EdX.  Code seems to
+     be particularly troublesome.
+  NOTE: The 'points' and 'randomize' attributes of questions are not honored by
+     some systems.
+
+The HTML5 and HTML Forms renderers supports these options:
+  -c <href>, --css=<href>
+      embed <href> for stylesheet into generated HTML5
+  -j <src>, --js=<src>
+      embed <src> for JavaScrips
+  -t <file.html.erb>, --template=<file.html.erb>
+      Use file.html.erb as HTML template rather than generating our own file.
+      file.html.erb should have <%= yield %> where questions should go.
+      An example is in the templates/ directory of RuQL.
+      The following local variables will be replaced with their values in
+      the template: 
+        <%= quiz.title %> - the quiz title
+        <%= quiz.num_questions %> - total number of questions
+        <%= quiz.points %> - total number of points for whole quiz
+  -s, --solutions
+      generate solutions (showing correct answers and explanations)
+  NOTE: If there is more than one quiz (collection of questions) in the file,
+      a complete <html>...</html> block is produced in the output for EACH quiz.
+
+The AutoQCM renderer supports these options:
+  -t <file.tex.erb>, --template=<file.tex.erb>
+      MANDATORY: Use file.tex.erb as LaTeX/AutoQCM template.
+      The file should have <%= yield %> where questions should go.
+      See the description of template under HTML5 renderer for variable
+      substitutions that can occur in the quiz body.
+
+The JSON renderer currently supports no options
+
+The Qualtrics renderer supports these options:
+  -t <file.txt.erb>, --template=<file.txt.erb>
+  The file should have <%= yield %> where questions should go. Since this just creates survey questions, grading information is ignored.Currently supports the same type of questions as the AutoQCM renderer.
+
+eos
+  exit
+end
+
+def main
+  filename = ARGV.shift
+  raise "Cannot read #{filename}" unless File.readable? filename
+  renderer = ARGV.shift
+  raise "Unknown renderer '#{renderer}'" unless Quiz.get_renderer(renderer)
+  opts = Getopt::Long.getopts(
+    ['-c', '--css', Getopt::REQUIRED],
+    ['-j', '--js', Getopt::REQUIRED],
+    ['-t', '--template', Getopt::REQUIRED],
+    ['-s', '--solutions', Getopt::BOOLEAN],
+    ['-n', '--name', Getopt::REQUIRED],
+    ['-l', '--log', Getopt::REQUIRED],
+    )    
+  Quiz.instance_eval "#{IO.read(filename)}"
+  Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
+end
+
+usage if ARGV.length < 2
+main
+
