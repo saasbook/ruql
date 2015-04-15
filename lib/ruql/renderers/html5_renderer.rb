@@ -9,7 +9,7 @@ class Html5Renderer
     @show_solutions = options.delete('s') || options.delete('solutions')
     @template = options.delete('t') ||
       options.delete('template') ||
-      File.join(Gem.loaded_specs['ruql'].full_gem_path, 'templates/html5.html.erb')
+      File.join(Gem.loaded_specs['ruqlcqb'].full_gem_path, 'templates/html5.html.erb')
     @output = ''
     @quiz = quiz
     @h = Builder::XmlMarkup.new(:target => @output, :indent => 2)
