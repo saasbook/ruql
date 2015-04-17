@@ -27,7 +27,7 @@ class Quiz
   attr_reader :output
   attr_reader :seed
   attr_reader :logger
-  attr_accessor :title
+  attr_accessor :title, :quizzes
 
   def initialize(title, yaml, options={})
     @output = ''
