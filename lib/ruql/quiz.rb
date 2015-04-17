@@ -41,6 +41,10 @@ class Quiz
     @quiz_yaml = yaml
   end
 
+  def self.nuke_from_orbit
+    @@quizzes = []
+  end
+
   def self.get_renderer(renderer)
     Object.const_get(renderer.to_s + 'Renderer') rescue nil
   end
