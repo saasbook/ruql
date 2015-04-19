@@ -2,7 +2,7 @@
 class Quiz
   @@quizzes = []
   def self.quizzes ; @@quizzes ;  end
-  @@default_options = 
+  @@default_options =
     {
     :open_time => Time.now,
     :soft_close_time => Time.now + 24*60*60,
@@ -41,15 +41,16 @@ class Quiz
 
   def self.get_renderer(renderer)
     Object.const_get(renderer.to_s + 'Renderer') rescue nil
-  end      
+  end
 
   def render_with(renderer,options={})
+    binding.pry
     srand @seed
     @renderer = Quiz.get_renderer(renderer).send(:new,self,options)
     @renderer.render_quiz
     @output = @renderer.output
   end
-  
+
   def points ; questions.map(&:points).inject { |sum,points| sum + points } ; end
 
   def num_questions ; questions.length ; end
@@ -57,7 +58,7 @@ class Quiz
   def random_seed(num)
     @seed = num.to_i
   end
-  
+
   # this should really be done using mixins.
   def choice_answer(*args, &block)
     if args.first.is_a?(Hash) # no question text
@@ -72,7 +73,7 @@ class Quiz
 
   def select_multiple(*args, &block)
     if args.first.is_a?(Hash) # no question text
-      q = SelectMultiple.new('',*args)
+      q = SelectMultiple.new('', *args)
     else
       text = args.shift
       q = SelectMultiple.new(text, *args)
@@ -83,6 +84,17 @@ class Quiz
 
   def truefalse(*args)
     q = TrueFalse.new(*args)
+    @questions << q
+  end
+
+  def peer_review(*args, &block)
+    if args.first.is_a?(Hash) # no question text
+      q = PeerReview.new('', *args)
+    else
+      text = args.shift
+      q = PeerReview.new(text, *args)
+    end
+    q.instance_eval(&block)
     @questions << q
   end
 
