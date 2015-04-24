@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
-require 'ruql'
+# require 'ruql'
+require_relative '../lib/ruql'
 require 'getopt/long'
+require 'pry'
 
 def usage
   name = File.basename $0
@@ -47,7 +49,7 @@ The HTML5 and HTML Forms renderers supports these options:
       file.html.erb should have <%= yield %> where questions should go.
       An example is in the templates/ directory of RuQL.
       The following local variables will be replaced with their values in
-      the template: 
+      the template:
         <%= quiz.title %> - the quiz title
         <%= quiz.num_questions %> - total number of questions
         <%= quiz.points %> - total number of points for whole quiz
@@ -85,7 +87,7 @@ def main
     ['-s', '--solutions', Getopt::BOOLEAN],
     ['-n', '--name', Getopt::REQUIRED],
     ['-l', '--log', Getopt::REQUIRED],
-    )    
+    )
   Quiz.instance_eval "#{IO.read(filename)}"
   Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
 end

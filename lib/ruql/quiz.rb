@@ -44,7 +44,6 @@ class Quiz
   end
 
   def render_with(renderer,options={})
-    binding.pry
     srand @seed
     @renderer = Quiz.get_renderer(renderer).send(:new,self,options)
     @renderer.render_quiz

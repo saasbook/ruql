@@ -13,11 +13,12 @@ class EdXmlRenderer
     case thing
     when MultipleChoice,SelectMultiple,TrueFalse then render_multiple_choice(thing)
     when FillIn then render_fill_in(thing)
+    when PeerReview then render_peer_review(thing)
     else
       raise "Unknown question type: #{thing}"
     end
   end
-  
+
   def render_quiz
     # entire quiz can be in one question group, as long as we specify
     # that ALL question from the group must be used to make the quiz.
@@ -70,5 +71,8 @@ class EdXmlRenderer
     end
   end
 
+  def render_peer_review(question)
+    binding.pry
+  end
 end
 
