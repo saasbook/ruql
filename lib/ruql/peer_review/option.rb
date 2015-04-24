@@ -1,11 +1,11 @@
 class Option
-  attr_accessor :points, :name, :label, :explanation
+  attr_accessor :points, :opt_name, :opt_label, :opt_explanation
 
-  def initialize(*args)
-    @points = args[:points] || 0
+  def initialize(options={})
+    @points = options[:points] || 0
   end
 
-  def name(name)               ; @name = name               ; end
-  def label(label)             ; @label = label             ; end
-  def explanation(explanation) ; @explanation = explanation ; end
+  def name(name)               ; @opt_name = name               ; end
+  def label(label)             ; @opt_label = label             ; end
+  def explanation(explanation) ; @opt_explanation = explanation ; end
 end

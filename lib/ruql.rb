@@ -1,6 +1,7 @@
 # basic gems/libs we rely on
 require 'builder'
 require 'logger'
+require 'date'
 
 $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__)))
 

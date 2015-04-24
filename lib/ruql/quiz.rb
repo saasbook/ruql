@@ -87,12 +87,7 @@ class Quiz
   end
 
   def peer_review(*args, &block)
-    if args.first.is_a?(Hash) # no question text
-      q = PeerReview.new('', *args)
-    else
-      text = args.shift
-      q = PeerReview.new(text, *args)
-    end
+    q = PeerReview.new(*args)
     q.instance_eval(&block)
     @questions << q
   end

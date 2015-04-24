@@ -72,6 +72,40 @@ class EdXmlRenderer
   end
 
   def render_peer_review(question)
+    @b.openassessment url_name: question.url_name,
+                      submission_start: "#{question.submission_start.to_s}T00:00:00+00:00",
+                      submission_end: "#{question.submission_end.to_s}T00:00:00+00:00",
+                      allow_file_upload: question.allow_file_upload.to_s.capitalize,
+                      allow_latex: question.allow_latex.to_s.capitalize do
+
+      @b.title question.question_title
+
+      @b.prompts do
+        question.prompts.each do |description|
+          @b.prompt do
+            @b.description description
+          end
+        end
+      end
+
+      @b.rubric do
+        question.criterions.each do |criterion|
+          @b.criterion feedback: criterion.feedback do
+            @b.name   criterion.criterion_name
+            @b.label  criterion.criterion_label
+            @b.prompt criterion.criterion_prompt
+
+            criterion.options.each do |option|
+              @b.option points: option.points do
+                @b.name        option.opt_name
+                @b.label       option.opt_label
+                @b.explanation option.opt_explanation
+              end
+            end
+          end
+        end
+      end
+    end
     binding.pry
   end
 end

@@ -1,20 +1,20 @@
 class Criterion
 
-  attr_accessor :options, :feedback, :name, :label, :prompt
+  attr_accessor :options, :feedback, :criterion_name,
+                :criterion_label, :criterion_prompt
 
-  def initialize(*args)
+  def initialize(options={})
     @options = []
-    @feedback = args[:feedback]
+    @feedback = options[:feedback]
   end
 
-  def name(name)     ; @name = name     ; end
-  def label(label)   ; @label = label   ; end
-  def prompt(prompt) ; @prompt = prompt ; end
+  def name(name)     ; @criterion_name = name     ; end
+  def label(label)   ; @criterion_label = label   ; end
+  def prompt(prompt) ; @criterion_prompt = prompt ; end
 
-  def options(*args, &block)
+  def option(*args, &block)
     option = Option.new(*args)
     option.instance_eval(&block)
-    binding.pry
     options << option
   end
 end
