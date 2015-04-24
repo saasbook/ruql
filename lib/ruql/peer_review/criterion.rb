@@ -7,7 +7,14 @@ class Criterion
     @feedback = args[:feedback]
   end
 
-  def name(s)   ; @name = s  ; end
-  def label(s)  ; @label = s ; end
-  def prompt(s) ; @prompt = s ; end
+  def name(name)     ; @name = name     ; end
+  def label(label)   ; @label = label   ; end
+  def prompt(prompt) ; @prompt = prompt ; end
+
+  def options(*args, &block)
+    option = Option.new(*args)
+    option.instance_eval(&block)
+    binding.pry
+    options << option
+  end
 end

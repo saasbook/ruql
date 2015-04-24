@@ -5,7 +5,7 @@ class Option
     @points = args[:points] || 0
   end
 
-  def name(s)      ;   @name = s  ; end
-  def label(s)     ;   @label = s ; end
-  def explanation(s) ; @explanation = s ; end
+  def name(name)               ; @name = name               ; end
+  def label(label)             ; @label = label             ; end
+  def explanation(explanation) ; @explanation = explanation ; end
 end
