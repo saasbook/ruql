@@ -91,7 +91,7 @@ def main
     ['-s', '--solutions', Getopt::BOOLEAN],
     ['-n', '--name', Getopt::REQUIRED],
     ['-l', '--log', Getopt::REQUIRED],
-    ['-y', '--yaml' Getopt::REQUIRED]
+    ['-y', '--yaml', Getopt::REQUIRED]
   )
 
   Quiz.instance_eval "#{IO.read(filename)}"
