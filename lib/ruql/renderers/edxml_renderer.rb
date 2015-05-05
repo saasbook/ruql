@@ -73,8 +73,8 @@ class EdXmlRenderer
 
   def render_peer_review(question)
     @b.openassessment url_name: question.url_name,
-                      submission_start: "#{question.submission_start.to_s}T00:00:00+00:00",
-                      submission_end: "#{question.submission_end.to_s}T00:00:00+00:00",
+                      submission_start: "#{question.submission_start.to_s}T00:00",
+                      submission_due: "#{question.submission_due.to_s}T00:00",
                       allow_file_upload: question.allow_file_upload.to_s.capitalize,
                       allow_latex: question.allow_latex.to_s.capitalize do
 
@@ -104,9 +104,10 @@ class EdXmlRenderer
             end
           end
         end
+        @b.feedbackprompt        question.question_feedback_prompt
+        @b.feedback_default_text question.question_feedback_default_text
       end
     end
-    binding.pry
   end
 end
 

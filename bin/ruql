@@ -39,6 +39,9 @@ The EdXML renderer supports these options:
   NOTE: The 'points' and 'randomize' attributes of questions are not honored by
      some systems.
 
+  -y <file.yml>, --yaml=<file.yml>
+      Render the questions with a specific yaml file.
+
 The HTML5 and HTML Forms renderers supports these options:
   -c <href>, --css=<href>
       embed <href> for stylesheet into generated HTML5
@@ -80,6 +83,7 @@ def main
   raise "Cannot read #{filename}" unless File.readable? filename
   renderer = ARGV.shift
   raise "Unknown renderer '#{renderer}'" unless Quiz.get_renderer(renderer)
+
   opts = Getopt::Long.getopts(
     ['-c', '--css', Getopt::REQUIRED],
     ['-j', '--js', Getopt::REQUIRED],
@@ -87,7 +91,9 @@ def main
     ['-s', '--solutions', Getopt::BOOLEAN],
     ['-n', '--name', Getopt::REQUIRED],
     ['-l', '--log', Getopt::REQUIRED],
-    )
+    ['-y', '--yaml' Getopt::REQUIRED]
+  )
+
   Quiz.instance_eval "#{IO.read(filename)}"
   Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
 end
