@@ -10,7 +10,7 @@ class PeerReview
     @criterions = []
 
     # Not sure what to do with url_name...hopefully I'll find out soon
-    @url_name = rand(1000000000)
+    @url_name = SecureRandom.hex
 
     @allow_file_upload = options[:allow_file_upload] || false
     @allow_latex = options[:allow_latex] || false
@@ -31,5 +31,9 @@ class PeerReview
     criterion = Criterion.new(*args)
     criterion.instance_eval(&block)
     @criterions << criterion
+  end
+
+  def single_question(*args, &block)
+
   end
 end

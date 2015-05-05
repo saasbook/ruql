@@ -94,7 +94,7 @@ def main
     ['-y', '--yaml', Getopt::REQUIRED]
   )
 
-  Quiz.instance_eval "#{IO.read(filename)}"
+  Quiz.instance_eval opts, "#{IO.read(filename)}"
   Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
 end
 

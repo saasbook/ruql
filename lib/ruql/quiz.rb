@@ -33,6 +33,7 @@ class Quiz
     @questions = options[:questions] || []
     @title = title
     @options = @@default_options.merge(options)
+    binding.pry
     @seed = srand
     @logger = Logger.new(STDERR)
     @logger.level = Logger.const_get (options.delete('l') ||
@@ -87,6 +88,7 @@ class Quiz
   end
 
   def peer_review(*args, &block)
+    binding.pry
     q = PeerReview.new(*args)
     q.instance_eval(&block)
     @questions << q
@@ -103,7 +105,8 @@ class Quiz
     @questions << q
   end
 
-  def self.quiz(*args,&block)
+  def self.quiz(*args, &block)
+    binding.pry
     quiz = Quiz.new(*args)
     quiz.instance_eval(&block)
     @@quizzes << quiz
