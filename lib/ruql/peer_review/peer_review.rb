@@ -1,3 +1,4 @@
+require 'securerandom'
 class PeerReview
 
   attr_accessor :question_title, :prompts, :criterions, :name,
@@ -5,18 +6,20 @@ class PeerReview
                 :submission_start, :submission_due,
                 :question_feedback_prompt, :question_feedback_default_text
 
-  def initialize(options={})
+  attr_accessor :yaml
+
+  def initialize(options={}, yaml={})
     @prompts = []
     @criterions = []
 
-    # Not sure what to do with url_name...hopefully I'll find out soon
     @url_name = SecureRandom.hex
+    @yaml = yaml
 
     @allow_file_upload = options[:allow_file_upload] || false
     @allow_latex = options[:allow_latex] || false
 
-    start_date = options[:submission_start] || Time.now.to_s
-    end_date = options[:submission_end] || Time.now.to_s
+    start_date = @yaml[:submission_start] || Time.now.to_s
+    end_date = @yaml[:submission_end] || Time.now.to_s
 
     @submission_start = Date.parse(start_date)
     @submission_due = Date.parse(end_date)
@@ -34,6 +37,6 @@ class PeerReview
   end
 
   def single_question(*args, &block)
-
+    instance_eval(&block)
   end
 end

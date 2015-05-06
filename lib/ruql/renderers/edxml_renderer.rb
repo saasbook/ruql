@@ -7,13 +7,6 @@ class EdXmlRenderer
   attr_accessor :file, :yaml_file
   def initialize(quiz,options={})
     @only_question = options.delete('n') || options.delete('name')
-
-    file_name = options.delete('y') || options.delete('yaml')
-    if file_name
-      raise "Can't open file #{file_name}" unless File.readable?(file_name)
-      @yaml_file = YAML::load_file(File.join(__dir__, file_name))
-    end
-
     @output = ''
     @b = Builder::XmlMarkup.new(:target => @output, :indent => 2)
     @quiz = quiz

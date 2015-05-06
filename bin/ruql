@@ -93,8 +93,8 @@ def main
     ['-l', '--log', Getopt::REQUIRED],
     ['-y', '--yaml', Getopt::REQUIRED]
   )
-
-  Quiz.instance_eval opts, "#{IO.read(filename)}"
+  Quiz.set_yaml_file opts.delete("y") || opts.delete("yaml")
+  Quiz.instance_eval "#{IO.read(filename)}"
   Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
 end
 
