@@ -17,4 +17,8 @@ class Criterion
     option.instance_eval(&block)
     options << option
   end
+
+  def add_option(option)
+    options << option
+  end
 end

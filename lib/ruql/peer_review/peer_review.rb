@@ -8,6 +8,17 @@ class PeerReview
 
   attr_accessor :yaml
 
+  @@single_question_scores =
+    [[5, "Excellent", "You got all of the question correct"],
+     [4, "Great", "You got most of the question correct"],
+     [3, "Good", "You got half of the question correct"],
+     [2, "Fair", "You got parts of the question correct"],
+     [1, "OK", "You got bits of the question correct"],
+     [0, "Poor", "You got non of the question correct"]]
+
+  @@single_question_criterion =
+    ["How'd you do?", ]
+
   def initialize(options={}, yaml={})
     @prompts = []
     @criterions = []
@@ -37,6 +48,25 @@ class PeerReview
   end
 
   def single_question(*args, &block)
+    criterion = Criterion.new()
+    criterion.name("How'd you do?")
+    criterion.label("Scoring Rubric")
+    criterions << criterion
+
+    @@single_question_scores.each do |score_array|
+      points, label, explanation = score_array
+      option = Option.new({ points: points })
+      option.name(label)
+      option.label(label)
+      option.explanation(explanation)
+      criterion.add_option(option)
+    end
+
     instance_eval(&block)
+    binding.pry
+  end
+
+  def answer(s)
+    criterions.first.prompt("Answer: #{s}")
   end
 end
