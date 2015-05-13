@@ -3,7 +3,7 @@ class OpenAssessment
 
   attr_accessor :question_title, :prompts, :criterions, :name,
                 :url_name, :allow_file_upload, :allow_latex,
-                :submission_start, :submission_due,
+                :submission_start, :submission_due, :peer_review, :self_assessment
                 :question_feedback_prompt, :question_feedback_default_text
 
   attr_accessor :yaml
@@ -16,8 +16,9 @@ class OpenAssessment
      [1, "OK", "You got bits of the question correct"],
      [0, "Poor", "You got non of the question correct"]]
 
+  # TODO
   @@single_question_criterion =
-    ["How'd you do?", ]
+    ["How'd you do?"]
 
   def initialize(options={}, yaml={})
     @prompts = []
@@ -28,6 +29,8 @@ class OpenAssessment
 
     @allow_file_upload = options[:allow_file_upload] || false
     @allow_latex = options[:allow_latex] || false
+    @peer_review = options[:peer_review] || false
+    @self_assessment = options[:self_assessment] || false
 
     start_date = @yaml[:submission_start] || Time.now.to_s
     end_date = @yaml[:submission_end] || Time.now.to_s
