@@ -76,7 +76,6 @@ class OpenAssessment
     end
 
     instance_eval(&block)
-    binding.pry
   end
 
   def answer(s)
@@ -84,8 +83,8 @@ class OpenAssessment
   end
 
   def student_training(*args, &block)
-    training = Training.new(args)
-    training.instance_eval(block)
+    training = Training.new(*args)
+    training.instance_eval(&block)
     @training << training
   end
 end

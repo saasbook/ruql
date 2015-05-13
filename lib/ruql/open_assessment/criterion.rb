@@ -26,6 +26,6 @@ class Criterion
   end
 
   def missing_parameters?
-    return @name.nil? || @label.nil? || @prompt.nil?
+    @criterion_name.nil? || @criterion_label.nil? || @criterion_prompt.nil?
   end
 end
