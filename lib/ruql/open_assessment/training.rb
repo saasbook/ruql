@@ -9,7 +9,7 @@ class Training
   def answer(s) ; @training_answer = s ; end
 
   def training_criterion(*args)
-    t = TrainingCriterion.new(args);
-    @training_criterions << t
+    training = TrainingCriterion.new(args);
+    @training_criterions << training
   end
 end

@@ -21,6 +21,14 @@ class OpenAssessment
     ["How'd you do?"]
 
   def initialize(options={}, yaml={})
+    @peer_review = options[:peer_review] || false
+    @self_assessment = options[:self_assessment] || false
+
+    # Validation
+    if !@peer_review && !@self_assessment
+      raise "Must specify open assesment type as either peer_review or self_assessment."
+    end
+
     @prompts = []
     @criterions = []
 
@@ -29,8 +37,6 @@ class OpenAssessment
 
     @allow_file_upload = options[:allow_file_upload] || false
     @allow_latex = options[:allow_latex] || false
-    @peer_review = options[:peer_review] || false
-    @self_assessment = options[:self_assessment] || false
 
     start_date = @yaml[:submission_start] || Time.now.to_s
     end_date = @yaml[:submission_end] || Time.now.to_s
@@ -71,5 +77,9 @@ class OpenAssessment
 
   def answer(s)
     criterions.first.prompt("Answer: #{s}")
+  end
+
+  def student_training
+
   end
 end
