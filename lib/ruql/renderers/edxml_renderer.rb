@@ -83,6 +83,40 @@ class EdXmlRenderer
 
       @b.title question.question_title
 
+      # Oh good lord my eyes
+      @b.assessments do
+        if question.trainings.size > 0
+          @b.assessment name: "student_training" do
+            question.trainings.each do |training|
+              @b.example do
+                @b.answer do
+                  @b.part training.training_answer
+                  training.training_criterions.each do |criterion|
+                    @b.select criterion: criterion.criterion,
+                              option:    criterion.option
+                  end
+                end
+              end
+            end
+          end
+        end
+
+        if question.peer_review
+          @b.assessment name: "peer_review",
+                        must_grade: question.must_grade,
+                        must_be_graded_by: question.graded_by,
+                        start: "#{question.submission_start.to_s}T00:00",
+                        due: "#{question.submission_due.to_s}T00:00"
+
+        end
+
+        if question.self_assessment
+          @b.assessment name: "self_assessment",
+                        start: "#{question.submission_start.to_s}T00:00",
+                        due: "#{question.submission_due.to_s}T00:00"
+        end
+      end
+
       @b.prompts do
         question.prompts.each do |description|
           @b.prompt do

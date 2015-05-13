@@ -1,5 +1,5 @@
 class Option
-  attr_accessor :points, :opt_name, :opt_name, :opt_explanation
+  attr_accessor :points, :opt_name, :opt_label, :opt_explanation
 
   def initialize(options={})
     @points = options[:points] || 0
@@ -10,6 +10,6 @@ class Option
   def explanation(explanation) ; @opt_explanation = explanation ; end
 
   def missing_parameters?
-    @opt_name.nil? || @opt_name.nil? || @opt_explanation.nil?
+    @opt_name.nil? || @opt_label.nil? || @opt_explanation.nil?
   end
 end

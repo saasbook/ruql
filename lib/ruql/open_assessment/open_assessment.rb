@@ -2,12 +2,13 @@ require 'securerandom'
 class OpenAssessment
 
   attr_accessor :question_title, :prompts, :criterions, :name,
-                :url_name, :self_assessment, :peer_review
+                :url_name, :self_assessment, :peer_review,
+                :must_grade, :graded_by
   attr_accessor :allow_file_upload, :allow_latex,
                 :submission_start, :submission_due
   attr_accessor :question_feedback_prompt, :question_feedback_default_text
   attr_accessor :yaml
-  attr_accessor :training
+  attr_accessor :trainings
 
   @@single_question_scores =
     [[5, "Excellent", "You got all of the question correct"],
@@ -15,32 +16,32 @@ class OpenAssessment
      [3, "Good", "You got half of the question correct"],
      [2, "Fair", "You got parts of the question correct"],
      [1, "OK", "You got bits of the question correct"],
-     [0, "Poor", "You got non of the question correct"]]
-
-  # TODO
-  @@single_question_criterion =
-    ["How'd you do?"]
+     [0, "Poor", "You got none of the question correct"]]
 
   def initialize(options={}, yaml={})
-    @peer_review = options[:peer_review] || false
-    @self_assessment = options[:self_assessment] || false
+    @peer_review = options[:peer_review]
+    @self_assessment = options[:self_assessment]
 
     # Validation
-    if !@peer_review && !@self_assessment
+    if @peer_review.nil? && @self_assessment.nil?
       raise "Must specify open assesment type as either peer_review or self_assessment."
     end
 
     @prompts = []
     @criterions = []
+    @trainings = []
 
     @url_name = SecureRandom.hex
     @yaml = yaml
+
+    @must_grade = @yaml[:must_grade] || 5
+    @graded_by = @yaml[:graded_by] || 3
 
     @allow_file_upload = options[:allow_file_upload] || false
     @allow_latex = options[:allow_latex] || false
 
     start_date = @yaml[:submission_start] || Time.now.to_s
-    end_date = @yaml[:submission_end] || Time.now.to_s
+    end_date = @yaml[:submission_end] || (Time.now + 14).to_s
 
     @submission_start = Date.parse(start_date)
     @submission_due = Date.parse(end_date)
@@ -85,6 +86,6 @@ class OpenAssessment
   def student_training(*args, &block)
     training = Training.new(*args)
     training.instance_eval(&block)
-    @training << training
+    @trainings << training
   end
 end
