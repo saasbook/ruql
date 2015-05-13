@@ -1,5 +1,5 @@
 require 'securerandom'
-class PeerReview
+class OpenAssessment
 
   attr_accessor :question_title, :prompts, :criterions, :name,
                 :url_name, :allow_file_upload, :allow_latex,

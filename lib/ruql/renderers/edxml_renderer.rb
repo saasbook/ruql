@@ -16,7 +16,7 @@ class EdXmlRenderer
     case thing
     when MultipleChoice,SelectMultiple,TrueFalse then render_multiple_choice(thing)
     when FillIn then render_fill_in(thing)
-    when PeerReview then render_peer_review(thing)
+    when OpenAssessment then render_open_assessment(thing)
     else
       raise "Unknown question type: #{thing}"
     end
@@ -74,7 +74,7 @@ class EdXmlRenderer
     end
   end
 
-  def render_peer_review(question)
+  def render_open_assessment(question)
     @b.openassessment url_name: question.url_name,
                       submission_start: "#{question.submission_start.to_s}T00:00",
                       submission_due: "#{question.submission_due.to_s}T00:00",
