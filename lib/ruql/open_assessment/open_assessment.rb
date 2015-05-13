@@ -2,11 +2,12 @@ require 'securerandom'
 class OpenAssessment
 
   attr_accessor :question_title, :prompts, :criterions, :name,
-                :url_name, :allow_file_upload, :allow_latex,
-                :submission_start, :submission_due, :peer_review, :self_assessment
-                :question_feedback_prompt, :question_feedback_default_text
-
+                :url_name, :self_assessment, :peer_review
+  attr_accessor :allow_file_upload, :allow_latex,
+                :submission_start, :submission_due
+  attr_accessor :question_feedback_prompt, :question_feedback_default_text
   attr_accessor :yaml
+  attr_accessor :training
 
   @@single_question_scores =
     [[5, "Excellent", "You got all of the question correct"],
@@ -51,6 +52,10 @@ class OpenAssessment
   def feedback_default_text(fb_text) ; @question_feedback_default_text = fb_text ; end
 
   def criterion(*args, &block)
+    if args[:name].nil? || args[:label].nil? || args[:prompt].nil?
+      raise "Missing criterion parameters"
+    end
+
     criterion = Criterion.new(*args)
     criterion.instance_eval(&block)
     @criterions << criterion
@@ -79,7 +84,9 @@ class OpenAssessment
     criterions.first.prompt("Answer: #{s}")
   end
 
-  def student_training
-
+  def student_training(*args, &block)
+    training = Training.new(args)
+    training.instance_eval(block)
+    @training << training
   end
 end
