@@ -13,16 +13,19 @@ class Criterion
   def prompt(prompt) ; @criterion_prompt = prompt ; end
 
   def option(*args, &block)
-    if args[:name].nil? || args[:label].nil? || args[:explanation].nil?
-      raise "Missing option paramaters"
-    end
-
     option = Option.new(*args)
     option.instance_eval(&block)
+
+    raise "Missing option parameters" if option.missing_parameters?
+
     options << option
   end
 
   def add_option(option)
     options << option
+  end
+
+  def missing_parameters?
+    return @name.nil? || @label.nil? || @prompt.nil?
   end
 end

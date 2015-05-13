@@ -8,4 +8,8 @@ class Option
   def name(name)               ; @opt_name = name               ; end
   def label(label)             ; @opt_label = label             ; end
   def explanation(explanation) ; @opt_explanation = explanation ; end
+
+  def missing_parameters?
+    return @name.nil? || @label.nil? || @explanation.nil?
+  end
 end

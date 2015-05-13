@@ -52,12 +52,11 @@ class OpenAssessment
   def feedback_default_text(fb_text) ; @question_feedback_default_text = fb_text ; end
 
   def criterion(*args, &block)
-    if args[:name].nil? || args[:label].nil? || args[:prompt].nil?
-      raise "Missing criterion parameters"
-    end
-
     criterion = Criterion.new(*args)
     criterion.instance_eval(&block)
+
+    raise "Missing criterion parameters" if criterion.missing_parameters?
+
     @criterions << criterion
   end
 
