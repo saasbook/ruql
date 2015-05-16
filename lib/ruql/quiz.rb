@@ -95,12 +95,23 @@ class Quiz
   end
 
   def open_assessment(*args, &block)
+    q = get_open_assessment(*args, &block)
+    @questions << q
+  end
+
+  def simple_open_assessment(*args, &block)
+    q = get_open_assessment(*args, &block)
+    q.add_simple_question
+    @questions << q
+  end
+
+  def get_open_assessment(*args, &block)
     y = @quiz_yaml.shift
     raise "Cannot continue - You must have a yaml block for each peer evaluation question" if y.nil?
     yaml = y[1][0]
     q = OpenAssessment.new(*args, yaml)
     q.instance_eval(&block)
-    @questions << q
+    q
   end
 
   def fill_in(*args, &block)

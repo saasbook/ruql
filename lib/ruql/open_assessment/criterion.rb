@@ -15,9 +15,7 @@ class Criterion
   def option(*args, &block)
     option = Option.new(*args)
     option.instance_eval(&block)
-
     raise "Missing option parameters" if option.missing_parameters?
-
     options << option
   end
 

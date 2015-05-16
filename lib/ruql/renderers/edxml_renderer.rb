@@ -102,7 +102,7 @@ class EdXmlRenderer
         end
 
         if question.peer_review
-          @b.assessment name: "peer_review",
+          @b.assessment name: "peer-review",
                         must_grade: question.must_grade,
                         must_be_graded_by: question.graded_by,
                         start: "#{question.submission_start.to_s}T00:00",
@@ -111,7 +111,7 @@ class EdXmlRenderer
         end
 
         if question.self_assessment
-          @b.assessment name: "self_assessment",
+          @b.assessment name: "self-assessment",
                         start: "#{question.submission_start.to_s}T00:00",
                         due: "#{question.submission_due.to_s}T00:00"
         end

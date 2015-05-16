@@ -9,6 +9,11 @@ class Option
   def label(label)             ; @opt_label = label             ; end
   def explanation(explanation) ; @opt_explanation = explanation ; end
 
+  def add_params(score_array)
+    _, @opt_label, @opt_explanation = score_array
+    @opt_name = @opt_label
+  end
+
   def missing_parameters?
     @opt_name.nil? || @opt_label.nil? || @opt_explanation.nil?
   end
