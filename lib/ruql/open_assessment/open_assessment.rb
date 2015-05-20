@@ -4,8 +4,10 @@ class OpenAssessment
   attr_accessor :question_title, :prompts, :criterions, :name,
                 :url_name, :self_assessment, :peer_review,
                 :must_grade, :graded_by
-  attr_accessor :allow_file_upload, :allow_latex,
-                :submission_start, :submission_due
+  attr_accessor :allow_file_upload, :allow_latex
+  attr_accessor :submission_start, :submission_due,
+                :self_assessment_start, :self_assessment_due,
+                :peer_review_start, :peer_review_due
   attr_accessor :question_feedback_prompt, :question_feedback_default_text
   attr_accessor :yaml
   attr_accessor :trainings
@@ -19,14 +21,13 @@ class OpenAssessment
      [1, "OK", "You got bits of the question correct"],
      [0, "Poor", "You got none of the question correct"]]
 
-  def initialize(options={}, yaml={})
-    @peer_review = options[:peer_review]
-    @self_assessment = options[:self_assessment]
+  @@DATE_REGEX = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/
 
-    # Validation
-    if @peer_review.nil? && @self_assessment.nil?
-      raise "Must specify open assesment type as either peer_review or self_assessment."
-    end
+  ##
+  # Initializes the open assessment question
+  def initialize(options={}, yaml={})
+    @peer_review = options[:peer_review] || false
+    @self_assessment = options[:self_assessment] || true
 
     @prompts = []
     @criterions = []
@@ -35,25 +36,54 @@ class OpenAssessment
     @url_name = SecureRandom.hex
     @yaml = yaml
 
-    @must_grade = @yaml[:must_grade] || 5
-    @graded_by = @yaml[:graded_by] || 3
+    @must_grade = @yaml["must_grade"] || 5
+    @graded_by = @yaml["graded_by"] || 3
 
     @allow_file_upload = options[:allow_file_upload] || false
     @allow_latex = options[:allow_latex] || false
 
-    start_date = @yaml[:submission_start] || Time.now.to_s
-    end_date = @yaml[:submission_end] || (Time.now + 14).to_s
+    # Parsing start/due dates
+    start_date = @yaml["submission_start"] || Time.now.to_s
+    end_date = @yaml["submission_end"] || (Time.now + 14).to_s
+
+    peer_review_start = @yaml["peer_review_start"] || start_date
+    peer_review_due = @yaml["peer_review_due"] || end_date
+
+    self_assessment_start = @yaml["self_assessment_start"] || start_date
+    self_assessment_due = @yaml["self_assessment_due"] || end_date
 
     @submission_start = Date.parse(start_date)
     @submission_due = Date.parse(end_date)
+
+    @peer_review_start = Date.parse(peer_review_start)
+    @peer_review_due = Date.parse(peer_review_due)
+
+    @self_assessment_start = Date.parse(self_assessment_start)
+    @self_assessment_due = Date.parse(self_assessment_due)
   end
 
+  ##
+  # Sets the title of the question
   def title(title)      ; @question_title  = title  ; end
+
+  ##
+  # Adds a prompt to the question - you must have at least one
   def prompt(prompt)    ; @prompts << prompt        ; end
+
+  ##
+  # Sets the answers for a simple_open_assessment question
   def answer(answer)    ; @question_answer = answer ; end
+
+  ##
+  # Sets the feedback prompt if you want students to leave feedback
   def feedback_prompt(fb_prompt) ; @question_feedback_prompt = fb_prompt ; end
+
+  ##
+  # Sets the default text for the feedback textarea
   def feedback_default_text(fb_text) ; @question_feedback_default_text = fb_text ; end
 
+  ##
+  # Adds a criterion and evaluates its proc block.
   def criterion(*args, &block)
     criterion = Criterion.new(*args)
     criterion.instance_eval(&block)
@@ -63,6 +93,8 @@ class OpenAssessment
     @criterions << criterion
   end
 
+  ##
+  # Adds fields for a simple_open_assessment question
   def add_simple_question
     criterion = Criterion.new
     criterion.name("How'd you do?")
@@ -80,7 +112,10 @@ class OpenAssessment
     end
   end
 
+  ##
+  # Adds a student training question - only used with peer review enabled questions
   def student_training(*args, &block)
+    return unless @peer_review
     training = Training.new(*args)
     training.instance_eval(&block)
     @trainings << training

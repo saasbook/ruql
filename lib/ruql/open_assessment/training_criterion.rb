@@ -1,6 +1,8 @@
 class TrainingCriterion
   attr_accessor :criterion, :option
 
+  ##
+  # Initializes a training criterion for a training response
   def initialize(options={})
     @criterion = options[:criterion]
     @option = options[:option]
