@@ -7,7 +7,7 @@ class Criterion
   # Initializes a criterion
   def initialize(options={})
     @options = []
-    @feedback = options[:feedback]
+    @feedback = options[:feedback] || "required"
   end
 
   ##
