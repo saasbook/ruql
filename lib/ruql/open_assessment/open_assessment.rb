@@ -6,12 +6,15 @@ class OpenAssessment
                 :must_grade, :graded_by
   attr_accessor :allow_file_upload, :allow_latex
   attr_accessor :submission_start, :submission_due,
+                :submission_start_time, :submission_due_time,
                 :self_assessment_start, :self_assessment_due,
-                :peer_review_start, :peer_review_due
+                :self_assessment_start_time, :self_assessment_due_time,
+                :peer_review_start, :peer_review_due,
+                :peer_review_start_time, :peer_review_due_time
   attr_accessor :question_feedback_prompt, :question_feedback_default_text
   attr_accessor :yaml
   attr_accessor :trainings
-  attr_accessor :answer
+  attr_accessor :answer, :question_scoring_guideline
 
   @@single_question_scores =
     [[5, "Excellent", "You got all of the question correct"],
@@ -54,12 +57,18 @@ class OpenAssessment
 
     @submission_start = Date.parse(start_date)
     @submission_due = Date.parse(end_date)
+    @submission_start_time = @yaml["submission_start_time"] || "00:00"
+    @submission_due_time = @yaml["submission_due_time"] || "00:00"
 
     @peer_review_start = Date.parse(peer_review_start)
     @peer_review_due = Date.parse(peer_review_due)
+    @peer_review_start_time = @yaml["peer_review_start_time"] || "00:00"
+    @peer_review_due_time = @yaml["peer_review_due_time"] || "00:00"
 
     @self_assessment_start = Date.parse(self_assessment_start)
     @self_assessment_due = Date.parse(self_assessment_due)
+    @self_assessment_start_time = @yaml["self_assessment_start_time"] || "00:00"
+    @self_assessment_due_time = @yaml["self_assessment_due_time"] || "00:00"
   end
 
   ##
@@ -73,6 +82,10 @@ class OpenAssessment
   ##
   # Sets the answers for a simple_open_assessment question
   def answer(answer)    ; @question_answer = answer ; end
+
+  ##
+  # Sets the scoring guidelines for a simple_open_assesment question
+  def scoring_guideline(score_array) ; @question_scoring_guideline = score_array ; end
 
   ##
   # Sets the feedback prompt if you want students to leave feedback
@@ -104,8 +117,8 @@ class OpenAssessment
     criterion.prompt(@question_answer)
 
     criterions << criterion
-
-    @@single_question_scores.each do |score_array|
+    scoring_guidelines = @question_scoring_guideline || @@single_question_scores
+    scoring_guidelines.each do |score_array|
       option = Option.new({ points: score_array[0] })
       option.add_params(score_array)
       criterion.add_option(option)

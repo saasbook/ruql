@@ -76,8 +76,10 @@ class EdXmlRenderer
 
   def render_open_assessment(question)
     @b.openassessment url_name: question.url_name,
-                      submission_start: "#{question.submission_start.to_s}T00:00:00+00:00",
-                      submission_due: "#{question.submission_due.to_s}T00:00:00+00:00",
+                      submission_start: "#{question.submission_start.to_s}T"\
+                                        "#{question.submission_start_time}:00+00:00",
+                      submission_due: "#{question.submission_due.to_s}T"\
+                                      "#{question.submission_due_time}:00+00:00",
                       allow_file_upload: question.allow_file_upload.to_s.capitalize,
                       allow_latex: question.allow_latex.to_s.capitalize do
 
@@ -105,15 +107,19 @@ class EdXmlRenderer
           @b.assessment name: "peer-review",
                         must_grade: question.must_grade,
                         must_be_graded_by: question.graded_by,
-                        start: "#{question.peer_review_start.to_s}T00:00:00+00:00",
-                        due: "#{question.peer_review_due.to_s}T00:00:00+00:00"
+                        start: "#{question.peer_review_start.to_s}T" \
+                               "#{question.peer_review_start_time}:00+00:00",
+                        due: "#{question.peer_review_due.to_s}T"\
+                             "#{question.peer_review_due_time}:00+00:00"
 
         end
 
         if question.self_assessment
           @b.assessment name: "self-assessment",
-                        start: "#{question.self_assessment_start.to_s}T00:00:00+00:00",
-                        due: "#{question.self_assessment_due.to_s}T00:00:00+00:00"
+                        start: "#{question.self_assessment_start.to_s}T"\
+                               "#{question.self_assessment_start_time}:00+00:00",
+                        due: "#{question.self_assessment_due.to_s}T"\
+                             "#{question.self_assessment_due_time}:00:00+00:00"
         end
       end
 
