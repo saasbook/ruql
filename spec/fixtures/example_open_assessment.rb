@@ -10,7 +10,7 @@ quiz '1/22/15 (W1 L2)' do
   # 2. A corresponding yaml file, one section for each question.
   #    (see example file)
   ###########
-  open_assessment peer_review: true, url_name: "100000" do
+  open_assessment peer_review: true, self_assessment: false, url_name: "100000" do
   # Self default to true/peer set to false unless stated otherwise
   # DTD - document type definition - check if EDX has one for this type of question
 

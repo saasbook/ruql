@@ -30,7 +30,8 @@ class OpenAssessment
   # Initializes the open assessment question
   def initialize(options={}, yaml={})
     @peer_review = options[:peer_review] || false
-    @self_assessment = options[:self_assessment] || true
+    @self_assessment = options[:self_assessment]
+    @self_assessment = true if @self_assessment.nil?
 
     @prompts = []
     @criterions = []
@@ -47,7 +48,7 @@ class OpenAssessment
 
     # Parsing start/due dates
     start_date = @yaml["submission_start"] || Time.now.to_s
-    end_date = @yaml["submission_end"] || (Time.now + 14).to_s
+    end_date = @yaml["submission_due"] || (Time.now + 14).to_s
 
     peer_review_start = @yaml["peer_review_start"] || start_date
     peer_review_due = @yaml["peer_review_due"] || end_date

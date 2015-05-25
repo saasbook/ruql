@@ -8,7 +8,7 @@ describe OpenAssessment do
     output = ""
     Quiz.quizzes.each { |quiz| output << quiz.render_with(renderer, {}) }
     expect(output).to eq(
-%q{<openassessment url_name="100000" submission_start="2011-01-01T00:00:00+00:00" submission_due="2015-05-24T00:00:00+00:00" allow_file_upload="False" allow_latex="False">
+%q{<openassessment url_name="100000" submission_start="2011-01-01T00:00:00+00:00" submission_due="2029-01-01T00:00:00+00:00" allow_file_upload="False" allow_latex="False">
   <title>This is a title.</title>
   <assessments>
     <assessment name="student-training">
@@ -19,8 +19,7 @@ describe OpenAssessment do
         <select criterion="Ideas" option="Poor"/>
       </example>
     </assessment>
-    <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" start="2011-02-01T00:00:00+00:00" due="2013-02-01T00:00:00+00:00"/>
-    <assessment name="self-assessment" start="2011-01-01T00:00:00+00:00" due="2015-05-24T00:00:00+00:00"/>
+    <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" start="2011-02-01T00:00:00+00:00" due="2029-01-01T00:00:00+00:00"/>
   </assessments>
   <prompts>
     <prompt>
@@ -45,7 +44,7 @@ describe OpenAssessment do
     <feedback_default_text>Let them know how they did</feedback_default_text>
   </rubric>
 </openassessment>
-<openassessment url_name="100000" submission_start="2011-02-01T00:00:00+00:00" submission_due="2015-05-24T00:00:00+00:00" allow_file_upload="False" allow_latex="False">
+<openassessment url_name="100000" submission_start="2011-02-01T00:00:00+00:00" submission_due="2013-02-01T00:00:00+00:00" allow_file_upload="False" allow_latex="False">
   <title>This is a title.</title>
   <assessments>
     <assessment name="self-assessment" start="2011-02-01T00:00:00+00:00" due="2013-02-01T00:00:00+00:00"/>
