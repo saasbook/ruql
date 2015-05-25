@@ -88,15 +88,15 @@ class EdXmlRenderer
       # Oh good lord my eyes
       @b.assessments do
         if question.trainings.size > 0
-          @b.assessment name: "student_training" do
+          @b.assessment name: "student-training" do
             question.trainings.each do |training|
               @b.example do
                 @b.answer do
                   @b.part training.training_answer
-                  training.training_criterions.each do |criterion|
-                    @b.select criterion: criterion.criterion,
-                              option:    criterion.option
-                  end
+                end
+                training.training_criterions.each do |criterion|
+                  @b.select criterion: criterion.criterion,
+                            option:    criterion.option
                 end
               end
             end
@@ -104,7 +104,7 @@ class EdXmlRenderer
         end
 
         if question.peer_review
-          @b.assessment name: "peer-review",
+          @b.assessment name: "peer-assessment",
                         must_grade: question.must_grade,
                         must_be_graded_by: question.graded_by,
                         start: "#{question.peer_review_start.to_s}T" \
@@ -119,7 +119,7 @@ class EdXmlRenderer
                         start: "#{question.self_assessment_start.to_s}T"\
                                "#{question.self_assessment_start_time}:00+00:00",
                         due: "#{question.self_assessment_due.to_s}T"\
-                             "#{question.self_assessment_due_time}:00:00+00:00"
+                             "#{question.self_assessment_due_time}:00+00:00"
         end
       end
 

@@ -69,6 +69,10 @@ class OpenAssessment
     @self_assessment_due = Date.parse(self_assessment_due)
     @self_assessment_start_time = @yaml["self_assessment_start_time"] || "00:00"
     @self_assessment_due_time = @yaml["self_assessment_due_time"] || "00:00"
+
+    # Default feedback settings
+    @question_feedback_prompt = "Leave feedback"
+    @question_feedback_default_text = "Let them know how they did"
   end
 
   ##
