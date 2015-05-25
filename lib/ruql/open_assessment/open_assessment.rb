@@ -36,7 +36,7 @@ class OpenAssessment
     @criterions = []
     @trainings = []
 
-    @url_name = SecureRandom.hex
+    @url_name = options[:url_name] || SecureRandom.hex
     @yaml = yaml
 
     @must_grade = @yaml["must_grade"] || 5
