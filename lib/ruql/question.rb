@@ -1,7 +1,8 @@
 class Question
   attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment
-  
+
   def initialize(*args)
+    binding.pry
     options = if args[-1].kind_of?(Hash) then args[-1] else {} end
     @answers = options[:answers] || []
     @points = [options[:points].to_i, 1].max
@@ -12,9 +13,9 @@ class Question
   end
 
   def raw? ; !!@raw ; end
-  
+
   def text(s) ; @question_text = s ; end
-  
+
   def explanation(text)
     @answers.each { |answer| answer.explanation ||= text }
   end
@@ -28,7 +29,7 @@ class Question
   end
 
   # these are ignored but legal for now:
-  def tags(*args) # string or array of strings 
+  def tags(*args) # string or array of strings
     if args.length > 1
       @question_tags += args.map(&:to_s)
     else

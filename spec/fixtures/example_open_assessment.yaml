@@ -1,0 +1,42 @@
+-
+  1:
+  -
+    # Peer review start/due date
+    # Defaulted to the submission start/due
+    submission_start: "1/1/2011"
+    submission_due: "1/1/2029"
+
+    # Open Assessment start/due time - must be military time format!
+    # Default to 00:00
+    submission_start_time: "00:00"
+    submission_due_time: "00:00"
+
+    # For peer response ONLY
+    # Default to zero
+    must_grade: 5
+    graded_by: 3
+
+    # Peer review start/due date
+    # Defaulted to the submission start/due
+    peer_review_start: "1/2/2011"
+    peer_review_due: "1/2/2013"
+
+    # Peer review start/due time - must be military time format!
+    # Default to 00:00
+    peer_review_start_time: "00:00"
+    peer_review_due_time: "00:00"
+
+  2:
+  -
+    submission_start: "1/2/2011"
+    submission_due: "1/2/2013"
+
+    # Self assessment start/due date
+    # Defaulted to the submission start/due
+    self_assessment_start: "1/2/2011"
+    self_assessment_due: "1/2/2013"
+
+    # Self assessment start/due time - must be military time format!
+    # Default to 00:00
+    self_assessment_start_time: "00:00"
+    self_assessment_due_time: "00:00"
