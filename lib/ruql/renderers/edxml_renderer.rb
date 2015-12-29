@@ -17,6 +17,7 @@ class EdXmlRenderer
     when MultipleChoice,SelectMultiple,TrueFalse then render_multiple_choice(thing)
     when FillIn then render_fill_in(thing)
     when OpenAssessment then render_open_assessment(thing)
+    when Dropdown then render_dropdown(thing)
     else
       raise "Unknown question type: #{thing}"
     end
@@ -31,10 +32,6 @@ class EdXmlRenderer
                     end
     question_list.each { |question| render(question) }
     @output
-  end
-
-  def render_fill_in(question)
-    raise "Not yet implemented for edXML"
   end
 
   def render_multiple_choice(question)
@@ -56,14 +53,12 @@ class EdXmlRenderer
           if question.raw? then @b.p { |p| p << line } else @b.p(line) end
         end
       end
+
       @b.__send__(question_type) do
         @b.__send__(answer_type, :type => 'MultipleChoice') do
           question.answers.each do |answer|
             if question.raw?
-              @b.choice(:correct => answer.correct?) do |choice|
-                choice << answer.answer_text
-                choice << "\n"
-              end
+              @b.choice "#{answer.answer_text.chomp}", :correct => answer.correct?
             else
               @b.choice answer.answer_text, :correct => answer.correct?
             end
@@ -85,6 +80,31 @@ class EdXmlRenderer
     end
   end
 
+  def render_dropdown(question)
+    @b.problem do
+      if question.raw?
+        @b.p { |p| p << question.question_text }
+      else
+        question.question_text.lines.map(&:chomp).each do |line|
+          if question.raw? then @b.p { |p| p << line } else @b.p(line) end
+        end
+      end
+      question.choices.each do |choice|
+        idx = choice.correct
+        menu_opts = choice.list
+        if menu_opts.length == 1 # this is actually a label
+          @b.span menu_opts[0]
+        else
+          @b.optionresponse do
+            debugger if menu_opts[idx].nil?
+            @b.optioninput :options => options_list_for_attribute(menu_opts),
+            :correct => escape_doublequotes(menu_opts[idx])
+          end
+        end
+      end
+    end
+  end
+  
   def render_open_assessment(question)
     @b.openassessment url_name: question.url_name,
                       submission_start: "#{question.submission_start.to_s}T"\
@@ -163,5 +183,17 @@ class EdXmlRenderer
       end
     end
   end
-end
 
+  private
+
+  def escape_doublequotes(str)
+    str.gsub(/"/, '&quot;') 
+  end
+
+  def options_list_for_attribute(list)
+    # takes a list of strings, places single quotes around each element
+    # and HTML-escapes doublequotes within any element. Because OLX.
+    attr = list.map { |e| "'" << escape_doublequotes(e) << "'" }.join(',')
+    "(#{attr})"
+  end
+end

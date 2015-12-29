@@ -1,4 +1,3 @@
-
 class Quiz
   @@quizzes = []
   @@yaml_file = nil
@@ -93,6 +92,12 @@ class Quiz
     @questions << q
   end
 
+  def dropdown(*args, &block)
+    q = Dropdown.new(*args)
+    q.instance_eval(&block)
+    @questions << q
+  end
+  
   def open_assessment(*args, &block)
     q = get_open_assessment(*args, &block)
     @questions << q
