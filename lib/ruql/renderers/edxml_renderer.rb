@@ -38,6 +38,15 @@ class EdXmlRenderer
   end
 
   def render_multiple_choice(question)
+    # the OLX for select-multiple and select-one are frustratingly different in arbitrary ways
+    # single choice has <multiplechoiceresponse> element containing a <choicegroup> with <choice>s
+    # select-mult has <choiceresponse> element containing a <checkboxgroup> with <choice>s
+
+    question_type, answer_type =
+      if question.kind_of?(SelectMultiple)
+      then ['choiceresponse', 'checkboxgroup']
+      else ['multiplechoiceresponse', 'choicegroup']
+      end
     @b.problem do
       # if question text has explicit newlines, use them to separate <p>'s
       if question.raw?
@@ -47,8 +56,8 @@ class EdXmlRenderer
           if question.raw? then @b.p { |p| p << line } else @b.p(line) end
         end
       end
-      @b.multiplechoiceresponse do
-        @b.choicegroup :type => 'MultipleChoice' do
+      @b.__send__(question_type) do
+        @b.__send__(answer_type, :type => 'MultipleChoice') do
           question.answers.each do |answer|
             if question.raw?
               @b.choice(:correct => answer.correct?) do |choice|
@@ -61,13 +70,15 @@ class EdXmlRenderer
           end
         end
       end
-      @b.solution do
-        @b.div :class => 'detailed_solution' do
-          @b.p 'Explanation'
-          if question.raw?
-            @b.p { |p| p << question.correct_answer.explanation }
-          else
-            @b.p question.correct_answer.explanation
+      if (ans = question.correct_answer.explanation)
+        @b.solution do
+          @b.div :class => 'detailed-solution' do
+            @b.p 'Explanation'
+            if question.raw?
+              @b.p { |p| p << ans }
+            else
+              @b.p ans
+            end
           end
         end
       end
