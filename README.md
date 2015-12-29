@@ -185,6 +185,9 @@ Generating a quiz from a RuQL file
 Using questions with Open EdX
 -----------------------------
 
+RuQL can output questions in a format that is at least somewhat
+compliant with [edX Open Learning XML (OXML)](http://edx-open-learning-xml.readthedocs.org/en/latest).
+
 To quickly add an inline question (multiple choice, text or numeric
 input, or option dropdown) to a course unit in EdX Studio:
 

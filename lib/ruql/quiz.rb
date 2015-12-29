@@ -1,7 +1,7 @@
 
 class Quiz
   @@quizzes = []
-  @@yaml_file;
+  @@yaml_file = nil
   @quiz_yaml = {}
   def self.quizzes ; @@quizzes ;  end
   @@default_options =
@@ -54,8 +54,7 @@ class Quiz
   end
 
   def self.set_yaml_file(file)
-    raise "Can't read file" if file.nil? || !File.readable?(file)
-    @@yaml_file = YAML::load_file(file)
+    @@yaml_file = file &&  YAML::load_file(file)
   end
 
   def points ; questions.map(&:points).inject { |sum,points| sum + points } ; end
@@ -126,7 +125,7 @@ class Quiz
   end
 
   def self.quiz(*args, &block)
-    quiz = Quiz.new(*args, @@yaml_file.shift)
+    quiz = Quiz.new(*args, (@@yaml_file.shift if @@yaml_file))
     quiz.instance_eval(&block)
     @@quizzes << quiz
   end

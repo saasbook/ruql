@@ -2,7 +2,6 @@ class Question
   attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment
 
   def initialize(*args)
-    binding.pry
     options = if args[-1].kind_of?(Hash) then args[-1] else {} end
     @answers = options[:answers] || []
     @points = [options[:points].to_i, 1].max
