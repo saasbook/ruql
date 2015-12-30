@@ -58,7 +58,7 @@ class EdXmlRenderer
         @b.__send__(answer_type, :type => 'MultipleChoice') do
           question.answers.each do |answer|
             if question.raw?
-              @b.choice "#{answer.answer_text.chomp}", :correct => answer.correct?
+              @b.choice(:correct => answer.correct?) { @b << answer.answer_text.chomp }
             else
               @b.choice answer.answer_text, :correct => answer.correct?
             end
