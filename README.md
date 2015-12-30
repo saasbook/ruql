@@ -146,6 +146,23 @@ truefalse 'The week has 7 days.', true
 truefalse 'The earth is flat.', false, :explanation => 'No, just looks that way'
 ```
 
+Questions with one or more dropdown-menu choices
+------------------------------------------------
+
+A question can consist of one or more dropdown menus and interstitial text (which is rendered verbatim without newlines,
+so use `:raw => true` to embed `<br>` tags if you want breaks).  A choice selector needs
+two arguments: the 0-based index of the correct choice, and an array of strings of all the choices.
+The `label` method provides interstitial text that separates the dropdowns.
+
+```ruby
+dropdown do
+  text "Arguably the world's first theme park was"
+  choice 0, ['Disneyland', 'Mickey World', 'Teenage Mutant Ninja Turtles Park']
+  label "located in"
+  choice 2, ['Beijing, China', 'Paris, France', 'California, USA']
+end
+```
+
 Preparing a quiz
 ----------------
 
@@ -186,7 +203,7 @@ Using questions with Open EdX
 -----------------------------
 
 RuQL can output questions in a format that is at least somewhat
-compliant with [edX Open Learning XML (OXML)](http://edx-open-learning-xml.readthedocs.org/en/latest).
+compliant with [edX Open Learning XML (OLX)](http://edx-open-learning-xml.readthedocs.org/en/latest).
 
 To quickly add an inline question (multiple choice, text or numeric
 input, or option dropdown) to a course unit in EdX Studio:
