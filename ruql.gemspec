@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'ruql'
-  s.version     = '0.0.5'
-  s.date        = '2015-12-29'
+  s.version     = '0.0.6'
+  s.date        = '2016-02-13'
   s.summary     = "Ruby question language"
   s.description = "Ruby-embedded DSL for creating short-answer quiz questions"
   s.authors     = ["Armando Fox"]
@@ -19,8 +19,8 @@ Gem::Specification.new do |s|
   s.files += Dir["templates/*.erb"]
   s.executables << 'ruql'
   # dependencies
-  s.add_runtime_dependency 'builder', '~> 0'
-  s.add_runtime_dependency 'getopt', '~> 0'
+  s.add_runtime_dependency 'builder', '~> 3.0'
+  s.add_runtime_dependency 'getopt', '1.4.2'
   s.homepage    = 'http://github.com/saasbook/ruql'
   s.license       = 'CC By-SA'
 end
