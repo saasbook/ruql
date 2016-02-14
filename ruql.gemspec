@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.email       = 'fox@cs.berkeley.edu'
   s.files = []
   s.files       << 'lib/ruql.rb'
-  s.files +=  %w(quiz answer question renderer
-                     select_multiple fill_in multiple_choice true_false
-                     tex_output).
+  s.files +=  %w(quiz answer dropdown fill_in multiple_choice
+                     open_assessment question quiz renderer
+                     select_multiple tex_output true_false).
     map { |s| "lib/ruql/#{s}.rb" }
   s.files += %w(auto_qcm_renderer edxml_renderer html5_renderer html_form_renderer
                      json_renderer qualtrics_renderer xml_renderer).
