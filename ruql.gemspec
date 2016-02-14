@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'ruql'
-  s.version     = '0.0.6'
+  s.version     = '0.0.7'
   s.date        = '2016-02-13'
   s.summary     = "Ruby question language"
   s.description = "Ruby-embedded DSL for creating short-answer quiz questions"
@@ -9,9 +9,11 @@ Gem::Specification.new do |s|
   s.files = []
   s.files       << 'lib/ruql.rb'
   s.files +=  %w(quiz answer dropdown fill_in multiple_choice
-                     open_assessment question quiz renderer
+                     question quiz renderer
                      select_multiple tex_output true_false).
     map { |s| "lib/ruql/#{s}.rb" }
+  s.files += %w(criterion option training training_criterion).
+    map { |s| "lib/ruql/open_assessment/#{s}.rb" }
   s.files += %w(auto_qcm_renderer edxml_renderer html5_renderer html_form_renderer
                      json_renderer qualtrics_renderer xml_renderer).
     map { |s| "lib/ruql/renderers/#{s}.rb" }
