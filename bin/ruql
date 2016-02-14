@@ -3,7 +3,6 @@
 # require 'ruql'
 require_relative '../lib/ruql'
 require 'getopt/long'
-require 'pry'
 
 def usage
   name = File.basename $0
