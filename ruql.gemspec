@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
                      question quiz renderer
                      select_multiple tex_output true_false).
     map { |s| "lib/ruql/#{s}.rb" }
-  s.files += %w(criterion option training training_criterion).
+  s.files += %w(criterion open_assessment option training training_criterion).
     map { |s| "lib/ruql/open_assessment/#{s}.rb" }
   s.files += %w(auto_qcm_renderer edxml_renderer html5_renderer html_form_renderer
                      json_renderer qualtrics_renderer xml_renderer).
