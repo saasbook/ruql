@@ -1,5 +1,6 @@
-<a href="https://codeclimate.com/github/saasbook/ruql"><img src="https://codeclimate.com/github/saasbook/ruql/badges/gpa.svg" /></a>
-<a href="https://codeclimate.com/github/saasbook/ruql/coverage"><img src="https://codeclimate.com/github/saasbook/ruql/badges/coverage.svg" /></a>
+[![CodeClimate](https://codeclimate.com/github/saasbook/ruql/badges/gpa.svg)](https://codeclimate.com/github/saasbook/ruql)
+[![Coverage](https://codeclimate.com/github/saasbook/ruql/badges/coverage.svg)](https://codeclimate.com/github/saasbook/ruql/coverage)
+[![Gem Version](https://badge.fury.io/rb/ruql.svg)](https://badge.fury.io/rb/ruql)
 
 Ruby-based Quiz Generator and DSL
 =================================
