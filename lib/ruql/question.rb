@@ -1,5 +1,5 @@
 class Question
-  attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment, :raw
+  attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_uuid, :question_comment, :raw
   
   def initialize(*args)
     options = if args[-1].kind_of?(Hash) then args[-1] else {} end
@@ -8,6 +8,7 @@ class Question
     @raw = options[:raw]
     @name = options[:name]
     @question_tags = []
+    @question_uuid = -1 # -1 uuid for question means it was just initialized, not set yet
     @question_comment = ''
   end
 
@@ -33,6 +34,14 @@ class Question
       @question_tags += args.map(&:to_s)
     else
       @question_tags << args.first.to_s
+    end
+  end
+  
+  def uuid(*args)
+    if args.length != 1
+      raise ArgumentError, 'Can only have 1 UUID per question'
+    else
+      @question_uuid << args.first.to_s
     end
   end
 
