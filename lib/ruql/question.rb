@@ -15,7 +15,7 @@ class Question
   def raw? ; !!@raw ; end
 
   def text(s) ; @question_text = s ; end
-
+  def question_uuid(u) ; @question_uuid = u ; end
   def explanation(text)
     @answers.each { |answer| answer.explanation ||= text }
   end
@@ -34,14 +34,6 @@ class Question
       @question_tags += args.map(&:to_s)
     else
       @question_tags << args.first.to_s
-    end
-  end
-  
-  def uuid(*args)
-    if args.length != 1
-      raise ArgumentError, 'Can only have 1 UUID per question'
-    else
-      @question_uuid << args.first.to_s
     end
   end
 
