@@ -42,14 +42,14 @@ class XMLRenderer
         }
       }
       # since we want all the options to appear, we create N option
-      # groups each containig 1 option, and specify that option to
+      # groups each containing 1 option, and specify that option to
       # always be selected for inclusion in the quiz.  If the original
       # question specified 'random', use the 'randomize' attribute on
       # option_groups to scramble the order in which displayed;
       # otherwise, display in same order as answers appear in source.
       @b.data {
         @b.text { @b.cdata!(question.question_text) }
-        @b.option_groups(:randomize => !!question.randomize) {
+        @b.option_groups(:randomize => !!question.randomize, :question_uuid => question.question_uuid.to_s) {
           @b.option_group(:select => 'all') {
             question.answers.each do |answer|
               option_args = {}
@@ -84,14 +84,14 @@ class XMLRenderer
         }
       }
       # since we want all the options to appear, we create N option
-      # groups each containig 1 option, and specify that option to
+      # groups each containing 1 option, and specify that option to
       # always be selected for inclusion in the quiz.  If the original
       # question specified 'random', use the 'randomize' attribute on
       # option_groups to scramble the order in which displayed;
       # otherwise, display in same order as answers appear in source.
       @b.data {
         @b.text { @b.cdata!(question.question_text) }
-        @b.option_groups(:randomize => !!question.randomize) {
+        @b.option_groups(:randomize => !!question.randomize, :question_uuid => question.question_uuid.to_s) {
           question.answers.each do |a|
             @b.option_group(:select => 'all') {
               self.render_multiple_choice_answer a, question.multiple
