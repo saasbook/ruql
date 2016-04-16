@@ -159,6 +159,7 @@ class HtmlFormRenderer
     @h.li html_args  do
       @h.div :class => 'text' do
         qtext = "[#{question.points} point#{'s' if question.points>1}] " <<
+          question.question_uuid.to_s <<
           ('Select ALL that apply: ' if question.multiple).to_s <<
           if question.class == FillIn then question.question_text.gsub(/\-+/, '')
           else question.question_text
