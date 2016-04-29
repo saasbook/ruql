@@ -8,7 +8,7 @@ class Question
     @raw = options[:raw]
     @name = options[:name]
     @question_tags = []
-    @question_uid = options[:question_uid].to_s.empty? ? SecureRandom.uid : options[:question_uid].to_s
+    @question_uid = options[:question_uid].to_s.empty? ? SecureRandom.uuid : options[:question_uid].to_s
     @question_comment = ''
   end
 
