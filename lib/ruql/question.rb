@@ -8,7 +8,7 @@ class Question
     @raw = options[:raw]
     @name = options[:name]
     @question_tags = []
-    @question_uuid = -1 # -1 uuid for question means it was just initialized, not set yet
+    @question_uuid = options[:question_uuid].empty? ? SecureRandom.uuid : options[:question_uuid]
     @question_comment = ''
   end
 
