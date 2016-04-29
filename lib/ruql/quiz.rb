@@ -4,6 +4,7 @@ class Quiz
   @quiz_yaml = {}
   def self.quizzes ; @@quizzes ;  end
   @@default_options =
+
     {
     :open_time => Time.now,
     :soft_close_time => Time.now + 24*60*60,
@@ -27,7 +28,7 @@ class Quiz
   attr_reader :output
   attr_reader :seed
   attr_reader :logger
-  attr_accessor :title, :quizzes, :uuid_list
+  attr_accessor :title, :quizzes
 
   def initialize(title, yaml, options={})
     @output = ''
@@ -43,7 +44,6 @@ class Quiz
 
   def self.nuke_from_orbit
     @@quizzes = []
-    @@uuid_list = []
   end
 
   def self.get_renderer(renderer)
@@ -62,12 +62,6 @@ class Quiz
   end
 
   def points ; questions.map(&:points).inject { |sum,points| sum + points } ; end
-    
-  def uuid_list
-    quizzes.each do |quiz|
-      uuid_list.push(quiz.uuid)
-    end
-  end
 
   def num_questions ; questions.length ; end
 
