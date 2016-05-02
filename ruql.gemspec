@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'ruql'
   s.version     = '0.0.9'
-  s.date        = '2016-05-1'
+  s.date        = '2016-05-01'
   s.summary     = "Ruby question language"
   s.description = "Ruby-embedded DSL for creating short-answer quiz questions"
   s.authors     = ["Armando Fox", "Aaron Zhang", "Jesmin Ngo"]
