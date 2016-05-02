@@ -1,11 +1,11 @@
 Gem::Specification.new do |s|
   s.name        = 'ruql'
-  s.version     = '0.0.5'
-  s.date        = '2015-04-14'
+  s.version     = '0.0.9'
+  s.date        = '2016-05-1'
   s.summary     = "Ruby question language"
   s.description = "Ruby-embedded DSL for creating short-answer quiz questions"
-  s.authors     = ["Armando Fox", "Aaron Zhang"]
-  s.email       = 'aaron.zhang@berkeley.edu'
+  s.authors     = ["Armando Fox", "Aaron Zhang", "Jesmin Ngo"]
+  s.email       = 'fox@cs.berkeley.edu'
   s.files = []
   s.files       << 'lib/ruql.rb'
   s.files +=  %w(quiz answer question renderer

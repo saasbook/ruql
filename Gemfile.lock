@@ -1,9 +1,12 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    builder (3.0.0)
-    byebug (8.2.2)
-    getopt (1.4.1)
+    builder (3.2.2)
+    byebug (8.2.5)
+    getopt (1.4.3)
+    json (1.8.3)
+    rdoc (4.2.2)
+      json (~> 1.4)
 
 PLATFORMS
   ruby
@@ -12,6 +15,7 @@ DEPENDENCIES
   builder
   byebug
   getopt
+  rdoc
 
 BUNDLED WITH
    1.11.2
