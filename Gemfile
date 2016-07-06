@@ -5,5 +5,5 @@ gem 'getopt'
 gem 'rdoc'
 
 group :development, :test do
-  gem 'ruby-debug19'
+  gem 'byebug'
 end

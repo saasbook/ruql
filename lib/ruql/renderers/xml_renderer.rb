@@ -34,7 +34,7 @@ class XMLRenderer
   end
 
   def render_fill_in(question)
-    @b.question :type => 'GS_Short_Answer_Question_Simple', :id => question.object_id.to_s(16) do
+    @b.question :type => 'GS_Short_Answer_Question_Simple', :id => question.object_id.to_s(16) , :uid => question.question_uid.to_s do
       @b.metadata {
         @b.parameters {
           @b.rescale_score question.points
@@ -42,12 +42,13 @@ class XMLRenderer
         }
       }
       # since we want all the options to appear, we create N option
-      # groups each containig 1 option, and specify that option to
+      # groups each containing 1 option, and specify that option to
       # always be selected for inclusion in the quiz.  If the original
       # question specified 'random', use the 'randomize' attribute on
       # option_groups to scramble the order in which displayed;
       # otherwise, display in same order as answers appear in source.
       @b.data {
+        @b.uid { @b.cdata!(question.question_uid.to_s) }
         @b.text { @b.cdata!(question.question_text) }
         @b.option_groups(:randomize => !!question.randomize) {
           @b.option_group(:select => 'all') {
@@ -76,7 +77,7 @@ class XMLRenderer
   end
 
   def render_multiple_choice(question)
-    @b.question :type => 'GS_Choice_Answer_Question', :id => question.object_id.to_s(16) do
+    @b.question :type => 'GS_Choice_Answer_Question', :id => question.object_id.to_s(16), :uid => question.question_uid.to_s do
       @b.metadata {
         @b.parameters {
           @b.rescale_score question.points
@@ -84,14 +85,15 @@ class XMLRenderer
         }
       }
       # since we want all the options to appear, we create N option
-      # groups each containig 1 option, and specify that option to
+      # groups each containing 1 option, and specify that option to
       # always be selected for inclusion in the quiz.  If the original
       # question specified 'random', use the 'randomize' attribute on
       # option_groups to scramble the order in which displayed;
       # otherwise, display in same order as answers appear in source.
       @b.data {
+        @b.uid { @b.cdata!(question.question_uid.to_s) }
         @b.text { @b.cdata!(question.question_text) }
-        @b.option_groups(:randomize => !!question.randomize) {
+        @b.option_groups(:randomize => !!question.randomize, :question_uid => question.question_uid.to_s) {
           question.answers.each do |a|
             @b.option_group(:select => 'all') {
               self.render_multiple_choice_answer a, question.multiple

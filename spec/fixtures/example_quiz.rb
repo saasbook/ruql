@@ -1,4 +1,5 @@
 quiz "I. Introduction", :duration => 1800 do
+  uid 1
   choice_answer :randomize => true do # means: randomize order of choices
     text 'question 1'
     distractor 'wrong answer a'
