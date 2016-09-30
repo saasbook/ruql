@@ -11,6 +11,8 @@ class Html5Renderer
       options.delete('template') ||
       File.join(Gem.loaded_specs['ruql'].full_gem_path, 'templates/html5.html.erb')
     @output = ''
+    @list_type = options.delete('o') || options.delete('list-type') || '1'
+    @list_start = options.delete('a') || options.delete('list-start') || '1'
     @quiz = quiz
     @h = Builder::XmlMarkup.new(:target => @output, :indent => 2)
   end
@@ -45,7 +47,7 @@ class Html5Renderer
     
   def render_questions
     render_random_seed
-    @h.ol :class => 'questions' do
+    @h.ol :class => 'questions', :type => @list_type, :start => @list_start do
       @quiz.questions.each_with_index do |q,i|
         case q
         when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(q,i)
