@@ -1,10 +1,10 @@
+
 class Quiz
   @@quizzes = []
   @@yaml_file = nil
   @quiz_yaml = {}
   def self.quizzes ; @@quizzes ;  end
   @@default_options =
-
     {
     :open_time => Time.now,
     :soft_close_time => Time.now + 24*60*60,
@@ -30,7 +30,7 @@ class Quiz
   attr_reader :logger
   attr_accessor :title, :quizzes
 
-  def initialize(title, yaml, options={})
+  def initialize(title, yaml = nil, options={})
     @output = ''
     @questions = options[:questions] || []
     @title = title
@@ -40,10 +40,6 @@ class Quiz
     @logger.level = Logger.const_get (options.delete('l') ||
                                       options.delete('log') || 'warn').upcase
     @quiz_yaml = yaml
-  end
-
-  def self.nuke_from_orbit
-    @@quizzes = []
   end
 
   def self.get_renderer(renderer)

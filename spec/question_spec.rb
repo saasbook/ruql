@@ -22,26 +22,7 @@ describe Question do
       end
     end
   end
-  describe 'uuid' do
-    it 'should be negative 1 by default' do
-      Question.new.question_tags.should == -1
-    end
-    describe 'setting' do
-      before(:each) { @q = Question.new }
-      it 'single string tag' do
-        @q.uuid 'string'
-        @q.question_uuid.should include 'string'
-      end
-      it 'single nonstring gets converted to string' do
-        @q.uuid 25
-        @q.question_uuid.should include '25'
-      end
-      it 'array of strings or nonstrings' do
-        @q.uuid 'tag', 30
-        @q.question_uuid.should raise_error
-      end
-    end
-  end
+
   describe 'comment' do
     it 'should be empty by default' do
       Question.new.question_comment.should == ''

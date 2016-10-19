@@ -7,10 +7,10 @@ describe Quiz do
     its(:questions) { should be_empty }
   end
   it 'should compute points based on its questions' do
-    Quiz.new('quiz',:questions => Array.new(3) { mock 'question', :points => 7 }).points.should == 21
+    Quiz.new('quiz',nil,:questions => Array.new(3) { mock 'question', :points => 7 }).points.should == 21
   end
   describe 'should include required XML elements when XML renderer used' do
-    subject { Quiz.new('Foo', :maximum_submissions => 2, :start => '2011-01-01 00:00', :time_limit => 60).render_with('XML') }
+    subject { Quiz.new('Foo', nil, :maximum_submissions => 2, :start => '2011-01-01 00:00', :time_limit => 60).render_with('XML') }
     {'title' => 'Foo',
       'maximum_submissions' => '2',
       'type' => 'quiz' }.each_pair do |element, value|
