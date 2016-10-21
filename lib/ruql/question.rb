@@ -20,7 +20,9 @@ class Question
     @question_comment = ''
   end
   def raw? ; !!@raw ; end
-
+  
+  def uid(u) ; @uid = u ; end
+  
   def text(s) ; @question_text = s ; end
 
   def explanation(text)
