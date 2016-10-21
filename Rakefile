@@ -1,7 +1,5 @@
 task :default => :ruql
 
-require(File.join(File.dirname(__FILE__), 'config', 'boot'))
-
 desc "Run Ruql with HtmlForm renderer"
 task :ruql do
   sh "ruby -Ilib bin/ruql examples/example.rb HtmlForm > examples/file.html"
