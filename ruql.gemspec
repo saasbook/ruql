@@ -1,27 +1,24 @@
 Gem::Specification.new do |s|
   s.name        = 'ruql'
-  s.version     = '0.1.2'
-  s.date        = '2016-10-20'
+  s.version     = '0.1.3'
+  s.date        = '2016-11-02'
   s.summary     = "Ruby question language"
   s.description = "Ruby-embedded DSL for creating short-answer quiz questions"
   s.authors     = ["Armando Fox"]
   s.email       = 'fox@cs.berkeley.edu'
   s.files = []
   s.files       << 'lib/ruql.rb'
-  s.files +=  %w(quiz answer question renderer
-                     select_multiple fill_in multiple_choice true_false
-                     tex_output).
+  s.files +=  %w(answer dropdown fill_in multiple_choice question quiz renderer select_multiple tex_output true_false).
     map { |s| "lib/ruql/#{s}.rb" }
-  s.files += %w(auto_qcm_renderer edxml_renderer html5_renderer html_form_renderer
-                     json_renderer qualtrics_renderer).
-    map { |s| "lib/ruql/renderers/#{s}.rb" }
+  s.files += Dir["lib/ruql/open_assessment/*.rb"]
+  s.files += Dir["lib/ruql/renderers/*.rb"]
   # add the templates
   s.files += Dir["templates/*.erb"]
   s.executables << 'ruql'
   # dependencies
-  s.add_runtime_dependency 'builder'
-  s.add_runtime_dependency 'getopt'
-  s.add_development_dependency 'rspec'
+  s.add_runtime_dependency 'builder', '>= 3.0'
+  s.add_runtime_dependency 'getopt', '>= 1.0'
+  s.add_development_dependency 'rspec', '>= 2.0'
   s.add_development_dependency 'activesupport', '~> 4.0'
   s.add_development_dependency 'byebug'
   s.homepage    = 'http://github.com/saasbook/ruql'
