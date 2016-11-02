@@ -8,7 +8,7 @@ class Html5Renderer
     @show_solutions = options.delete('s') || options.delete('solutions')
     @template = options.delete('t') ||
       options.delete('template') ||
-      File.join(Gem.loaded_specs['ruql'].full_gem_path, 'templates/html5.html.erb')
+      File.join(File.dirname(__FILE__), '../../../templates/html5.html.erb')
     @output = ''
     @list_type = options.delete('o') || options.delete('list-type') || '1'
     @list_start = options.delete('a') || options.delete('list-start') || '1'
@@ -114,13 +114,13 @@ class Html5Renderer
       :'data-uid' => question.question_uid,
       :class => ['question', question.class.to_s.downcase, (question.multiple ? 'multiple' : '')].join(' ')
     }
-    if question.image           # add CSS class to both <li> and <img>
+    if question.question_image           # add CSS class to both <li> and <img>
       html_args[:class] << 'question-with-image'
     end
     @h.li html_args  do
       # if there's an image, render it first
-      if question.image
-        @h.img :src => question.image, :class => 'question-image'
+      if question.question_image
+        @h.img :src => question.question_image, :class => 'question-image'
       end
       @h.div :class => 'text' do
         qtext = "[#{question.points} point#{'s' if question.points>1}] " <<

@@ -1,7 +1,7 @@
 class Question
   attr_accessor :question_text, 
                 :answers, 
-                :image,
+                :question_image,
                 :randomize, 
                 :points, 
                 :name, 
@@ -16,7 +16,7 @@ class Question
     @points = [options[:points].to_i, 1].max
     @raw = options[:raw]
     @name = options[:name]
-    @image = options[:image]
+    @question_image = options[:image]
     @question_tags = []
     @question_uid = (options.delete(:uid) || SecureRandom.uuid).to_s
     @question_comment = ''
@@ -31,6 +31,10 @@ class Question
     @answers.each { |answer| answer.explanation ||= text }
   end
 
+  def image(url)
+    @question_image = url
+  end
+  
   def answer(text, opts={})
     @answers << Answer.new(text, correct=true, opts[:explanation])
   end
