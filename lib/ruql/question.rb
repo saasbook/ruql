@@ -1,6 +1,7 @@
 class Question
   attr_accessor :question_text, 
                 :answers, 
+                :image,
                 :randomize, 
                 :points, 
                 :name, 

@@ -1,6 +1,6 @@
 # cs169 spring '15 microquizzes
 
-quiz '1/22/15 (W1 L2)' do
+quiz '1/22/15 (W1 L2)', :yaml => 'spec/fixtures/example_open_assessment.yaml' do
   ###########
   # Open Assessment question.
   # Includes both peer/self graded questions.

@@ -15,7 +15,6 @@ renderer choices are:
   HtmlForm - HTML forms
   EdXml    - XML for OpenEdX platform in-course questions
   AutoQCM  - LaTeX for use with AutoQCM (http://home.gna.org/auto-qcm)
-  Coursera - [obsolete] Coursera HTML/XML format for online auto-grading
   JSON     - [partially implemented] JSON format
   Qualtrics -[partially implemented] Qualtrics survey (txt) format
 
@@ -39,7 +38,7 @@ The EdXML renderer supports these options:
      some systems.
 
   -y <file.yml>, --yaml=<file.yml>
-      Render the questions with a specific yaml file.
+      Render open-assessment questions using info in given Yaml file.
 
 The HTML5 and HTML Forms renderers supports these options:
   -o <type>, --list-type=<type>
@@ -47,14 +46,13 @@ The HTML5 and HTML Forms renderers supports these options:
       Sets the values of the 'start' and 'type' attributes for the HTML <ol>
       element.  Type should be one of 1,a,A,i,I.  Start should always be
       a number indicating the ordinal value (starting from 1) of first item.
-  -c <href>, --css=<href>
-      embed <href> for stylesheet into generated HTML5
   -j <src>, --js=<src>
       embed <src> for JavaScript
   -t <file.html.erb>, --template=<file.html.erb>
       Use file.html.erb as HTML template rather than generating our own file.
       file.html.erb should have <%= yield %> where questions should go.
-      An example is in the templates/ directory of RuQL.
+      The default template in the templates/ directory of RuQL will be used
+      if this option is not given.
       The following local variables will be replaced with their values in
       the template:
         <%= quiz.title %> - the quiz title
@@ -99,7 +97,6 @@ def main
     ['-l', '--log', Getopt::REQUIRED],
     ['-y', '--yaml', Getopt::REQUIRED]
   )
-  Quiz.set_yaml_file opts.delete("y") || opts.delete("yaml")
   Quiz.instance_eval "#{IO.read(filename)}"
   Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
 end

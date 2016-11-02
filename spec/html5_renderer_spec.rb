@@ -9,14 +9,6 @@ describe Html5Renderer do
     def rendering_with(opts)
       Html5Renderer.new(Quiz.new(''), opts).render_quiz.output
     end
-    it 'should include CSS link with -c option' do
-      rendering_with('c' => 'foo.html').
-        should match /<link rel="stylesheet" type="text\/css" href="foo.html"/
-    end
-    it 'should include CSS link with --css option' do
-      rendering_with('css' => 'foo.html').
-        should match /<link rel="stylesheet" type="text\/css" href="foo.html"/
-    end
     it 'should use ERB template if directed' do
       rendering_with('template' => File.join(File.dirname(__FILE__),'fixtures','template.html.erb')).
         should match /<body id="template">/

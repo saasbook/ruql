@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
                      tex_output).
     map { |s| "lib/ruql/#{s}.rb" }
   s.files += %w(auto_qcm_renderer edxml_renderer html5_renderer html_form_renderer
-                     json_renderer qualtrics_renderer xml_renderer).
+                     json_renderer qualtrics_renderer).
     map { |s| "lib/ruql/renderers/#{s}.rb" }
   # add the templates
   s.files += Dir["templates/*.erb"]
@@ -21,6 +21,9 @@ Gem::Specification.new do |s|
   # dependencies
   s.add_runtime_dependency 'builder'
   s.add_runtime_dependency 'getopt'
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'activesupport', '~> 4.0'
+  s.add_development_dependency 'byebug'
   s.homepage    = 'http://github.com/saasbook/ruql'
   s.license       = 'CC By-SA'
 end

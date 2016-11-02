@@ -5,7 +5,6 @@ class Html5Renderer
   attr_reader :output
 
   def initialize(quiz,options={})
-    @css = options.delete('c') || options.delete('css')
     @show_solutions = options.delete('s') || options.delete('solutions')
     @template = options.delete('t') ||
       options.delete('template') ||
@@ -18,21 +17,9 @@ class Html5Renderer
   end
 
   def render_quiz
-    if @template
-      render_with_template do
-        render_questions
-        @output
-      end
-    else
-      @h.html do
-        @h.head do
-          @h.title @quiz.title
-          @h.link(:rel => 'stylesheet', :type =>'text/css', :href=>@css) if @css
-        end
-        @h.body do
-          render_questions
-        end
-      end
+    render_with_template do
+      render_questions
+      @output
     end
     self
   end
