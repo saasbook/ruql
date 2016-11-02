@@ -167,6 +167,35 @@ dropdown do
 end
 ```
 
+Images and other options that apply to all questions
+----------------------------------------------------
+
+To include an image in a question, you can do this:
+
+```ruby
+choice_answer do
+  text "Here is a question"
+  image "http://imgur.com/34dar4eLu.jpg"
+  # rest of question...
+```
+
+The image can be any URL that can be resolved at the time RuQL is run. 
+The HTML 5 renderer will render the image as follows (each question
+appears as a `<li>` element):
+
+```html
+<li class="question-with-image">
+  <img src="..." class="question-image">
+  ...question text and other stuff...
+```
+
+Questions also have a unique-in-the-universe ID.  You can specify one
+for any question by saying `uid `_string_.  Questions without a UID will
+be assigned one, and it will appear as the `data-uid` attribute of that
+question's `<li>`.  UIDs are used by systems such as the
+[QuestionBank](https://github.com/saasbook/coursequestionbank).
+
+
 Preparing a quiz
 ----------------
 
