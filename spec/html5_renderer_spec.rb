@@ -71,8 +71,12 @@ describe Html5Renderer do
   describe 'rendering multiple-choice question' do
     before :each do
       @a = [Answer.new('aa',true),Answer.new('bb',false), Answer.new('cc',false)]
-      @q = MultipleChoice.new('question', :answers => @a)
+      @q = MultipleChoice.new('question', :answers => @a, :uid => 'abcde')
       @h = Html5Renderer.new(:fake)
+    end
+    it 'should include uid' do
+      @h.render_multiple_choice(@q,1).output.
+        should have_xml_element('li').with_attribute('data-uid', 'abcde')
     end
     it 'should randomize option order if :randomize true' do
       @q.randomize = true

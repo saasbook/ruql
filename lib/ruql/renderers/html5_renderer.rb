@@ -111,8 +111,8 @@ class Html5Renderer
   def render_question_text(question,index)
     html_args = {
       :id => "question-#{index}",
-      :class => ['question', question.class.to_s.downcase, (question.multiple ? 'multiple' : '')]
-        .join(' ')
+      :'data-uid' => question.question_uid,
+      :class => ['question', question.class.to_s.downcase, (question.multiple ? 'multiple' : '')].join(' ')
     }
     @h.li html_args  do
       @h.div :class => 'text' do

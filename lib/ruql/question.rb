@@ -6,7 +6,7 @@ class Question
                 :points, 
                 :name, 
                 :question_tags, 
-                :uid, 
+                :question_uid, 
                 :question_comment, 
                 :raw
   
@@ -16,13 +16,14 @@ class Question
     @points = [options[:points].to_i, 1].max
     @raw = options[:raw]
     @name = options[:name]
+    @image = options[:image]
     @question_tags = []
-    @uid = options[:uid].to_s.empty? ? SecureRandom.uuid : options[:uid].to_s
+    @question_uid = (options.delete(:uid) || SecureRandom.uuid).to_s
     @question_comment = ''
   end
   def raw? ; !!@raw ; end
   
-  def uid(u) ; @uid = u ; end
+  def uid(u) ; @question_uid = u ; end
   
   def text(s) ; @question_text = s ; end
 
