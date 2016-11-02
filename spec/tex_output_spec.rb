@@ -14,7 +14,7 @@ describe TexOutput do
       to_tex('A bit of <tt>code_here</tt>').should ==
         'A bit of \texttt{code\textunderscore{}here}'
     end
-    it 'should replace multiline <pre> with Verbatim environment' do
+    it 'should replace multiline <pre> with Verbatim environment', :pending => true do
       to_tex('Code here:
 <pre>
   I haz

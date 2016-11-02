@@ -22,6 +22,7 @@ describe Question do
       end
     end
   end
+
   describe 'comment' do
     it 'should be empty by default' do
       Question.new.question_comment.should == ''

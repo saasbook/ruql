@@ -1,3 +1,4 @@
+
 class Quiz
   @@quizzes = []
   @@yaml_file = nil
@@ -27,9 +28,9 @@ class Quiz
   attr_reader :output
   attr_reader :seed
   attr_reader :logger
-  attr_accessor :title
+  attr_accessor :title, :quizzes
 
-  def initialize(title, yaml, options={})
+  def initialize(title, yaml = nil, options={})
     @output = ''
     @questions = options[:questions] || []
     @title = title
@@ -41,6 +42,10 @@ class Quiz
     @quiz_yaml = yaml
   end
 
+  def self.nuke_from_orbit
+    @@quizzes = []
+  end
+  
   def self.get_renderer(renderer)
     Object.const_get(renderer.to_s + 'Renderer') rescue nil
   end

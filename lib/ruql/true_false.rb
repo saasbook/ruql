@@ -1,6 +1,6 @@
 class TrueFalse < Question
 
-  def initialize(text, correct_answer, opts=nil)
+  def initialize(text='', correct_answer=false, opts=nil)
     super
     opts ||= {}
     opts[:explanation] ||= ''

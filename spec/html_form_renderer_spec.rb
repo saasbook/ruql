@@ -44,7 +44,7 @@ describe HtmlFormRenderer do
         Answer.new('bb',false,'Nope'),
         Answer.new('cc',false)]
       @q = MultipleChoice.new('question', :answers => @a)
-      @quiz = Quiz.new('foo', :questions => [@q])
+      @quiz = Quiz.new('foo', nil, :questions => [@q])
       @output = HtmlFormRenderer.new(@quiz,{'solutions' => true}).render_quiz.output
     end
     it 'should highlight correct answer' do

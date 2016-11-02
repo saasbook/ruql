@@ -19,7 +19,7 @@ describe OpenAssessment do
         <select criterion="Ideas" option="Poor"/>
       </example>
     </assessment>
-    <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" start="2011-02-01T00:00:00+00:00" due="2029-01-01T00:00:00+00:00"/>
+    <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" start="2011-02-01T00:00:00+00:00" due="2013-02-01T00:00:00+00:00"/>
   </assessments>
   <prompts>
     <prompt>
