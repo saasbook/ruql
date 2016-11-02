@@ -114,7 +114,14 @@ class Html5Renderer
       :'data-uid' => question.question_uid,
       :class => ['question', question.class.to_s.downcase, (question.multiple ? 'multiple' : '')].join(' ')
     }
+    if question.image           # add CSS class to both <li> and <img>
+      html_args[:class] << 'question-with-image'
+    end
     @h.li html_args  do
+      # if there's an image, render it first
+      if question.image
+        @h.img :src => question.image, :class => 'question-image'
+      end
       @h.div :class => 'text' do
         qtext = "[#{question.points} point#{'s' if question.points>1}] " <<
           ('Select ALL that apply: ' if question.multiple).to_s <<

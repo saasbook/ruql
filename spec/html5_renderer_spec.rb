@@ -67,12 +67,26 @@ describe Html5Renderer do
       Html5Renderer.new(:fake).render_multiple_choice(@q,1).output.should match /<b>cc<\/b>/
     end
   end
-  
+
   describe 'rendering multiple-choice question' do
     before :each do
       @a = [Answer.new('aa',true),Answer.new('bb',false), Answer.new('cc',false)]
-      @q = MultipleChoice.new('question', :answers => @a, :uid => 'abcde')
+      @q = MultipleChoice.new('question', :answers => @a, :uid => 'abcde', :image => 'file:///foo.jpg')
       @h = Html5Renderer.new(:fake)
+    end
+    context 'with image' do
+      before(:each) do
+        @o = @h.render_multiple_choice(@q,1).output
+      end
+      it 'should have image tag with correct src' do
+        @o.should have_xml_element('li/img').with_attribute('src', 'file:///foo.jpg')
+      end
+      it 'should have image tag with correct class' do
+        @o.should have_xml_element('li/img').with_attribute('class', 'question-image')
+      end
+      it "should add class to enclosing question's <li>" do
+        @o.should have_xml_element('li').with_attribute('class', /question-with-image/)
+      end
     end
     it 'should include uid' do
       @h.render_multiple_choice(@q,1).output.
