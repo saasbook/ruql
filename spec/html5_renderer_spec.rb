@@ -1,8 +1,11 @@
 require 'spec_helper'
 
 describe Html5Renderer do
+  before(:each) do
+    @quiz = double('quiz', :first_question_number => 1, :point_string => '', :suppress_random => false)
+  end
   describe 'when created' do
-    subject { Html5Renderer.new(:fake_quiz) }
+    subject { Html5Renderer.new(@quiz) }
     its(:output) { should == '' }
   end
   describe 'with stylesheet link' do
@@ -23,6 +26,7 @@ describe Html5Renderer do
         Answer.new('cc',false)]
       @q = MultipleChoice.new('question', :answers => @a)
       @quiz = Quiz.new('foo', :questions => [@q])
+      @quiz.stub(:points_threshold).and_return(1)
       @output = Html5Renderer.new(@quiz,{'solutions' => true}).render_quiz.output
     end
     it 'should highlight correct answer' do
@@ -44,7 +48,6 @@ describe Html5Renderer do
     end
     before :each do
       @atts = {:title => 'My Quiz', :points => 20, :num_questions => 5} 
-      @quiz = mock('quiz', @atts.merge(:questions => []))
     end
     %w(title total_points num_questions).each do |var|
       it "should set '#{var}'" do
@@ -61,10 +64,10 @@ describe Html5Renderer do
       @q.answer '<b>cc</b>'
     end
     it 'should not escape HTML in the question' do
-      Html5Renderer.new(:fake).render_multiple_choice(@q,1).output.should match /<tt>xx<\/tt>/
+      Html5Renderer.new(@quiz).render_multiple_choice(@q,1).output.should match /<tt>xx<\/tt>/
     end
     it 'should not escape HTML in the answer' do
-      Html5Renderer.new(:fake).render_multiple_choice(@q,1).output.should match /<b>cc<\/b>/
+      Html5Renderer.new(@quiz).render_multiple_choice(@q,1).output.should match /<b>cc<\/b>/
     end
   end
 
@@ -72,7 +75,7 @@ describe Html5Renderer do
     before :each do
       @a = [Answer.new('aa',true),Answer.new('bb',false), Answer.new('cc',false)]
       @q = MultipleChoice.new('question', :answers => @a, :uid => 'abcde', :image => 'file:///foo.jpg')
-      @h = Html5Renderer.new(:fake)
+      @h = Html5Renderer.new(@quiz)
     end
     context 'with image' do
       before(:each) do
@@ -94,7 +97,7 @@ describe Html5Renderer do
     end
     it 'should randomize option order if :randomize true' do
       @q.randomize = true
-      runs = Array.new(10) { Html5Renderer.new(:fake).render_multiple_choice(@q,1).output }
+      runs = Array.new(10) { Html5Renderer.new(@quiz).render_multiple_choice(@q,1).output }
       runs.any? { |run| runs[0] != run }.should be_true
     end
     it 'should preserve option order if :randomize false' do

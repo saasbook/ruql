@@ -19,14 +19,27 @@ renderer choices are:
   Qualtrics -[partially implemented] Qualtrics survey (txt) format
 
 Global options:
+  -r <file>, --report=<file>
+     Write to <file> a 4-line report of #points, #questions, and first and last
+     question#. Especially useful in conjunction with the -a/--start option.
+  -a <first>, --start=<first>
+      Sets the starting ordinal value (1=first) for question numbering. Default 1.
+      If a filename is given, looks for a line of the form "last NN" and
+      starts at the number following NN.
   -l <loglevel>, --log=<loglevel>
      In increasing verbosity, they are 'error' (nonfatal), 'warn', 'info',
      'debug'; default is 'warn'
-  -p <penalty>, --penalty <penalty>
-     The penalty for WRONG answers, as a fraction of the penalty for
-     RIGHT answers.  For a 2-point question, penalty=0.25 means 1/2 point
-     (0.25 * 2) deducted for WRONG answer.  Default is 0.  Not all
-     output formats are able to do something useful with this.
+  -p <points>, --points-threshold <points>
+     If a question's point value is more than <points> (default: 0), include
+     the string "[N points]" at the beginning of the question text.  Make this a
+     large number to avoid any points info being printed.
+  -P <points-string>, --points-string <points-string>  
+     String for formatting the points description prepended to the question text,
+     with %d as a placeholder for the point value and %s as a placeholder for
+     pluralizing the word 'points' or whatever.  Default is "[%d point%s]".
+  -R, --no-randomize
+     Present the answer choices in the order they appear in the RuQL file(s),
+     even for questions that have :randomize => true.
 
 The EdXML renderer supports these options:
   -n <name>, --name=<name>
@@ -42,10 +55,8 @@ The EdXML renderer supports these options:
 
 The HTML5 and HTML Forms renderers supports these options:
   -o <type>, --list-type=<type>
-  -a <first>, --list-start=<first>
-      Sets the values of the 'start' and 'type' attributes for the HTML <ol>
-      element.  Type should be one of 1,a,A,i,I.  Start should always be
-      a number indicating the ordinal value (starting from 1) of first item.
+      Sets the type of HTML list to use for answer choices: 'u' for unordered
+      (<ul>) or 'o' for ordered (<ol>).  Default is 'o'.
   -j <src>, --js=<src>
       embed <src> for JavaScript
   -t <file.html.erb>, --template=<file.html.erb>
@@ -74,7 +85,7 @@ The JSON renderer currently supports no options
 
 The Qualtrics renderer supports these options:
   -t <file.txt.erb>, --template=<file.txt.erb>
-  The file should have <%= yield %> where questions should go. Since this just creates survey questions, grading information is ignored.Currently supports the same type of questions as the AutoQCM renderer.
+  The file should have <%= yield %> where questions should go. Since this just creates survey questions, grading information is ignored. Currently supports the same type of questions as the AutoQCM renderer.
 
 eos
   exit
@@ -88,13 +99,17 @@ def main
 
   opts = Getopt::Long.getopts(
     ['-o', '--list-type', Getopt::REQUIRED],
-    ['-a', '--list-start', Getopt::REQUIRED],
+    ['-r', '--report', Getopt::REQUIRED],
+    ['-a', '--start', Getopt::REQUIRED],
     ['-c', '--css', Getopt::REQUIRED],
     ['-j', '--js', Getopt::REQUIRED],
     ['-t', '--template', Getopt::REQUIRED],
     ['-s', '--solutions', Getopt::BOOLEAN],
     ['-n', '--name', Getopt::REQUIRED],
     ['-l', '--log', Getopt::REQUIRED],
+    ['-P', '--points-string', Getopt::REQUIRED],
+    ['-p', '--points-threshold', Getopt::REQUIRED],
+    ['-R', '--no-randomize', Getopt::BOOLEAN],
     ['-y', '--yaml', Getopt::REQUIRED]
   )
   Quiz.instance_eval "#{IO.read(filename)}"

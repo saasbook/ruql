@@ -10,8 +10,8 @@ class Html5Renderer
       options.delete('template') ||
       File.join(File.dirname(__FILE__), '../../../templates/html5.html.erb')
     @output = ''
-    @list_type = options.delete('o') || options.delete('list-type') || '1'
-    @list_start = options.delete('a') || options.delete('list-start') || '1'
+    @list_type = (options.delete('o') || options.delete('list-type') || 'o')[0] + "l"
+    @list_start = quiz.first_question_number
     @quiz = quiz
     @h = Builder::XmlMarkup.new(:target => @output, :indent => 2)
   end
@@ -34,7 +34,7 @@ class Html5Renderer
     
   def render_questions
     render_random_seed
-    @h.ol :class => 'questions', :type => @list_type, :start => @list_start do
+    @h.ol :class => 'questions', :start => @list_start do
       @quiz.questions.each_with_index do |q,i|
         case q
         when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(q,i)
@@ -51,10 +51,10 @@ class Html5Renderer
     render_question_text(q, index) do
       answers =
         if q.class == TrueFalse then q.answers.sort.reverse # True always first
-        elsif q.randomize then q.answers.sort_by { rand }
+        elsif q.randomize && !@quiz.suppress_random then q.answers.sort_by { rand }
         else q.answers
         end
-      @h.ol :class => 'answers' do
+      @h.__send__(@list_type, :class => 'answers') do
         answers.each do |answer|
           if @show_solutions
             render_answer_for_solutions(answer, q.raw?, q.class == TrueFalse)
@@ -123,8 +123,8 @@ class Html5Renderer
         @h.img :src => question.question_image, :class => 'question-image'
       end
       @h.div :class => 'text' do
-        qtext = "[#{question.points} point#{'s' if question.points>1}] " <<
-          ('Select ALL that apply: ' if question.multiple).to_s <<
+        qtext = @quiz.point_string(question.points) << ' ' <<
+          ('Select <b>all</b> that apply: ' if question.multiple).to_s <<
           if question.class == FillIn then question.question_text.gsub(/\-+/, '_____________________________')
           else question.question_text
           end
