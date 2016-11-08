@@ -62,6 +62,10 @@ class Html5Renderer
             if q.raw? then @h.li { |l| l << answer.answer_text } else @h.li answer.answer_text end
           end
         end
+        if @show_solutions && ((exp = q.explanation.to_s) != '')
+          @h.br
+          if q.raw? then @h.span(:class => 'explanation') { |p| p << exp } else @h.span(exp, :class => 'explanation') end
+        end
       end
     end
     self
@@ -100,10 +104,10 @@ class Html5Renderer
         answer.correct? ? "CORRECT: " : "INCORRECT: ")
     end
     @h.li(args) do
-      if raw then @h.p { |p| p << answer.answer_text } else @h.p answer.answer_text  end
+      if raw then @h.span { |p| p << answer.answer_text } else @h.span answer.answer_text  end
       if answer.has_explanation?
-        if raw then @h.p(:class => 'explanation') { |p| p << answer.explanation }
-        else @h.p(answer.explanation, :class => 'explanation') end
+        @h.br
+        if raw then @h.span(:class => 'explanation') { |p| p << answer.explanation } else @h.span(answer.explanation, :class => 'explanation') end
       end
     end
   end

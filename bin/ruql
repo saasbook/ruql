@@ -98,6 +98,7 @@ def main
   raise "Unknown renderer '#{renderer}'" unless Quiz.get_renderer(renderer)
 
   opts = Getopt::Long.getopts(
+    ['-v', '--version', Getopt::BOOLEAN],
     ['-o', '--list-type', Getopt::REQUIRED],
     ['-r', '--report', Getopt::REQUIRED],
     ['-a', '--start', Getopt::REQUIRED],

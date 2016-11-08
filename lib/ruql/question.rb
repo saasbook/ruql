@@ -1,6 +1,6 @@
 class Question
   attr_accessor :question_text, 
-                :answers, 
+                :answers,
                 :question_image,
                 :randomize, 
                 :points, 
@@ -19,28 +19,35 @@ class Question
     @question_image = options[:image]
     @question_tags = []
     @question_uid = (options.delete(:uid) || SecureRandom.uuid).to_s
+    @explanation = nil
     @question_comment = ''
   end
   def raw? ; !!@raw ; end
   
+  def has_explanation? ; @explanation.to_s != '' ; end
+
+  def explanation(text=nil)
+    if text
+      @explanation = text
+    else
+      @explanation
+    end
+  end
+
   def uid(u) ; @question_uid = u ; end
   
   def text(s) ; @question_text = s ; end
-
-  def explanation(text)
-    @answers.each { |answer| answer.explanation ||= text }
-  end
 
   def image(url)
     @question_image = url
   end
   
   def answer(text, opts={})
-    @answers << Answer.new(text, correct=true, opts[:explanation])
+    @answers << Answer.new(text, correct=true, opts[:explanation], self)
   end
 
   def distractor(text, opts={})
-    @answers << Answer.new(text, correct=false, opts[:explanation])
+    @answers << Answer.new(text, correct=false, opts[:explanation], self)
   end
 
   # these are ignored but legal for now:

@@ -7,11 +7,12 @@ class Answer
 
   def <=>(other) ; self.answer_text <=> other.answer_text ; end
   def correct? ; !!correct ; end
-  def has_explanation? ; !!explanation ; end
-  def initialize(answer_text = '', correct = false, explanation=nil)
+  def has_explanation? ; @explanation.to_s != '' ; end
+  def initialize(answer_text = '', correct = false, explanation=nil, question=nil)
     @answer_text = answer_text
     @correct = !!correct # ensure boolean
     @explanation = explanation
+    @question = question
   end
   
   def to_JSON
