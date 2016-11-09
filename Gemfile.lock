@@ -1,7 +1,7 @@
 PATH
   remote: ~/workspace/
   specs:
-    ruql (0.1.2)
+    ruql (0.1.5)
       builder
       getopt
 

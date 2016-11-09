@@ -93,7 +93,11 @@ class Question
     #create the appropriate class of the object from the hash's class name
     question = Object.const_get(hash.fetch('question_type')).new()
     hash.reject{|key| key == 'answers' or key == 'question_type'}.each do |key, value|
-      question.send((key + '=').to_sym, value)
+      begin
+        question.send((key + '=').to_sym, value)
+      rescue
+        question.send(key.to_sym, value)
+      end
     end
     question.answers = hash['answers'].map{|answer_hash| Answer.from_JSON(answer_hash)}
     question
