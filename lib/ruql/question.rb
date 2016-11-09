@@ -27,7 +27,7 @@ class Question
   end
   
   def uid(u)
-    @uid = uid
+    @uid = u
   end
   
   def text(s)
