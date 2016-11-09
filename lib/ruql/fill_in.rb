@@ -1,7 +1,6 @@
 class FillIn < Question
-
-    attr_accessor :order
-    attr_accessor :case_sensitive
+  attr_accessor :order
+  attr_accessor :case_sensitive
 
   def initialize(text='', opts={})
     super
@@ -10,6 +9,7 @@ class FillIn < Question
     self.case_sensitive = !!opts[:case_sensitive]
   end
 
-  def multiple ; false ; end
-
+  def multiple
+    false
+  end
 end

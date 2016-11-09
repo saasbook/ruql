@@ -3,6 +3,8 @@
 # require 'ruql'
 require_relative '../lib/ruql'
 require 'getopt/long'
+require 'byebug'
+require 'logger'
 
 def usage
   name = File.basename $0
@@ -84,6 +86,8 @@ end
 
 def main
   filename = ARGV.shift
+  log = Logger.new('log.txt')
+  log.debug "Log file created"
   raise "Cannot read #{filename}" unless File.readable? filename
   renderer = ARGV.shift
   raise "Unknown renderer '#{renderer}'" unless Quiz.get_renderer(renderer)

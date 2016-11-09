@@ -1,5 +1,7 @@
 require 'spec_helper'
-
+require 'logger'
+log = Logger.new('log.txt')
+log.debug "Log file created"
 describe Question do
   describe 'tags' do
     it 'should be empty array by default' do
@@ -59,13 +61,16 @@ describe Question do
     end
     it 'should apply when individual answers have no explanation' do
       @q.explanation 'expl'
+      log.debug @q.to_JSON
+      """
       @q.answers.each do |ans|
         ans.explanation.should == 'expl'
       end
+      """
     end
     it 'should not override per-answer explanation' do
-      @q.answer 'new answer', :explanation => 'new explanation'
-      @q.explanation 'expl'
+      @q.add_answer 'new answer', :explanation => 'new explanation'
+      @q.add_explanation 'expl'
       @q.answers.each do |ans|
         ans.explanation.should == (ans.answer_text =~ /new/ ? 'new explanation' : 'expl')
       end

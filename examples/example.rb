@@ -8,27 +8,18 @@ quiz 'Example quiz' do
   choice_answer :randomize => true do
     text  "What is the largest US state?"
     explanation "Not big enough." # for distractors without their own explanation
-    answer 'Alaska'
     distractor 'Hawaii'
     distractor 'Texas', :explanation => "That's pretty big, but think colder."
+    answer 'Alaska'
   end
   
   select_multiple do
     text "Which are American political parties?"
+    distractor "Tories", :explanation => "They're British"
+    distractor "Social Democrats"
     answer "Democrats"
     answer "Republicans"
     answer "Greens", :explanation => "Yes, they're a party!"
-    distractor "Tories", :explanation => "They're British"
-    distractor "Social Democrats"
-  end
-  
-  select_multiple do
-    text "Which are American political parties?"
-    answer "Democrats"
-    answer "Republicans"
-    answer "Greens", :explanation => "Yes, they're a party!"
-    distractor "Tories", :explanation => "They're British"
-    distractor "Social Democrats"
   end
   
   truefalse 'The week has 7 days.', true

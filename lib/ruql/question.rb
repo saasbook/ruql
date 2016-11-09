@@ -1,3 +1,4 @@
+require 'logger'
 class Question
   attr_accessor :question_text, 
                 :answers, 
@@ -8,29 +9,39 @@ class Question
                 :uid, 
                 :question_comment, 
                 :raw
+                :global_explanation
   
   def initialize(*args)
     options = if args[-1].kind_of?(Hash) then args[-1] else {} end
     @answers = options[:answers] || []
     @points = [options[:points].to_i, 1].max
     @raw = options[:raw]
+    @global_explanation = options[:explanation]
     @name = options[:name]
     @question_tags = []
     @uid = options[:uid].to_s.empty? ? SecureRandom.uuid : options[:uid].to_s
     @question_comment = ''
   end
-  def raw? ; !!@raw ; end
+  def raw?
+    !!@raw
+  end
   
-  def uid(u) ; @uid = u ; end
+  def uid(u)
+    @uid = uid
+  end
   
-  def text(s) ; @question_text = s ; end
+  def text(s)
+    @question_text = s
+  end
 
   def explanation(text)
-    @answers.each { |answer| answer.explanation ||= text }
+    #@answers.each { |answer| answer.explanation ||= text }
+    @global_explanation = text
   end
 
   def answer(text, opts={})
     @answers << Answer.new(text, correct=true, opts[:explanation])
+    to_JSON
   end
 
   def distractor(text, opts={})
@@ -50,9 +61,13 @@ class Question
     @question_comment = str.to_s
   end
 
-  def correct_answer ;  @answers.detect(&:correct?)  ;  end
+  def correct_answer
+    @answers.detect(&:correct?)
+  end
 
-  def correct_answers ;  @answers.collect(&:correct?) ; end
+  def correct_answers
+    @answers.collect(&:correct?)
+  end
 
   def answer_helper(obj)
     if obj.is_a? Array and obj.size and obj[0].is_a? Answer
@@ -61,10 +76,14 @@ class Question
     obj
   end
 
-  #creates a JSON hash of the object with its object name. we should convert this to a mixin for answer and question. aaron
   def to_JSON
-      h = Hash[instance_variables.collect { |var| [var.to_s.delete('@'), answer_helper(instance_variable_get(var))] }]
+      h = Hash[instance_variables.collect{|var|
+                          [var.to_s.delete('@'),
+                           answer_helper(instance_variable_get(var))]}
+              ]
+      log = Logger.new("json.txt")
       h['question_type'] = self.class.to_s
+      log.debug h
       return h
   end
 
