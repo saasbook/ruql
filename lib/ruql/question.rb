@@ -22,7 +22,6 @@ class Question
     @question_image = options[:image]
     @question_tags = []
     @question_uid = (options.delete(:uid) || SecureRandom.uuid).to_s
-    @explanation = nil
     @question_comment = ''
   end
   def raw?
@@ -51,7 +50,7 @@ class Question
   end
 
   def distractor(text, opts={})
-    @answers << Answer.new(text, correct=false, opts[:explanation], self)
+    @answers << Answer.new(text, correct=false, opts[:explanation])
   end
 
   # these are ignored but legal for now:

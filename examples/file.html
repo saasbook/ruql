@@ -1,31 +1,54 @@
 <html>
   <head>
-    <title>A few example questions</title>
+    <title>Example quiz</title>
   </head>
   <body>
-    <!-- Seed: 319276650968821665995549738375277660966 -->
+    <!-- Seed: 264750648256903801168023529044167246469 -->
     <form>
       <ol class="questions">
-        <li id="question-0" class="question multiplechoice ">
+        <li id="question-0" class="question fillin ">
           <div class="text">
             <p>
-[1 point] Which of the following best identifies the four basic operations supported by RDBMS?            </p>
+[2 points] The capital of California is               <input type="text" class="fillin"/>
+            </p>
+          </div>
+        </li>
+        <li id="question-1" class="question multiplechoice ">
+          <div class="text">
+            <p>
+[1 point] What is the largest US state?            </p>
           </div>
           <ol class="answers">
             <input type="radio" name="a" class="select">
-Get, Put, Post, Delete</br>            </input>
+Hawaii</br>            </input>
             <input type="radio" name="a" class="select">
-REST</br>            </input>
+Alaska</br>            </input>
             <input type="radio" name="a" class="select">
-HTTP</br>            </input>
-            <input type="radio" name="a" class="select">
-CRUD</br>            </input>
+Texas</br>            </input>
           </ol>
         </li>
-        <li id="question-1" class="question truefalse ">
+        <li id="question-2" class="question selectmultiple multiple">
           <div class="text">
             <p>
-[1 point] True or False: If an app has a RESTful API, it must be performing CRUD operations.            </p>
+[1 point] Select ALL that apply: Which are American political parties?            </p>
+          </div>
+          <ol class="answers">
+            <input type="checkbox" name="b" class="check">
+Tories</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Social Democrats</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Democrats</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Republicans</br>            </input>
+            <input type="checkbox" name="b" class="check">
+Greens</br>            </input>
+          </ol>
+        </li>
+        <li id="question-3" class="question truefalse ">
+          <div class="text">
+            <p>
+[1 point] True or False: The week has 7 days.            </p>
           </div>
           <ol class="answers">
             <input type="radio" name="a" class="select">
@@ -34,68 +57,16 @@ True</br>            </input>
 False</br>            </input>
           </ol>
         </li>
-        <li id="question-2" class="question multiplechoice ">
+        <li id="question-4" class="question truefalse ">
           <div class="text">
             <p>
-[1 point] The implied port number of the URI <tt>http://google.com</tt> is            </p>
+[1 point] True or False: The earth is flat.            </p>
           </div>
           <ol class="answers">
             <input type="radio" name="a" class="select">
-400</br>            </input>
+True</br>            </input>
             <input type="radio" name="a" class="select">
-3000</br>            </input>
-            <input type="radio" name="a" class="select">
-8000</br>            </input>
-            <input type="radio" name="a" class="select">
-80</br>            </input>
-          </ol>
-        </li>
-        <li id="question-3" class="question selectmultiple multiple">
-          <div class="text">
-            <p>
-[1 point] Select ALL that apply: Which tiers in the three-tier architecture are involved in handling views?            </p>
-          </div>
-          <ol class="answers">
-            <input type="checkbox" name="b" class="check">
-Logic</br>            </input>
-            <input type="checkbox" name="b" class="check">
-Database</br>            </input>
-            <input type="checkbox" name="b" class="check">
-Presentation</br>            </input>
-            <input type="checkbox" name="b" class="check">
-Persistence</br>            </input>
-          </ol>
-        </li>
-        <li id="question-4" class="question multiplechoice ">
-          <div class="text">
-            <p>
-[1 point] The ----- tier of three-tier SaaS apps is the most complicated to scale.            </p>
-          </div>
-          <ol class="answers">
-            <input type="radio" name="a" class="select">
-Logic</br>            </input>
-            <input type="radio" name="a" class="select">
-Persistence</br>            </input>
-            <input type="radio" name="a" class="select">
-Presentation</br>            </input>
-            <input type="radio" name="a" class="select">
-Database</br>            </input>
-          </ol>
-        </li>
-        <li id="question-5" class="question multiplechoice ">
-          <div class="text">
-            <p>
-[1 point] An HTTP request must consist of both a(n) ----- and a(n) -----            </p>
-          </div>
-          <ol class="answers">
-            <input type="radio" name="a" class="select">
-URI, HTTP request method</br>            </input>
-            <input type="radio" name="a" class="select">
-header, cookie</br>            </input>
-            <input type="radio" name="a" class="select">
-URL, wildcard</br>            </input>
-            <input type="radio" name="a" class="select">
-CRUD action, database</br>            </input>
+False</br>            </input>
           </ol>
         </li>
       </ol>
