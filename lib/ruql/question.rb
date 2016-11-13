@@ -97,7 +97,7 @@ class Question
     hash = JSON.parse(hash_str)
     #create the appropriate class of the object from the hash's class name
     question = Object.const_get(hash.fetch('question_type')).new()
-    hash.reject{|key| key == 'answers' or key == 'question_type' or key == 'global_explanation'}.each do |key, value|
+    hash.reject{|key| key == 'answers' or key == 'question_type' or key == 'global_explanation' or key == "image"}.each do |key, value|
       begin
         question.send((key + '=').to_sym, value)
       rescue
