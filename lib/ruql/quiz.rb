@@ -1,7 +1,5 @@
 class Quiz
-  @@quizzes = []
   @quiz_yaml = {}
-  def self.quizzes ; @@quizzes ;  end
   @@default_options =
     {
     :open_time => Time.now,
@@ -35,6 +33,7 @@ class Quiz
 
   def initialize(title, options={})
     @output = ''
+    @quizzes = []
     @questions = options.delete(:questions) || []
     @title = title
     @options = @@default_options.merge(options)
@@ -167,6 +166,6 @@ class Quiz
   def self.quiz(*args, &block)
     quiz = Quiz.new(*args)
     quiz.instance_eval(&block)
-    @@quizzes << quiz
+    @quizzes << quiz
   end
 end
