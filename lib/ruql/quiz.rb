@@ -30,10 +30,13 @@ class Quiz
   attr_reader :points_string
   attr_accessor :title, :quizzes
 
+  def self.quizzes
+    @@quizzes
+  end
 
   def initialize(title, options={})
     @output = ''
-    @quizzes = []
+    @@quizzes = []
     @questions = options.delete(:questions) || []
     @title = title
     @options = @@default_options.merge(options)
@@ -166,6 +169,6 @@ class Quiz
   def self.quiz(*args, &block)
     quiz = Quiz.new(*args)
     quiz.instance_eval(&block)
-    @quizzes << quiz
+    @@quizzes << quiz
   end
 end
