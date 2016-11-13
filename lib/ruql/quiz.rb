@@ -1,5 +1,7 @@
 class Quiz
+  @@quizzes = []
   @quiz_yaml = {}
+  def self.quizzes ; @@quizzes ;  end
   @@default_options =
     {
     :open_time => Time.now,
@@ -30,13 +32,12 @@ class Quiz
   attr_reader :points_string
   attr_accessor :title, :quizzes
 
-  def self.quizzes
-    @@quizzes
+  def self.reset
+    @@quizzes = []
   end
 
   def initialize(title, options={})
     @output = ''
-    @@quizzes = []
     @questions = options.delete(:questions) || []
     @title = title
     @options = @@default_options.merge(options)
