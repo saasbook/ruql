@@ -115,7 +115,7 @@ class OpenAssessment
   # Adds fields for a simple_open_assessment question
   def add_simple_question
     criterion = Criterion.new
-    criterion.name("How'd you do?")
+    criterion.name("How'd you do?") # "
     criterion.label("Scoring Rubric")
 
     raise "Must have answer for question" if @question_answer.nil?

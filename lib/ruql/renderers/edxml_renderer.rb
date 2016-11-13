@@ -4,7 +4,7 @@ require 'yaml'
 class EdXmlRenderer
 
   attr_reader :output
-  attr_accessor :file, :yaml_file
+  attr_accessor :file
   def initialize(quiz,options={})
     @only_question = options.delete('n') || options.delete('name')
     @output = ''

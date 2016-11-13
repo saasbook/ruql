@@ -3,7 +3,6 @@ require 'spec_helper'
 describe OpenAssessment do
   it "input should match the following EdXml output" do
     renderer = "EdXml"
-    Quiz.set_yaml_file "./spec/fixtures/example_open_assessment.yaml"
     Quiz.instance_eval "#{IO.read('./spec/fixtures/example_open_assessment.rb')}"
     output = ""
     Quiz.quizzes.each { |quiz| output << quiz.render_with(renderer, {}) }

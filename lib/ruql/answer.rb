@@ -21,6 +21,7 @@ class Answer
     @answer_text = answer_text
     @correct = !!correct        # ensure boolean
     @explanation = explanation
+    @question = question
   end
   
   def to_JSON

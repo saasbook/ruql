@@ -1,21 +1,16 @@
 require 'spec_helper'
 
 describe Html5Renderer do
+  before(:each) do
+    @quiz = double('quiz', :first_question_number => 1, :point_string => '', :suppress_random => false)
+  end
   describe 'when created' do
-    subject { Html5Renderer.new(:fake_quiz) }
+    subject { Html5Renderer.new(@quiz) }
     its(:output) { should == '' }
   end
   describe 'with stylesheet link' do
     def rendering_with(opts)
       Html5Renderer.new(Quiz.new(''), opts).render_quiz.output
-    end
-    it 'should include CSS link with -c option' do
-      rendering_with('c' => 'foo.html').
-        should match /<link rel="stylesheet" type="text\/css" href="foo.html"/
-    end
-    it 'should include CSS link with --css option' do
-      rendering_with('css' => 'foo.html').
-        should match /<link rel="stylesheet" type="text\/css" href="foo.html"/
     end
     it 'should use ERB template if directed' do
       rendering_with('template' => File.join(File.dirname(__FILE__),'fixtures','template.html.erb')).
@@ -31,6 +26,7 @@ describe Html5Renderer do
         Answer.new('cc',false)]
       @q = MultipleChoice.new('question', :answers => @a)
       @quiz = Quiz.new('foo', :questions => [@q])
+      @quiz.stub(:points_threshold).and_return(1)
       @output = Html5Renderer.new(@quiz,{'solutions' => true}).render_quiz.output
     end
     it 'should highlight correct answer' do
@@ -52,7 +48,6 @@ describe Html5Renderer do
     end
     before :each do
       @atts = {:title => 'My Quiz', :points => 20, :num_questions => 5} 
-      @quiz = mock('quiz', @atts.merge(:questions => []))
     end
     %w(title total_points num_questions).each do |var|
       it "should set '#{var}'" do
@@ -69,22 +64,40 @@ describe Html5Renderer do
       @q.answer '<b>cc</b>'
     end
     it 'should not escape HTML in the question' do
-      Html5Renderer.new(:fake).render_multiple_choice(@q,1).output.should match /<tt>xx<\/tt>/
+      Html5Renderer.new(@quiz).render_multiple_choice(@q,1).output.should match /<tt>xx<\/tt>/
     end
     it 'should not escape HTML in the answer' do
-      Html5Renderer.new(:fake).render_multiple_choice(@q,1).output.should match /<b>cc<\/b>/
+      Html5Renderer.new(@quiz).render_multiple_choice(@q,1).output.should match /<b>cc<\/b>/
     end
   end
-  
+
   describe 'rendering multiple-choice question' do
     before :each do
       @a = [Answer.new('aa',true),Answer.new('bb',false), Answer.new('cc',false)]
-      @q = MultipleChoice.new('question', :answers => @a)
-      @h = Html5Renderer.new(:fake)
+      @q = MultipleChoice.new('question', :answers => @a, :uid => 'abcde', :image => 'file:///foo.jpg')
+      @h = Html5Renderer.new(@quiz)
+    end
+    context 'with image' do
+      before(:each) do
+        @o = @h.render_multiple_choice(@q,1).output
+      end
+      it 'should have image tag with correct src' do
+        @o.should have_xml_element('li/img').with_attribute('src', 'file:///foo.jpg')
+      end
+      it 'should have image tag with correct class' do
+        @o.should have_xml_element('li/img').with_attribute('class', 'question-image')
+      end
+      it "should add class to enclosing question's <li>" do
+        @o.should have_xml_element('li').with_attribute('class', /question-with-image/)
+      end
+    end
+    it 'should include uid' do
+      @h.render_multiple_choice(@q,1).output.
+        should have_xml_element('li').with_attribute('data-uid', 'abcde')
     end
     it 'should randomize option order if :randomize true' do
       @q.randomize = true
-      runs = Array.new(10) { Html5Renderer.new(:fake).render_multiple_choice(@q,1).output }
+      runs = Array.new(10) { Html5Renderer.new(@quiz).render_multiple_choice(@q,1).output }
       runs.any? { |run| runs[0] != run }.should be_true
     end
     it 'should preserve option order if :randomize false' do

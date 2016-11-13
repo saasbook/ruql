@@ -1,7 +1,5 @@
-
 class Quiz
   @@quizzes = []
-  @@yaml_file = nil
   @quiz_yaml = {}
   def self.quizzes ; @@quizzes ;  end
   @@default_options =
@@ -24,46 +22,78 @@ class Quiz
 
   attr_reader :renderer
   attr_reader :questions
+  attr_reader :first_question_number
   attr_reader :options
   attr_reader :output
+  attr_reader :suppress_random
   attr_reader :seed
   attr_reader :logger
+  attr_reader :points_threshold
+  attr_reader :points_string
   attr_accessor :title, :quizzes
 
-  def initialize(title, yaml = nil, options={})
+
+  def initialize(title, options={})
     @output = ''
-    @questions = options[:questions] || []
+    @questions = options.delete(:questions) || []
     @title = title
     @options = @@default_options.merge(options)
     @seed = srand
     @logger = Logger.new(STDERR)
     @logger.level = Logger.const_get (options.delete('l') ||
                                       options.delete('log') || 'warn').upcase
-    @quiz_yaml = yaml
+    if (yaml = options.delete(:yaml))
+      @quiz_yaml = YAML::load(IO.read yaml)
+    end
   end
 
-  def self.nuke_from_orbit
-    @@quizzes = []
+  def get_first_question_number(spec)
+    return 1 if spec.nil?
+    return $1.to_i if spec =~ /^(\d+)$/
+    # file?
+    begin
+      File.readlines(spec).each do |f|
+        return 1 + $1.to_i if f =~ /^last\s+(\d+)/
+      end
+      return 1
+    rescue StandardError => e
+      warn "Warning: starting question numbering at 1, cannot read #{spec}: #{e.message}"
+      return 1
+    end
   end
-  
+
   def self.get_renderer(renderer)
     Object.const_get(renderer.to_s + 'Renderer') rescue nil
   end
 
   def render_with(renderer,options={})
     srand @seed
+    @first_question_number = get_first_question_number(options.delete('a'))
+    @points_threshold = (options.delete('p') || 0).to_i
+    @points_string = options.delete('P') || "[%d point%s]"
+    @suppress_random = !!options['R']
     @renderer = Quiz.get_renderer(renderer).send(:new,self,options)
     @renderer.render_quiz
+    if (report = options.delete('r'))
+      File.open(report, "w") do |f|
+        f.puts "questions #{num_questions}"
+        f.puts "first #{first_question_number}"
+        f.puts "last #{first_question_number + num_questions - 1}"
+        f.puts "points #{self.points}"
+      end
+    end
     @output = @renderer.output
-  end
-
-  def self.set_yaml_file(file)
-    @@yaml_file = file &&  YAML::load_file(file)
   end
 
   def points ; questions.map(&:points).inject { |sum,points| sum + points } ; end
 
   def num_questions ; questions.length ; end
+
+  def point_string(points)
+    points >= points_threshold ?
+    sprintf(points_string.to_s, points, (points > 1 ? 's' : '')) :
+      ''
+  end
 
   def random_seed(num)
     @seed = num.to_i
@@ -135,7 +165,7 @@ class Quiz
   end
 
   def self.quiz(*args, &block)
-    quiz = Quiz.new(*args, (@@yaml_file.shift if @@yaml_file))
+    quiz = Quiz.new(*args)
     quiz.instance_eval(&block)
     @@quizzes << quiz
   end

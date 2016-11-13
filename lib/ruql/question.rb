@@ -1,12 +1,13 @@
 require 'logger'
 class Question
   attr_accessor :question_text, 
-                :answers, 
+                :answers,
+                :question_image,
                 :randomize, 
                 :points, 
                 :name, 
                 :question_tags, 
-                :uid, 
+                :question_uid, 
                 :question_comment, 
                 :raw
                 :global_explanation
@@ -18,8 +19,10 @@ class Question
     @raw = options[:raw]
     @global_explanation = options[:explanation]
     @name = options[:name]
+    @question_image = options[:image]
     @question_tags = []
-    @uid = options[:uid].to_s.empty? ? SecureRandom.uuid : options[:uid].to_s
+    @question_uid = (options.delete(:uid) || SecureRandom.uuid).to_s
+    @explanation = nil
     @question_comment = ''
   end
   def raw?
@@ -35,17 +38,20 @@ class Question
   end
 
   def explanation(text)
-    #@answers.each { |answer| answer.explanation ||= text }
     @global_explanation = text
   end
-
+  
+  def image(url)
+    @question_image = url
+  end
+  
   def answer(text, opts={})
     @answers << Answer.new(text, correct=true, opts[:explanation])
     to_JSON
   end
 
   def distractor(text, opts={})
-    @answers << Answer.new(text, correct=false, opts[:explanation])
+    @answers << Answer.new(text, correct=false, opts[:explanation], self)
   end
 
   # these are ignored but legal for now:
@@ -102,5 +108,4 @@ class Question
     question.answers = hash['answers'].map{|answer_hash| Answer.from_JSON(answer_hash)}
     question
   end
-
 end

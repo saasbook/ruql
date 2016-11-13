@@ -5,34 +5,21 @@ class Html5Renderer
   attr_reader :output
 
   def initialize(quiz,options={})
-    @css = options.delete('c') || options.delete('css')
     @show_solutions = options.delete('s') || options.delete('solutions')
     @template = options.delete('t') ||
       options.delete('template') ||
-      File.join(Gem.loaded_specs['ruql'].full_gem_path, 'templates/html5.html.erb')
+      File.join(File.dirname(__FILE__), '../../../templates/html5.html.erb')
     @output = ''
-    @list_type = options.delete('o') || options.delete('list-type') || '1'
-    @list_start = options.delete('a') || options.delete('list-start') || '1'
+    @list_type = (options.delete('o') || options.delete('list-type') || 'o')[0] + "l"
+    @list_start = quiz.first_question_number
     @quiz = quiz
     @h = Builder::XmlMarkup.new(:target => @output, :indent => 2)
   end
 
   def render_quiz
-    if @template
-      render_with_template do
-        render_questions
-        @output
-      end
-    else
-      @h.html do
-        @h.head do
-          @h.title @quiz.title
-          @h.link(:rel => 'stylesheet', :type =>'text/css', :href=>@css) if @css
-        end
-        @h.body do
-          render_questions
-        end
-      end
+    render_with_template do
+      render_questions
+      @output
     end
     self
   end
@@ -47,7 +34,7 @@ class Html5Renderer
     
   def render_questions
     render_random_seed
-    @h.ol :class => 'questions', :type => @list_type, :start => @list_start do
+    @h.ol :class => 'questions', :start => @list_start do
       @quiz.questions.each_with_index do |q,i|
         case q
         when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(q,i)
@@ -64,16 +51,20 @@ class Html5Renderer
     render_question_text(q, index) do
       answers =
         if q.class == TrueFalse then q.answers.sort.reverse # True always first
-        elsif q.randomize then q.answers.sort_by { rand }
+        elsif q.randomize && !@quiz.suppress_random then q.answers.sort_by { rand }
         else q.answers
         end
-      @h.ol :class => 'answers' do
+      @h.__send__(@list_type, :class => 'answers') do
         answers.each do |answer|
           if @show_solutions
             render_answer_for_solutions(answer, q.raw?, q.class == TrueFalse)
           else
             if q.raw? then @h.li { |l| l << answer.answer_text } else @h.li answer.answer_text end
           end
+        end
+        if @show_solutions && ((exp = q.explanation.to_s) != '')
+          @h.br
+          if q.raw? then @h.span(:class => 'explanation') { |p| p << exp } else @h.span(exp, :class => 'explanation') end
         end
       end
     end
@@ -113,10 +104,10 @@ class Html5Renderer
         answer.correct? ? "CORRECT: " : "INCORRECT: ")
     end
     @h.li(args) do
-      if raw then @h.p { |p| p << answer.answer_text } else @h.p answer.answer_text  end
+      if raw then @h.span { |p| p << answer.answer_text } else @h.span answer.answer_text  end
       if answer.has_explanation?
-        if raw then @h.p(:class => 'explanation') { |p| p << answer.explanation }
-        else @h.p(answer.explanation, :class => 'explanation') end
+        @h.br
+        if raw then @h.span(:class => 'explanation') { |p| p << answer.explanation } else @h.span(answer.explanation, :class => 'explanation') end
       end
     end
   end
@@ -124,13 +115,20 @@ class Html5Renderer
   def render_question_text(question,index)
     html_args = {
       :id => "question-#{index}",
-      :class => ['question', question.class.to_s.downcase, (question.multiple ? 'multiple' : '')]
-        .join(' ')
+      :'data-uid' => question.question_uid,
+      :class => ['question', question.class.to_s.downcase, (question.multiple ? 'multiple' : '')].join(' ')
     }
+    if question.question_image           # add CSS class to both <li> and <img>
+      html_args[:class] << 'question-with-image'
+    end
     @h.li html_args  do
+      # if there's an image, render it first
+      if question.question_image
+        @h.img :src => question.question_image, :class => 'question-image'
+      end
       @h.div :class => 'text' do
-        qtext = "[#{question.points} point#{'s' if question.points>1}] " <<
-          ('Select ALL that apply: ' if question.multiple).to_s <<
+        qtext = @quiz.point_string(question.points) << ' ' <<
+          ('Select <b>all</b> that apply: ' if question.multiple).to_s <<
           if question.class == FillIn then question.question_text.gsub(/\-+/, '_____________________________')
           else question.question_text
           end

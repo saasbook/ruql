@@ -6,13 +6,7 @@ require 'date'
 $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__)))
 
 # renderers
-require 'ruql/renderers/xml_renderer'
-require 'ruql/renderers/html5_renderer'
-require 'ruql/renderers/html_form_renderer'
-require 'ruql/renderers/edxml_renderer'
-require 'ruql/renderers/auto_qcm_renderer'
-require 'ruql/renderers/json_renderer'
-require 'ruql/renderers/qualtrics_renderer'
+Dir[File.join(File.dirname(__FILE__),'ruql/renderers/*.rb')].each { |file| require file }
 
 # question types
 require 'ruql/quiz'
