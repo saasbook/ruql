@@ -86,10 +86,7 @@ class Question
                           [var.to_s.delete('@'),
                            answer_helper(instance_variable_get(var))]}
               ]
-      log = Logger.new("json.txt")
       h['question_type'] = self.class.to_s
-      log.debug h
-      return h
   end
 
   #factory method to return correct type of question

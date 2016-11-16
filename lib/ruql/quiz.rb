@@ -43,8 +43,9 @@ class Quiz
     @options = @@default_options.merge(options)
     @seed = srand
     @logger = Logger.new(STDERR)
-    @logger.level = Logger.const_get (options.delete('l') ||
-                                      options.delete('log') || 'warn').upcase
+    @logger.debug "Defined in quiz.rb"
+    #@logger.level = Logger.const_get (options.delete('l') ||
+                                      #options.delete('log') || 'warn').upcase
     if (yaml = options.delete(:yaml))
       @quiz_yaml = YAML::load(IO.read yaml)
     end
@@ -113,7 +114,14 @@ class Quiz
     q.instance_eval(&block)
     @questions << q
   end
-
+  
+  def grouped_question(*args, &block)
+    @logger.debug "IN GROUPED Question"
+    q = Group.new()
+    # q.instance_eval(&block)
+    #@quesitons << q
+  end
+  
   def select_multiple(*args, &block)
     if args.first.is_a?(Hash) # no question text
       q = SelectMultiple.new('', *args)

@@ -138,6 +138,12 @@ class HtmlFormRenderer
       end
     end
   end
+  
+  def render_grouped_question(q, idx)
+    log = Logger.new('log.txt')
+    log.debug q
+    log.debug idx
+  end
 
   def render_answer_for_solutions(answer,raw)
     args = {:class => (answer.correct? ? 'correct' : 'incorrect')}
