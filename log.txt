@@ -1,0 +1,25 @@
+# Logfile created on 2016-11-16 15:36:06 -0800 by logger.rb/53141
+D, [2016-11-16T15:36:06.366903 #17928] DEBUG -- : Log file created
+D, [2016-11-16T15:37:12.902657 #17946] DEBUG -- : Log file created
+D, [2016-11-16T15:37:52.212335 #17954] DEBUG -- : Log file created
+D, [2016-11-16T15:40:57.460736 #18410] DEBUG -- : Log file created
+D, [2016-11-16T15:46:35.105468 #18442] DEBUG -- : Log file created
+D, [2016-11-16T15:47:08.221829 #18451] DEBUG -- : Log file created
+D, [2016-11-16T15:53:10.681551 #18485] DEBUG -- : Log file created
+D, [2016-11-16T15:53:40.657896 #18491] DEBUG -- : Log file created
+D, [2016-11-16T16:04:24.222362 #18651] DEBUG -- : Log file created
+D, [2016-11-16T16:05:45.020669 #18657] DEBUG -- : Log file created
+D, [2016-11-16T16:06:34.055266 #18664] DEBUG -- : Log file created
+D, [2016-11-16T16:07:14.416503 #18670] DEBUG -- : Log file created
+D, [2016-11-16T16:07:51.278976 #18676] DEBUG -- : Log file created
+D, [2016-11-16T16:09:24.803347 #18684] DEBUG -- : Log file created
+D, [2016-11-16T16:09:51.388912 #18690] DEBUG -- : Log file created
+D, [2016-11-16T16:10:21.605966 #18696] DEBUG -- : Log file created
+D, [2016-11-16T16:16:23.580403 #18721] DEBUG -- : Log file created
+D, [2016-11-16T16:24:40.599462 #18825] DEBUG -- : Log file created
+D, [2016-11-16T16:25:08.038456 #18831] DEBUG -- : Log file created
+D, [2016-11-16T16:25:31.205890 #18835] DEBUG -- : Log file created
+D, [2016-11-16T16:25:58.465924 #18841] DEBUG -- : Log file created
+D, [2016-11-16T16:40:56.891415 #19116] DEBUG -- : Log file created
+D, [2016-11-16T16:40:56.894257 #19116] DEBUG -- : Attemting to render a grouped question.
+D, [2016-11-16T16:40:56.894285 #19116] DEBUG -- : #<Group:0x007fbe60077800 @answers=[], @points=1, @raw=nil, @global_explanation=nil, @name=nil, @question_image="Trump", @question_tags=[], @question_uid="8d98f0e7-950b-4a1e-bed3-ef928817c67a", @question_comment="", @log=#<Logger:0x007fbe60077378 @progname=nil, @level=0, @default_formatter=#<Logger::Formatter:0x007fbe60077350 @datetime_format=nil>, @formatter=nil, @logdev=#<Logger::LogDevice:0x007fbe60077300 @shift_size=nil, @shift_age=nil, @filename=nil, @dev=#<IO:<STDERR>>, @mon_owner=nil, @mon_count=0, @mon_mutex=#<Thread::Mutex:0x007fbe600772d8>>>, @questions=[#<MultipleChoice:0x007fbe60076f68 @answers=[#<Answer:0x007fbe60076ba8 @answer_text="Hawaii", @correct=false, @explanation=nil>, #<Answer:0x007fbe60076b08 @answer_text="Texas", @correct=false, @explanation="That's pretty big, but think colder.">, #<Answer:0x007fbe60076a90 @answer_text="Alaska", @correct=true, @explanation=nil>], @points=1, @raw=nil, @global_explanation="Not big enough.", @name=nil, @question_image=nil, @question_tags=[], @question_uid="06f1dc9c-0a83-465f-bd76-8f4c166f3f68", @question_comment="", @question_text="What is the largest US state?", @multiple=false, @randomize=true>, #<SelectMultiple:0x007fbe60075500 @answers=[#<Answer:0x007fbe600750f0 @answer_text="Tories", @correct=false, @explanation="They're British">, #<Answer:0x007fbe60075078 @answer_text="Social Democrats", @correct=false, @explanation=nil>, #<Answer:0x007fbe60075000 @answer_text="Democrats", @correct=true, @explanation=nil>, #<Answer:0x007fbe5f0d3048 @answer_text="Republicans", @correct=true, @explanation=nil>, #<Answer:0x007fbe6007f1e0 @answer_text="Greens", @correct=true, @explanation="Yes, they're a party!">], @points=1, @raw=nil, @global_explanation=nil, @name=nil, @question_image="http://michaelmoore.s3.amazonaws.com/wp/uploads/2016/07/23143828/trumpwillwin-notext.jpg", @question_tags=[], @question_uid="0f2941f9-c65d-4c3a-b91b-3f4960e170a3", @question_comment="", @question_text="Which are American political parties?", @multiple=true, @randomize=false>], @question_text="Stories">

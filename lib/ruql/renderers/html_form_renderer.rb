@@ -56,6 +56,7 @@ class HtmlFormRenderer
           when SelectMultiple then render_select_multiple(q,i)
           when MultipleChoice, TrueFalse then render_multiple_choice(q,i)
           when FillIn then render_fill_in(q, i)
+          when Group then render_grouped_question(q, i)
           else
             raise "Unknown question type: #{q}"
           end
@@ -64,7 +65,6 @@ class HtmlFormRenderer
       @h.input(:type => 'submit', :value => 'Enviar')
     end
   end
-
 
   def render_multiple_choice(q,index)
     render_question_text(q, index) do
@@ -141,8 +141,8 @@ class HtmlFormRenderer
   
   def render_grouped_question(q, idx)
     log = Logger.new('log.txt')
+    log.debug "Attemting to render a grouped question."
     log.debug q
-    log.debug idx
   end
 
   def render_answer_for_solutions(answer,raw)

@@ -116,10 +116,15 @@ class Quiz
   end
   
   def grouped_question(*args, &block)
-    @logger.debug "IN GROUPED Question"
-    q = Group.new()
-    # q.instance_eval(&block)
-    #@quesitons << q
+    @logger.debug "In group question"
+    q = Group.new(*args)
+    q.instance_eval(&block)
+    # @logger.debug "What is q after instance eval?"
+    # @logger.debug q.class
+    # @logger.debug @questions.class
+    # @logger.debug @questions.nil?
+    @questions << q
+    # @logger.debug "Added grouped question to questions."
   end
   
   def select_multiple(*args, &block)
