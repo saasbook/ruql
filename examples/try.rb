@@ -1,4 +1,4 @@
-quiz 'Example quiz' do
+quiz 'Example group' do
 
   grouped_question do
     image "Trump"

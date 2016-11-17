@@ -75,7 +75,7 @@ class Question
   end
 
   def answer_helper(obj)
-    if obj.is_a? Array and obj.size and obj[0].is_a? Answer
+    if obj.is_a? Array and obj.size and (obj[0].is_a? Answer or obj[0].is_a? Question)
       return obj.map {|answer| answer.to_JSON}
     end
     obj
@@ -87,6 +87,7 @@ class Question
                            answer_helper(instance_variable_get(var))]}
               ]
       h['question_type'] = self.class.to_s
+      h
   end
 
   #factory method to return correct type of question

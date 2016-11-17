@@ -142,7 +142,8 @@ class HtmlFormRenderer
   def render_grouped_question(q, idx)
     log = Logger.new('log.txt')
     log.debug "Attemting to render a grouped question."
-    log.debug q
+    log.debug q.to_JSON
+    log.debug q.questions[0].to_JSON
   end
 
   def render_answer_for_solutions(answer,raw)

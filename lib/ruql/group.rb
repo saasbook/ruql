@@ -2,8 +2,6 @@ class Group < Question
     attr_accessor :questions
     def initialize(*args)
         super
-        @log = Logger.new(STDERR)
-        @log.debug "in Group class"
         @questions = []
     end
     
@@ -16,7 +14,7 @@ class Group < Question
         end
         q.instance_eval(&block)
         @questions << q
-        @log.debug "Added choice answer"
+        # @log.debug "Added choice answer"
     end
   
     def select_multiple(*args, &block)
@@ -27,12 +25,12 @@ class Group < Question
             q = SelectMultiple.new(text, *args)
         end
             q.instance_eval(&block)
-        @log.debug "in select multiple"
-        @log.debug @questions.class
-        @log.debug q.class
-        @log.debug q
+        # @log.debug "in select multiple"
+        # @log.debug @questions.class
+        # @log.debug q.class
+        # @log.debug q
         @questions << q
-        @log.debug "Added select multiple"
+        # @log.debug "Added select multiple"
     end
 
     def truefalse(*args)
