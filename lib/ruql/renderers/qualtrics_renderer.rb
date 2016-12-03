@@ -1,7 +1,7 @@
 class QualtricsRenderer
 
   attr_reader :output
-  
+
   def initialize(quiz, options={})
     @output = ''
     @quiz = quiz
@@ -34,8 +34,8 @@ class QualtricsRenderer
       ''
     end
   end
-  
-  def render(question, index, type='')    
+
+  def render(question, index, type='')
     output = ''
     output << "[[Question:MC:#{type}Answer]]\n"
     output << "[[ID:#{index}]]\n"

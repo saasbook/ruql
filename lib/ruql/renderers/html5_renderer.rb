@@ -1,7 +1,7 @@
 class Html5Renderer
   require 'builder'
   require 'erb'
-  
+
   attr_reader :output
 
   def initialize(quiz,options={})
@@ -25,13 +25,13 @@ class Html5Renderer
   end
 
   def render_with_template
-    # local variables that should be in scope in the template 
+    # local variables that should be in scope in the template
     quiz = @quiz
     # the ERB template includes 'yield' where questions should go:
     output = ERB.new(IO.read(File.expand_path @template)).result(binding)
     @output = output
   end
-    
+
   def render_questions
     render_random_seed
     @h.ol :class => 'questions', :start => @list_start do
@@ -39,6 +39,7 @@ class Html5Renderer
         case q
         when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(q,i)
         when FillIn then render_fill_in(q, i)
+        when Group then render_grouped_question(q, i)
         else
           raise "Unknown question type: #{q}"
         end
@@ -99,7 +100,7 @@ class Html5Renderer
 
   def render_answer_for_solutions(answer,raw,is_true_false = nil)
     args = {:class => (answer.correct? ? 'correct' : 'incorrect')}
-    if is_true_false 
+    if is_true_false
       answer.answer_text.prepend(
         answer.correct? ? "CORRECT: " : "INCORRECT: ")
     end
@@ -110,6 +111,11 @@ class Html5Renderer
         if raw then @h.span(:class => 'explanation') { |p| p << answer.explanation } else @h.span(answer.explanation, :class => 'explanation') end
       end
     end
+  end
+
+  def render_grouped_question(q, idx)
+    log=Logger.new(STDERR)
+    log.debug "Cannot render a grouped question"
   end
 
   def render_question_text(question,index)

@@ -4,7 +4,7 @@ class Group < Question
         super
         @questions = []
     end
-    
+
     def choice_answer(*args, &block)
         if args.first.is_a?(Hash) # no question text
           q = MultipleChoice.new('',*args)
@@ -14,9 +14,8 @@ class Group < Question
         end
         q.instance_eval(&block)
         @questions << q
-        # @log.debug "Added choice answer"
     end
-  
+
     def select_multiple(*args, &block)
         if args.first.is_a?(Hash) # no question text
             q = SelectMultiple.new('', *args)
@@ -25,12 +24,7 @@ class Group < Question
             q = SelectMultiple.new(text, *args)
         end
             q.instance_eval(&block)
-        # @log.debug "in select multiple"
-        # @log.debug @questions.class
-        # @log.debug q.class
-        # @log.debug q
         @questions << q
-        # @log.debug "Added select multiple"
     end
 
     def truefalse(*args)

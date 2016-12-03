@@ -1,7 +1,8 @@
 class HtmlFormRenderer
   require 'builder'
   require 'erb'
-  
+  require 'logger'
+
   attr_reader :output
 
   def initialize(quiz,options={})
@@ -39,14 +40,14 @@ class HtmlFormRenderer
   end
 
   def render_with_template
-    # local variables that should be in scope in the template 
+    # local variables that should be in scope in the template
     quiz = @quiz
     title = "Quiz" unless @title
     # the ERB template includes 'yield' where questions should go:
     output = ERB.new(IO.read(File.expand_path @template)).result(binding)
     @output = output
   end
-    
+
   def render_questions
     render_random_seed
     @h.form do
@@ -79,7 +80,7 @@ class HtmlFormRenderer
             render_answer_for_solutions(answer, q.raw?)
           else
             #if q.raw? then @h.li { |l| l << answer.answer_text } else @h.li answer.answer_text end
-            @h.input(:type => 'radio', :name => 'a', :class => 'select') { |p| 
+            @h.input(:type => 'radio', :name => 'a', :class => 'select') { |p|
               p << answer.answer_text
               p << '</br>'
             }
@@ -102,7 +103,7 @@ class HtmlFormRenderer
           render_answer_for_solutions(answer, q.raw?)
         else
           #if q.raw? then @h.li { |l| l << answer.answer_text } else @h.li answer.answer_text end
-          @h.input(:type => 'checkbox', :name => 'b', :class => 'check') { |p| 
+          @h.input(:type => 'checkbox', :name => 'b', :class => 'check') { |p|
             p << answer.answer_text
             p << '</br>'
           }
@@ -112,7 +113,7 @@ class HtmlFormRenderer
   end
   self
   end
-  
+
   def render_fill_in(q, idx)
     render_question_text(q, idx) do
       if @show_solutions
@@ -138,12 +139,10 @@ class HtmlFormRenderer
       end
     end
   end
-  
+
   def render_grouped_question(q, idx)
-    log = Logger.new('log.txt')
-    log.debug "Attemting to render a grouped question."
-    log.debug q.to_JSON
-    log.debug q.questions[0].to_JSON
+    log=Logger.new(STDERR)
+    log.debug "Cannot render a grouped question"
   end
 
   def render_answer_for_solutions(answer,raw)

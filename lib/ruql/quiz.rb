@@ -43,7 +43,6 @@ class Quiz
     @options = @@default_options.merge(options)
     @seed = srand
     @logger = Logger.new(STDERR)
-    @logger.debug "Defined in quiz.rb"
     #@logger.level = Logger.const_get (options.delete('l') ||
                                       #options.delete('log') || 'warn').upcase
     if (yaml = options.delete(:yaml))
@@ -114,19 +113,13 @@ class Quiz
     q.instance_eval(&block)
     @questions << q
   end
-  
+
   def grouped_question(*args, &block)
-    @logger.debug "In group question"
     q = Group.new(*args)
     q.instance_eval(&block)
-    # @logger.debug "What is q after instance eval?"
-    # @logger.debug q.class
-    # @logger.debug @questions.class
-    # @logger.debug @questions.nil?
     @questions << q
-    # @logger.debug "Added grouped question to questions."
   end
-  
+
   def select_multiple(*args, &block)
     if args.first.is_a?(Hash) # no question text
       q = SelectMultiple.new('', *args)
@@ -148,7 +141,7 @@ class Quiz
     q.instance_eval(&block)
     @questions << q
   end
-  
+
   def open_assessment(*args, &block)
     q = get_open_assessment(*args, &block)
     @questions << q

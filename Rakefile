@@ -5,9 +5,9 @@ task :ruql do
   sh "ruby -Ilib bin/ruql examples/example.rb HtmlForm > examples/file.html"
 end
 
-desc "Agile"
-task :try do
-  sh "ruby -Ilib bin/ruql examples/try.rb HtmlForm > examples/file_try.html"
+desc "Run Ruql on a grouped question"
+task :group do
+  sh "ruby -Ilib bin/ruql examples/grouped.rb HtmlForm > examples/grouped_attempt.html"
 end
 
 desc "Run Ruql with HtmlForm renderer and JavaScript"

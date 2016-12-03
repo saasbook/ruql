@@ -4,7 +4,7 @@ require 'ruql/tex_output'
 class AutoQCMRenderer
   include TexOutput
   attr_reader :output
-  
+
   def initialize(quiz, options={})
     @output = ''
     @quiz = quiz
@@ -13,7 +13,7 @@ class AutoQCMRenderer
       File.join(Gem.loaded_specs['ruql'].full_gem_path, 'templates/autoqcm.tex.erb')
     @penalty = (options.delete('p') || options.delete('penalty') || '0').to_f
     @show_solutions = options.delete('s') || options.delete('solutions')
-    
+
   end
 
   def render_quiz
@@ -49,8 +49,8 @@ class AutoQCMRenderer
     @output << "\n%% Random seed: #{seed}\n"
     @output << "\\AMCrandomseed{#{seed}}\n\n"
   end
-  
-  def render(question, index, type='')    
+
+  def render(question, index, type='')
     output = ''
     output << "\\begin{question#{type}}{q#{index}}\n"
     output << "  \\scoring{b=#{question.points},m=#{@penalty*question.points}}\n"

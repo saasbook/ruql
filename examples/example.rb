@@ -17,6 +17,7 @@ quiz 'Example quiz' do
   select_multiple do
     image "http://michaelmoore.s3.amazonaws.com/wp/uploads/2016/07/23143828/trumpwillwin-notext.jpg"
     text "Which are American political parties?"
+    explanation "Not a party."
     distractor "Tories", :explanation => "They're British"
     distractor "Social Democrats"
     answer "Democrats"
