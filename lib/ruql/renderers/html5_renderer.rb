@@ -105,10 +105,10 @@ class Html5Renderer
         answer.correct? ? "CORRECT: " : "INCORRECT: ")
     end
     @h.li(args) do
-      if raw then @h.span { |p| p << answer.answer_text } else @h.span answer.answer_text  end
+      if raw then @h.p { |p| p << answer.answer_text } else @h.p answer.answer_text  end
       if answer.has_explanation?
         @h.br
-        if raw then @h.span(:class => 'explanation') { |p| p << answer.explanation } else @h.span(answer.explanation, :class => 'explanation') end
+        if raw then @h.p(:class => 'explanation') { |p| p << answer.explanation } else @h.p(answer.explanation, :class => 'explanation') end
       end
     end
   end

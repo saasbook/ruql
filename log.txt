@@ -4,3 +4,5 @@ D, [2016-12-04T13:31:33.451406 #7515] DEBUG -- : {"answers"=>[{"answer_text"=>"a
 D, [2016-12-12T18:12:02.911249 #2956] DEBUG -- : Log file created
 D, [2016-12-12T18:12:03.292164 #2956] DEBUG -- : {"answers"=>[{"answer_text"=>"answer", "correct"=>true, "explanation"=>nil}, {"answer_text"=>"distractor", "correct"=>false, "explanation"=>nil}], "points"=>1, "raw"=>nil, "global_explanation"=>"expl", "name"=>nil, "question_image"=>nil, "question_tags"=>[], "question_uid"=>"694d3bd0-3ada-4f58-bba2-0a31485b7e71", "question_comment"=>"", "question_text"=>"question", "question_type"=>"Question"}
 D, [2016-12-12T18:21:58.727325 #3099] DEBUG -- : Log file created
+D, [2016-12-12T18:28:46.042877 #3659] DEBUG -- : Log file created
+D, [2016-12-12T18:30:52.260861 #3665] DEBUG -- : Log file created

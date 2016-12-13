@@ -17,7 +17,7 @@ describe Html5Renderer do
         should match /<body id="template">/
     end
   end
-    
+
   describe 'rendering solutions' do
     before :each do
       @a = [
@@ -47,7 +47,7 @@ describe Html5Renderer do
       return f.path
     end
     before :each do
-      @atts = {:title => 'My Quiz', :points => 20, :num_questions => 5} 
+      @atts = {:title => 'My Quiz', :points => 20, :num_questions => 5}
     end
     %w(title total_points num_questions).each do |var|
       it "should set '#{var}'" do
