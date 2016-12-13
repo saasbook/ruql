@@ -69,13 +69,11 @@ describe Question do
       """
     end
     it 'should not override per-answer explanation' do
-      @q.add_answer 'new answer', :explanation => 'new explanation'
-      @q.add_explanation 'expl'
+      @q.answer 'new answer', :explanation => 'new explanation'
+      @q.explanation 'expl'
       @q.answers.each do |ans|
-        ans.explanation.should == (ans.answer_text =~ /new/ ? 'new explanation' : 'expl')
+        ans.explanation.should == (ans.answer_text =~ /new/ ? 'new explanation' : nil)
       end
     end
   end
 end
-
-    
