@@ -1,17 +1,18 @@
 require 'logger'
 class Question
-  attr_accessor :question_text, 
+  attr_accessor :question_text,
                 :answers,
                 :question_image,
-                :randomize, 
-                :points, 
-                :name, 
-                :question_tags, 
-                :question_uid, 
-                :question_comment, 
+                :randomize,
+                :points,
+                :name,
+                :question_tags,
+                :question_uid,
+                :question_comment,
                 :raw
                 :global_explanation
-  
+
+
   def initialize(*args)
     options = if args[-1].kind_of?(Hash) then args[-1] else {} end
     @answers = options[:answers] || []
@@ -27,11 +28,11 @@ class Question
   def raw?
     !!@raw
   end
-  
+
   def uid(u)
     @uid = u
   end
-  
+
   def text(s)
     @question_text = s
   end
@@ -39,11 +40,15 @@ class Question
   def explanation(text)
     @global_explanation = text
   end
-  
+
+  def explanation
+    @global_explanation
+  end
+
   def image(url)
     @question_image = url
   end
-  
+
   def answer(text, opts={})
     @answers << Answer.new(text, correct=true, opts[:explanation])
     to_JSON
