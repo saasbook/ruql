@@ -37,12 +37,12 @@ class Question
     @question_text = s
   end
 
-  def explanation(text)
-    @global_explanation = text
-  end
-
-  def explanation
-    @global_explanation
+  def explanation(*args)
+    if args.length == 0
+      @global_explanation
+    else
+      @global_explanation = args[0]
+    end
   end
 
   def image(url)
