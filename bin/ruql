@@ -78,6 +78,10 @@ eos
 end
 
 def main
+  if ARGV[0] =~ /--?v/
+    puts Ruql::VERSION
+    exit(true)
+  end
   filename = ARGV.shift
   raise "Cannot read #{filename}" unless File.readable? filename
   renderer = ARGV.shift
@@ -97,6 +101,6 @@ def main
   Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
 end
 
-usage if ARGV.length < 2
+usage if ARGV.length < 1
 main
 

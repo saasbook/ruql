@@ -1,13 +1,15 @@
+require './lib/ruql/version.rb'
+
 Gem::Specification.new do |s|
   s.name        = 'ruql'
-  s.version     = '0.0.8'
-  s.date        = '2016-02-13'
+  s.version     = Ruql::VERSION
   s.summary     = "Ruby question language"
   s.description = "Ruby-embedded DSL for creating short-answer quiz questions"
   s.authors     = ["Armando Fox"]
-  s.email       = 'fox@cs.berkeley.edu'
+  s.email       = 'fox@berkeley.edu'
   s.files = []
   s.files       << 'lib/ruql.rb'
+  s.files       << 'lib/ruql/version.rb'
   s.files +=  %w(quiz answer dropdown fill_in multiple_choice
                      question quiz renderer
                      select_multiple tex_output true_false).

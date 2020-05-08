@@ -1,5 +1,5 @@
 class Question
-  attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment
+  attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment, :uid
 
   def initialize(*args)
     options = if args[-1].kind_of?(Hash) then args[-1] else {} end
@@ -10,6 +10,8 @@ class Question
     @question_tags = []
     @question_comment = ''
   end
+
+  def uid(str); @uid = str; end
 
   def raw? ; !!@raw ; end
 

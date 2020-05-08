@@ -28,3 +28,5 @@ require 'ruql/open_assessment/criterion'
 require 'ruql/open_assessment/option'
 require 'ruql/open_assessment/training'
 require 'ruql/open_assessment/training_criterion'
+
+require 'ruql/version'
