@@ -42,12 +42,14 @@ class Quiz
   end
 
   def self.get_renderer(renderer)
-    Object.const_get(renderer.to_s + 'Renderer') rescue nil
+    require "ruql-#{renderer}"
+    Object.const_get('Ruql::Renderer::' + renderer.to_s) rescue nil
   end
 
   def render_with(renderer,options={})
     srand @seed
-    @renderer = Quiz.get_renderer(renderer).send(:new,self,options)
+    renderer_klass = (renderer.kind_of?(Class) ? renderer : Quiz.get_renderer(renderer))
+    @renderer = renderer_klass.send(:new,self,options)
     @renderer.render_quiz
     @output = @renderer.output
   end

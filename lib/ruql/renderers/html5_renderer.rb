@@ -16,6 +16,38 @@ class Html5Renderer
     @h = Builder::XmlMarkup.new(:target => @output, :indent => 2)
   end
 
+  def allowed_options
+    opts = [
+      ['-c', '--css', Getopt::REQUIRED],
+      ['-t', '--template', Getopt::REQUIRED],
+      ['-s', '--solutions', Getopt::BOOLEAN],
+      ['-T', '--show-tags', Getopt::BOOLEAN]
+    ]
+    help = <<eos
+The HTML5 and HTML Forms renderers supports these options:
+  -c <href>, --css=<href>
+      embed <href> for stylesheet into generated HTML5
+  -j <src>, --js=<src>
+      embed <src> for JavaScrips
+  -t <file.html.erb>, --template=<file.html.erb>
+      Use file.html.erb as HTML template rather than generating our own file.
+      file.html.erb should have <%= yield %> where questions should go.
+      An example is in the templates/ directory of RuQL.
+      The following local variables will be replaced with their values in
+      the template:
+        <%= quiz.title %> - the quiz title
+        <%= quiz.num_questions %> - total number of questions
+        <%= quiz.points %> - total number of points for whole quiz
+  -T, --show-tags
+      Show the tag(s) associated with a question within an element <div class="tags">.
+  -s, --solutions
+      generate solutions (showing correct answers and explanations)
+  NOTE: If there is more than one quiz (collection of questions) in the file,
+      a complete <html>...</html> block is produced in the output for EACH quiz.
+eos
+    return(
+
+
   def render_quiz
     if @template
       render_with_template do
