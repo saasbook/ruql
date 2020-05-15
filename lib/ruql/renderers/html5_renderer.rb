@@ -7,6 +7,7 @@ class Html5Renderer
   def initialize(quiz,options={})
     @css = options.delete('c') || options.delete('css')
     @show_solutions = options.delete('s') || options.delete('solutions')
+    @show_tags = options.delete('T') || options.delete('show-tags')
     @template = options.delete('t') ||
       options.delete('template') ||
       File.join((Gem.loaded_specs['ruql'].full_gem_path rescue '.'), 'templates/html5.html.erb')
@@ -132,6 +133,11 @@ class Html5Renderer
           if question.class == FillIn then question.question_text.gsub(/\-+/, '_____________________________')
           else question.question_text
           end
+        if @show_tags
+          @h.div(:class => 'text') do
+            question.tags.join(',')
+          end
+        end
         if question.raw?
           @h.p { |p| p << qtext }
         else

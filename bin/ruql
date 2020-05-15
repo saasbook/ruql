@@ -55,6 +55,8 @@ The HTML5 and HTML Forms renderers supports these options:
         <%= quiz.title %> - the quiz title
         <%= quiz.num_questions %> - total number of questions
         <%= quiz.points %> - total number of points for whole quiz
+  -T, --show-tags
+      Show the tag(s) associated with a question within an element <div class="tags">.
   -s, --solutions
       generate solutions (showing correct answers and explanations)
   NOTE: If there is more than one quiz (collection of questions) in the file,
