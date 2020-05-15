@@ -96,6 +96,7 @@ def main
     ['-s', '--solutions', Getopt::BOOLEAN],
     ['-n', '--name', Getopt::REQUIRED],
     ['-l', '--log', Getopt::REQUIRED],
+    ['-T', '--show-tags', Getopt::BOOLEAN],
     ['-y', '--yaml', Getopt::REQUIRED]
   )
   Quiz.set_yaml_file opts.delete("y") || opts.delete("yaml")

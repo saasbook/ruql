@@ -128,16 +128,12 @@ class Html5Renderer
     }
     @h.li html_args  do
       @h.div :class => 'text' do
-        qtext = "[#{question.points} point#{'s' if question.points>1}] " <<
-          ('Select ALL that apply: ' if question.multiple).to_s <<
+        qtext = "[#{question.points} point#{'s' if question.points>1}] "
+        qtext <<  ('Select ALL that apply: ' if question.multiple).to_s
+        qtext <<
           if question.class == FillIn then question.question_text.gsub(/\-+/, '_____________________________')
           else question.question_text
           end
-        if @show_tags
-          @h.div(:class => 'text') do
-            question.tags.join(',')
-          end
-        end
         if question.raw?
           @h.p { |p| p << qtext }
         else
@@ -148,11 +144,16 @@ class Html5Renderer
           end
         end
       end
+      if @show_tags
+        @h.div(:class => 'tags') do |d|
+          d << question.question_tags.join(',')
+        end
+      end
       yield # render answers
     end
     self
   end
-
+  
   def quiz_header
     @h.div(:id => 'student-name') do
       @h.p 'Name:'

@@ -33,7 +33,9 @@ class Question
   def tags(*args) # string or array of strings
     if args.length > 1
       @question_tags += args.map(&:to_s)
-    else
+    elsif args.first.kind_of?(Array)
+      @question_tags = args.first
+    else                        # a solitary string
       @question_tags << args.first.to_s
     end
   end
