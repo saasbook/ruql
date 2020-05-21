@@ -26,5 +26,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'builder', '~> 3.0'
   s.add_runtime_dependency 'getopt', '1.4.2'
   s.homepage    = 'http://github.com/saasbook/ruql'
-  s.license       = 'CC By-SA'
+  s.license       = 'CC-BY-4.0'
 end
