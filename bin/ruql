@@ -45,7 +45,6 @@ module Ruql
       load_renderer
 
       options = [
-        ['-H', '-h', '--help', GetoptLong::NO_ARGUMENT],
         ['-S', '--solutions', GetoptLong::NO_ARGUMENT],
         ['-V', '--verbose', GetoptLong::NO_ARGUMENT]
       ]
@@ -56,7 +55,8 @@ module Ruql
         # anything else gets passed to renderer
         @options[opt] = arg
       end
-      @filename = ARGV.pop
+
+      @filename = ARGV.pop || usage
       raise "Cannot read #{@filename}" unless File.readable? @filename
 
       ## Quiz.set_yaml_file opts.delete("y") || opts.delete("yaml")
@@ -77,7 +77,7 @@ Usage: #{name} <formatter> [options] filename.rb
 The special renderer 'stats' will just show stats for the input file without generating output.
 Global options:
   -S, --solutions
-     Generate a version of the output with solutions included (not supported by all renderers)
+     Generate a version of the output with solutions included (not supported by all formatters)
   -V, --verbose
      Show verbose output for debugging
 
