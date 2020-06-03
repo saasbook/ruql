@@ -200,6 +200,76 @@ future tools that can use this information.
 free-text comment to be added to a question.
 
 
+Current renderers
+=================
+
+* [html](https://github.com/saasbook/ruql-html): produces HTML 5 output using a default or user-supplied HTML
+template
+* [canvas](https://github.com/saasbook/ruql-canvas): creates a quiz in Canvas LMS using its REST API
+
+
+Adding your own renderer
+========================
+
+**This documentation is incomplete**
+
+If you're creating the `foobar` formatter, the gem should
+be named `ruql-foobar` and have the following directory
+structure (heavily recommend using Bundler):
+
+```
+ruql-foobar:
+.
+├── CODE_OF_CONDUCT.md
+├── Gemfile
+├── README.md
+├── Rakefile
+├── bin
+│   ├── console
+│   └── setup
+├── lib
+│   └── ruql
+│       ├── foobar
+│       │   ├── foobar.rb
+│       │   └── version.rb
+│       └── foobar.rb
+├── result.json
+├── ruql-foobar.gemspec
+├── spec
+│   ├── ruql
+│   │   └── foobar_spec.rb
+│   └── spec_helper.rb
+└── templates
+    └── quiz.json
+
+
+```
+
+The main entry point should be in
+`ruql-foobar/lib/ruql/foobar/foobar.rb` and include the following at a
+minimum:
+
+```ruby
+module Ruql
+  module Foobar
+    def initialize(quiz, options={})
+      # initialize yourself, given a Quiz object and command-line
+      # options in Getoptlong format
+    end
+    def self.allowed_options
+      opts = [['--foobar-option1', Getoptlong::REQUIRED_ARGUMENT],
+              ['--foobar-option2', Getoptlong::BOOLEAN_ARGUMENT]]
+      help_text = "Some text describing what the options do"
+      return [help_text, opts]
+    end
+    def render_quiz
+      # render your quiz however you like. See the descriptions of 
+      # the Quiz class and various subclasses of Question and Answer.
+    end
+  end
+end
+```
+
 Generating a quiz from a RuQL file
 ==================================
 

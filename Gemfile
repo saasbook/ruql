@@ -1,9 +1,6 @@
-source :rubygems
+source "https://rubygems.org"
 
-gem 'builder'
-gem 'getopt'
-gem 'rdoc'
+git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
-group :development, :test do
-  gem 'byebug'
-end
+# Specify your gem's dependencies in ruql.gemspec
+gemspec

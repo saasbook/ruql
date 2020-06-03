@@ -1,5 +1,5 @@
 class Question
-  attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_comment, :uid
+  attr_accessor :question_text, :answers, :randomize, :points, :name, :question_tags, :question_group, :question_comment, :uid
 
   def initialize(*args)
     options = if args[-1].kind_of?(Hash) then args[-1] else {} end
@@ -8,6 +8,7 @@ class Question
     @raw = options[:raw]
     @name = options[:name]
     @question_tags = []
+    @question_group = ''
     @question_comment = ''
   end
 
@@ -29,6 +30,10 @@ class Question
     @answers << Answer.new(text, correct=false, opts[:explanation])
   end
 
+  def group(str)
+    @question_group = str
+  end
+  
   # these are ignored but legal for now:
   def tags(*args) # string or array of strings
     if args.length > 1

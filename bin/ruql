@@ -1,90 +1,94 @@
 #!/usr/bin/env ruby
 
-# require 'ruql'
 require_relative '../lib/ruql'
-require 'getopt/long'
+require 'getoptlong'
+require 'byebug'
 
-def usage
-  name = File.basename $0
-  STDERR.puts <<eos
-Usage: #{name} filename.rb renderer [options]
-filename.rb contains questions expressed in RuQL
+module Ruql
+  class Runner
 
-renderer choices are:
-  Html5    - HTML 5 suitable for Web display/printing
-  HtmlForm - HTML forms
-  EdXml    - XML for OpenEdX platform in-course questions
-  AutoQCM  - LaTeX for use with AutoQCM (http://home.gna.org/auto-qcm)
-  Coursera - [obsolete] Coursera HTML/XML format for online auto-grading
-  JSON     - [partially implemented] JSON format
-  Qualtrics -[partially implemented] Qualtrics survey (txt) format
+    def initialize
+      @renderer = nil
+      @options = {}
+      @filename = nil
+      @template = nil
+      @solutions = nil
+      @help = ''
+      @additional_options = [[]]
+    end
 
+    def version
+      puts Ruql::VERSION
+      exit true
+    end
+
+    def load_renderer
+      renderer = ARGV.shift
+      if renderer == 'stats'
+        @renderer = Ruql::Stats
+        @help = ''
+        @additional_options = []
+      else
+        begin
+          require "ruql/#{renderer}"
+          @renderer = Object.const_get("Ruql::" + renderer.gsub(/(?:_|^)(\w)/){$1.upcase})
+          @help,@additional_options = @renderer.allowed_options
+        rescue LoadError => e
+          raise Ruql::OptionsError.new("Renderer #{renderer} requires the gem ruql-#{renderer} to be installed")
+        end
+      end
+    end
+
+    def run
+      usage if ARGV.length < 1 || ARGV[0] =~ /^--?[Hh]/
+      version if ARGV[0] =~ /^-v/
+      load_renderer
+
+      options = [
+        ['-H', '-h', '--help', GetoptLong::NO_ARGUMENT],
+        ['-S', '--solutions', GetoptLong::NO_ARGUMENT],
+        ['-V', '--verbose', GetoptLong::NO_ARGUMENT]
+      ]
+      opts = GetoptLong.new(*(options + @additional_options))
+      
+      opts.each do |opt,arg|
+        usage(help) if (opt == '--help' || opt == '-H')
+        # anything else gets passed to renderer
+        @options[opt] = arg
+      end
+      @filename = ARGV.pop
+      raise "Cannot read #{@filename}" unless File.readable? @filename
+
+      ## Quiz.set_yaml_file opts.delete("y") || opts.delete("yaml")
+      Quiz.set_options(@options)
+      Quiz.instance_eval "#{IO.read(@filename)}"
+      Quiz.quizzes.each { |quiz| puts quiz.render_with(@renderer, @options)  }
+    end
+    
+    def usage(help='')
+      name = File.basename $0
+      STDERR.puts <<eos
+Usage: #{name} <formatter> [options] filename.rb
+
+ filename.rb contains questions expressed in RuQL.  Formatters are packaged as separate gems
+ named ruql-*, for example, formatter 'html' is provided by the gem ruql-html, which must
+ be installed. See #{Gem.loaded_specs['ruql'].homepage} for available formatters or to add your own.
+
+The special renderer 'stats' will just show stats for the input file without generating output.
 Global options:
-  -l <loglevel>, --log=<loglevel>
-     In increasing verbosity, they are 'error' (nonfatal), 'warn', 'info',
-     'debug'; default is 'warn'
-  -p <penalty>, --penalty <penalty>
-     The penalty for WRONG answers, as a fraction of the penalty for
-     RIGHT answers.  For a 2-point question, penalty=0.25 means 1/2 point
-     (0.25 * 2) deducted for WRONG answer.  Default is 0.  Not all
-     output formats are able to do something useful with this.
+  -S, --solutions
+     Generate a version of the output with solutions included (not supported by all renderers)
+  -V, --verbose
+     Show verbose output for debugging
 
-The EdXML renderer supports these options:
-  -n <name>, --name=<name>
-      Only render the question(s) that have :name => 'name'.
-  NOTE: Some markup that is legal in RuQL questions will break the EdX parser.
-     Manually check your questions as you enter them into EdX.  Code seems to
-     be particularly troublesome.
-  NOTE: The 'points' and 'randomize' attributes of questions are not honored by
-     some systems.
-
-  -y <file.yml>, --yaml=<file.yml>
-      Render the questions with a specific yaml file.
-
-The AutoQCM renderer supports these options:
-  -t <file.tex.erb>, --template=<file.tex.erb>
-      MANDATORY: Use file.tex.erb as LaTeX/AutoQCM template.
-      The file should have <%= yield %> where questions should go.
-      See the description of template under HTML5 renderer for variable
-      substitutions that can occur in the quiz body.
-
-The JSON renderer currently supports no options
-
-The Qualtrics renderer supports these options:
-  -t <file.txt.erb>, --template=<file.txt.erb>
-  The file should have <%= yield %> where questions should go. Since this just creates survey questions, grading information is ignored.Currently supports the same type of questions as the AutoQCM renderer.
+#{help}
 
 eos
-  exit false
-end
-
-def main
-  if ARGV[0] =~ /--?v/
-    puts Ruql::VERSION
-    exit(true)
+      exit false
+    end
   end
-  filename = ARGV.shift
-  raise "Cannot read #{filename}" unless File.readable? filename
-  renderer = ARGV.shift
-  raise "Unknown renderer '#{renderer}'" unless (renderer = Quiz.get_renderer(renderer))
+end  
 
-  help,options = renderer.allowed_options
+Ruql::Runner.new.run
 
-  options += [
-    ['-H', '--help', Getopt::BOOLEAN]
-  ]
-  opts = Getopt::Long.getopts(options)
-    # ['-j', '--js', Getopt::REQUIRED],
-    # ['-n', '--name', Getopt::REQUIRED],
-    # ['-l', '--log', Getopt::REQUIRED],
-    # ['-y', '--yaml', Getopt::REQUIRED]
-
-  usage if opts.delete('H') || opts.delete('--help')
-  Quiz.set_yaml_file opts.delete("y") || opts.delete("yaml")
-  Quiz.instance_eval "#{IO.read(filename)}"
-  Quiz.quizzes.each { |quiz| puts quiz.render_with(renderer, opts)  }
-end
-
-usage if ARGV.length < 1
-main
 

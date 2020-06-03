@@ -3,16 +3,14 @@ require 'builder'
 require 'logger'
 require 'date'
 
+require 'ruql/version'
+
 $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__)))
 
-# renderers
-require 'ruql/renderers/xml_renderer'
-require 'ruql/renderers/html5_renderer'
-require 'ruql/renderers/html_form_renderer'
-require 'ruql/renderers/edxml_renderer'
-require 'ruql/renderers/auto_qcm_renderer'
-require 'ruql/renderers/json_renderer'
-require 'ruql/renderers/qualtrics_renderer'
+module Ruql
+  class OptionsError < StandardError ;  end
+  class QuizContentError < StandardError ;  end
+end
 
 # question types
 require 'ruql/quiz'
@@ -28,5 +26,4 @@ require 'ruql/open_assessment/criterion'
 require 'ruql/open_assessment/option'
 require 'ruql/open_assessment/training'
 require 'ruql/open_assessment/training_criterion'
-
-require 'ruql/version'
+require 'ruql/stats'

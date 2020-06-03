@@ -3,23 +3,6 @@ class Quiz
   @@yaml_file = nil
   @quiz_yaml = {}
   def self.quizzes ; @@quizzes ;  end
-  @@default_options =
-    {
-    :open_time => Time.now,
-    :soft_close_time => Time.now + 24*60*60,
-    :hard_close_time => Time.now + 24*60*60,
-    :maximum_submissions => 1,
-    :duration => 3600,
-    :retry_delay => 600,
-    :parameters =>  {
-      :show_explanations => {
-        :question => 'before_soft_close_time',
-        :option => 'before_soft_close_time',
-        :score => 'before_soft_close_time',
-      }
-    },
-    :maximum_score => 1,
-  }
 
   attr_reader :renderer
   attr_reader :questions
@@ -29,38 +12,56 @@ class Quiz
   attr_reader :logger
   attr_accessor :title
 
-  def initialize(title, yaml, options={})
+  def initialize(title, options={})
     @output = ''
     @questions = options[:questions] || []
     @title = title
-    @options = @@default_options.merge(options)
+    @options = @@options.merge(options)
     @seed = srand
     @logger = Logger.new(STDERR)
-    @logger.level = Logger.const_get (options.delete('l') ||
-                                      options.delete('log') || 'warn').upcase
-    @quiz_yaml = yaml
-  end
-
-  def self.get_renderer(renderer)
-    require "ruql-#{renderer}"
-    Object.const_get('Ruql::Renderer::' + renderer.to_s) rescue nil
+    @logger.level = (@options['-V'] || @options['--verbose']) ? Logger::INFO : Logger::WARN
+    #@quiz_yaml = yaml
   end
 
   def render_with(renderer,options={})
     srand @seed
-    renderer_klass = (renderer.kind_of?(Class) ? renderer : Quiz.get_renderer(renderer))
-    @renderer = renderer_klass.send(:new,self,options)
+    @renderer = renderer.send(:new,self,options)
     @renderer.render_quiz
     @output = @renderer.output
   end
 
-  def self.set_yaml_file(file)
-    @@yaml_file = file &&  YAML::load_file(file)
+  def self.set_options(options)
+    @@options = options
   end
 
-  def points ; questions.map(&:points).inject { |sum,points| sum + points } ; end
+  def ungrouped_questions
+    questions.filter { |q| q.question_group.to_s == '' }
+  end
 
-  def num_questions ; questions.length ; end
+  def grouped_questions
+    questions.filter { |q| q.question_group.to_s != '' }.sort_by(&:question_group)
+  end
+
+  def groups ; questions.map(&:question_group).uniq.reject { |g| g.to_s == '' } ; end
+
+  def ungrouped_points
+    ungrouped_questions.map(&:points).sum
+  end
+
+  def grouped_points
+    gq = grouped_questions
+    groups.sum do |g|
+      gq.detect { |q| q.question_group == g }.points
+    end
+  end
+
+  def points
+    ungrouped_points + grouped_points
+  end
+  
+  def num_questions
+    groups.length + ungrouped_questions.length
+  end
 
   def random_seed(num)
     @seed = num.to_i
@@ -131,8 +132,8 @@ class Quiz
     @questions << q
   end
 
-  def self.quiz(*args, &block)
-    quiz = Quiz.new(*args, (@@yaml_file.shift if @@yaml_file))
+  def self.quiz(title, args={}, &block)
+    quiz = Quiz.new(title, args)
     quiz.instance_eval(&block)
     @@quizzes << quiz
   end
