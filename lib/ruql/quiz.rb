@@ -2,6 +2,7 @@ class Quiz
   @@quizzes = []
   @@yaml_file = nil
   @quiz_yaml = {}
+  @@options = {}
   def self.quizzes ; @@quizzes ;  end
 
   attr_reader :renderer

@@ -2,8 +2,8 @@
 [![Coverage](https://codeclimate.com/github/saasbook/ruql/badges/coverage.svg)](https://codeclimate.com/github/saasbook/ruql/coverage)
 [![Gem Version](https://badge.fury.io/rb/ruql.svg)](https://badge.fury.io/rb/ruql)
 
-Ruby-based Quiz Generator and DSL
-=================================
+Ruby-based DSL for Authoring Quiz Questions
+===========================================
 
 This is a simple gem that takes a set of questions (a "quiz") written in
 RuQL ("Ruby quiz language" or "Ruby question language" - a DSL embedded
@@ -13,20 +13,36 @@ Some types of questions or question elements that can be expressed in
 RuQL cannot be expressed by some LMSs, and some LMS-specific question
 features cannot be expressed in RuQL.
 
+
 Installation
-------------
+============
 
 `gem install ruql` to install this from RubyGems.  It works with Ruby
-1.9.2 and 1.9.3; haven't tested it on other versions but should be fine.
+>=1.9.2
 
-License
--------
+You'll also need to install one or more formatters to produce quiz output.
 
-RuQL is licensed under Creative Commons BY-SA license v3.0 or any later
-version.  You can use it for any purpose, including commercial, and you
-can create derivative works, but the following attribution must be
-preserved:  "Copyright 2012 Strawberry Canyon LLC".  And you  must be
-willing to share your improvements back to this repo.
+Installation: Current Formatters
+================================
+
+* [ruql-html](https://github.com/saasbook/ruql-html): produces HTML 5 output using a default or user-supplied HTML
+template
+* [ruql-canvas](https://github.com/saasbook/ruql-canvas): creates a quiz in Canvas LMS using its REST API
+
+
+Running RuQL
+============
+
+Create your `quiz.rb` file as described below, then run:
+
+`ruql formatter-name quiz.rb`
+
+Where `formatter-name` is from the list above, eg `html` for the
+`ruql-html` formatter.
+
+`ruql formatter-name -h` lists the options supported by that
+formatter, and `ruql -h` shows RuQL's global options.
+
 
 Creating Quiz Questions in RuQL
 ===============================
@@ -38,6 +54,112 @@ Management Systems or in printable form.
 RuQL is a DSL embedded in Ruby, so you can include expressions in
 questions, for example, to generate simple variants of a question along
 with its solution.
+
+In addition to the basic parts of a question (prompt text, answers,
+etc.), each question can also have an optional list of one or more
+_tags_, and an optional _comment_.  These attributes
+are available to formatters, but most formatters ignore them.
+They can be used to provide information about the
+question's topic(s) or other info useful to a question-management app
+such as [Course Question Bank](https://github.com/saasbook/coursequestionbank).
+
+A question can also optionally have a _group_.  Questions with the
+same group name (within the scope of a single quiz) are grouped in
+a "pool" from which a single question is selected at quiz generation time.
+For "static" formatters such as HTML, RuQL will pick a random
+question.  For some LMSs, like Canvas, the questions are put into a
+"quiz group" and any given student gets a randomly chosen one at runtime.
+
+Preparing a quiz
+----------------
+
+A quiz is an `.rb` file with a collection of questions:
+
+    quiz 'Example quiz name here' do
+      # (questions here)
+    end
+
+You create a quiz by putting the quiz in its own file and
+copying-and-pasting the questions you want into it.  (Yes, that's ugly.
+Soon, questions will have unique IDs and you'll be able to create a quiz
+by reference.)
+
+Multiple-choice questions with a single correct answer
+------------------------------------------------------
+
+You can provide a generic `explanation` clause, and/or override it with
+specific explanations to accompany right or wrong answers.
+Choices are rendered in the order in which
+they appear in the RuQL markup, but capable LMSs or formatters can be
+told to randomize them.  This example also shows the use of tags to
+include metadata about a question's topic, and the use of groups to
+place two questions into a group from which one will be chosen at
+random for the quiz.
+
+```ruby
+choice_answer  do
+  tags 'US states', 'geography'
+  group 'states-1'
+  text  "What is the largest US state?"
+  explanation "Not big enough." # for distractors without their own explanation
+  answer 'Alaska'
+  distractor 'Hawaii'
+  distractor 'Texas', :explanation => "That's pretty big, but think colder."
+end
+choice_answer  do
+  tags 'US cities', 'geography'
+  group 'states-1'
+  text  "What is the largest US city?"
+  answer 'New York'
+  distractor 'Los Angeles'
+  distractor 'Chicago'
+end
+```
+
+Specifying `:raw => true` allows HTML markup in the question to be
+passed through unescaped, such as for `<pre>` or `<code>` blocks.
+
+
+```ruby
+  choice_answer :raw => true do
+    text %Q{What does the following code do:
+<pre>
+  puts "Hello world!"
+</pre>
+}
+    distractor 'Throws an exception', :explanation => "Don't be an idiot."
+    answer 'Prints a friendly message'
+  end
+```
+
+Multiple-choice "select all that apply" questions
+-------------------------------------------------
+
+These use the same syntax as single-choice questions, but multiple
+`answer` clauses are allowed:
+
+```ruby
+select_multiple do
+  text "Which are American political parties?"
+  answer "Democrats"
+  answer "Republicans"
+  answer "Greens", :explanation => "Yes, they're a party!"
+  distractor "Tories", :explanation => "They're British"
+  distractor "Social Democrats"
+end
+```
+
+True or false questions
+-----------------------
+
+Internally, true/false questions are treated as a special case of
+multiple-choice questions with a single correct answer, but there's a
+shortcut syntax for them.
+
+```ruby
+truefalse 'The week has 7 days.', true
+truefalse 'The earth is flat.', false, :explanation => 'No, just looks that way'
+```
 
 Short-answer fill-in-the-blanks questions
 -----------------------------------------
@@ -84,71 +206,7 @@ fill_in do
 end
 ```
 
-Multiple-choice questions with a single correct answer
-------------------------------------------------------
 
-You can provide a generic `explanation` clause, and/or override it with
-specific explanations to accompany right or wrong answers.
-If `:randomize => true` is given as an optional argument to the
-question, the order of choices may be randomized, depending on the LMS's
-capabilities.  Otherwise, choices are presented in the order in which
-they appear in the RuQL markup.
-
-```ruby
-choice_answer :randomize => true do
-  text  "What is the largest US state?"
-  explanation "Not big enough." # for distractors without their own explanation
-  answer 'Alaska'
-  distractor 'Hawaii'
-  distractor 'Texas', :explanation => "That's pretty big, but think colder."
-end
-```
-
-Specifying `:raw => true` allows HTML markup in the question to be
-passed through unescaped.  DEPRECATION WARNING: this was originally
-included for allowing code blocks in questions.  It is probably going
-away so don't rely on it.
-
-```ruby
-  choice_answer :raw => true do
-    text %Q{What does the following code do:
-<pre>
-  puts "Hello world!"
-</pre>
-}
-    distractor 'Throws an exception', :explanation => "Don't be an idiot."
-    answer 'Prints a friendly message'
-  end
-```
-
-Multiple-choice "select all that apply" questions
--------------------------------------------------
-
-These use the same syntax as single-choice quetsions, but multiple
-`answer` clauses are allowed:
-
-```ruby
-select_multiple do
-  text "Which are American political parties?"
-  answer "Democrats"
-  answer "Republicans"
-  answer "Greens", :explanation => "Yes, they're a party!"
-  distractor "Tories", :explanation => "They're British"
-  distractor "Social Democrats"
-end
-```
-
-True or false questions
------------------------
-
-Internally, true/false questions are treated as a special case of
-multiple-choice questions with a single correct answer, but there's a
-shortcut syntax for them.
-
-```ruby
-truefalse 'The week has 7 days.', true
-truefalse 'The earth is flat.', false, :explanation => 'No, just looks that way'
-```
 
 Questions with one or more dropdown-menu choices
 ------------------------------------------------
@@ -167,20 +225,6 @@ dropdown do
 end
 ```
 
-Preparing a quiz
-----------------
-
-A quiz is a collection of questions in the `do` block of a `quiz`,
-which has a mandatory name argument:
-
-    quiz 'Example quiz' do   
-      # (questions here)
-    end
-
-You create a quiz by putting the quiz in its own file and
-copying-and-pasting the questions you want into it.  (Yes, that's ugly.
-Soon, questions will have unique IDs and you'll be able to create a quiz
-by reference.)
 
 Additional arguments and options
 --------------------------------
@@ -198,14 +242,6 @@ future tools that can use this information.
 
 3. The optional `comment` clause is followed by a string and allows a
 free-text comment to be added to a question.
-
-
-Current renderers
-=================
-
-* [html](https://github.com/saasbook/ruql-html): produces HTML 5 output using a default or user-supplied HTML
-template
-* [canvas](https://github.com/saasbook/ruql-canvas): creates a quiz in Canvas LMS using its REST API
 
 
 Adding your own renderer
@@ -270,70 +306,3 @@ module Ruql
 end
 ```
 
-Generating a quiz from a RuQL file
-==================================
-
-Using questions with Open EdX
------------------------------
-
-RuQL can output questions in a format that is at least somewhat
-compliant with [edX Open Learning XML (OLX)](http://edx-open-learning-xml.readthedocs.org/en/latest).
-
-To quickly add an inline question (multiple choice, text or numeric
-input, or option dropdown) to a course unit in EdX Studio:
-
-1. Create the question in RuQL with an attribute `:name => "some-name"`
-and put it in some file `questions.rb` 
-2. Run `ruql questions.rb EdXml -n some-name`
-3. Copy the resulting XML to the Clipboard.  In Studio, select "Advanced
-Editor" view for the question, which shows the raw XML of the question.
-Replace that raw XML with the output from `ruql`.
-4. Visually check that the question looks right in Studio, since some
-markup that is legal in RuQL doesn't format correctly in Studio.
-
-
-Creating an HTML 5 or Printable Version of a Quiz
--------------------------------------------------
-
-Run `ruql questionfile.rb Html5 --template=template.html.erb`
-
-The optional template should be an `.html.erb` template in which `yield`
-is rendered where the questions should go.  If you omit the `template`
-argument, you'll get the `html5.html.erb` file template that comes in
-the `templates` directory of the gem.
-
-If you also specify `--solutions` on the command line, you can generate
-an HTML5 version that includes identification of the correct answer.
-NOTE that if you do this, the HTML5 tags will clearly identify the correct
-answer--this format is meant for printing, not for online use, since a
-simple "view page source" would show the correct answers!
-
-Creating an AutoQCM quiz
-------------------------
-
-The [AutoQCM](home.gna.org/auto-qcm/) tool uses LaTeX to create a
-multiple-choice quiz with answer bubbles, and includes software to
-automatically score scanned multiple-choice answer sheets it creates.
-
-You can generate (mostly) AutoQCM-compatible LaTeX input sources from a
-set of RuQL questions:
-
-`ruql questionfile.rb AutoQCM  --template=my_template.tex.erb`
-
-The template file will be run through `erb` and should render `yield`
-where the questions should be.  A template file is *mandatory* for
-AutoQCM.  If you omit the template argument, you'll get the
-`autoqcm.tex.erb` template in the gem's `templates` directory.
-
-The command-line option `--penalty=0.8` takes a number that indicates
-what fraction of the question's total points should be deducted as a
-penalty for wrong answer.  For example, a question worth 4 points with a
-penalty of 0.25 means the student receives -1 point for the question, as
-opposed to zero points for leaving it blank.  Default if omitted is
-zero.  This information is just embedded in the file that will be passed
-to AutoQCM.
-
-There are additional renderers not described here.  The renderer
-misleadingly called 'XmlRenderer' once upon a time generated
-Coursera-compatible markup, but that was long ago.  The JSON renderer
-outputs questions in the [MOOCdb](http://moocrp.herokuapp.com) format.

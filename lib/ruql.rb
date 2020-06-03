@@ -1,5 +1,4 @@
 # basic gems/libs we rely on
-require 'builder'
 require 'logger'
 require 'date'
 

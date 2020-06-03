@@ -1,5 +1,5 @@
-quiz "I. Introduction", :duration => 1800 do
-  choice_answer :randomize => true do # means: randomize order of choices
+quiz "I. Introduction" do
+  choice_answer do # means: randomize order of choices
     text 'question 1'
     distractor 'wrong answer a'
     distractor 'wrong answer b', :explanation => 'b is wrong'

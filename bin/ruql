@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
 require_relative '../lib/ruql'
 require 'getoptlong'
-require 'byebug'
 
 module Ruql
   class Runner
@@ -34,7 +34,7 @@ module Ruql
           @renderer = Object.const_get("Ruql::" + renderer.gsub(/(?:_|^)(\w)/){$1.upcase})
           @help,@additional_options = @renderer.allowed_options
         rescue LoadError => e
-          raise Ruql::OptionsError.new("Renderer #{renderer} requires the gem ruql-#{renderer} to be installed")
+          raise Ruql::OptionsError.new("Formatter '#{renderer}' requires the gem ruql-#{renderer} to be installed")
         end
       end
     end
