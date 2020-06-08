@@ -51,7 +51,7 @@ module Ruql
       opts = GetoptLong.new(*(options + @additional_options))
       
       opts.each do |opt,arg|
-        usage(help) if (opt == '--help' || opt == '-H')
+        usage if (opt == '--help' || opt == '-H')
         # anything else gets passed to renderer
         @options[opt] = arg
       end
@@ -65,7 +65,7 @@ module Ruql
       Quiz.quizzes.each { |quiz| puts quiz.render_with(@renderer, @options)  }
     end
     
-    def usage(help='')
+    def usage
       name = File.basename $0
       STDERR.puts <<eos
 Usage: #{name} <formatter> [options] filename.rb
@@ -81,7 +81,7 @@ Global options:
   -V, --verbose
      Show verbose output for debugging
 
-#{help}
+#{@help}
 
 eos
       exit false
