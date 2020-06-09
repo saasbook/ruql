@@ -45,6 +45,7 @@ module Ruql
       load_renderer
 
       options = [
+        ['-h', '--help', GetoptLong::NO_ARGUMENT],
         ['-S', '--solutions', GetoptLong::NO_ARGUMENT],
         ['-V', '--verbose', GetoptLong::NO_ARGUMENT]
       ]
@@ -74,7 +75,7 @@ Usage: #{name} <formatter> [options] filename.rb
  named ruql-*, for example, formatter 'html' is provided by the gem ruql-html, which must
  be installed. See #{Gem.loaded_specs['ruql'].homepage} for available formatters or to add your own.
 
-The special renderer 'stats' will just show stats for the input file without generating output.
+The special formatter 'stats' will just show stats for the input file without generating output.
 Global options:
   -S, --solutions
      Generate a version of the output with solutions included (not supported by all formatters)
