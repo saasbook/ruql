@@ -1,9 +1,6 @@
 class Quiz
   @@quizzes = []
-  @@yaml_file = nil
-  @quiz_yaml = {}
   @@options = {}
-  def self.quizzes ; @@quizzes ;  end
 
   attr_reader :renderer
   attr_reader :questions
@@ -12,6 +9,13 @@ class Quiz
   attr_reader :seed
   attr_reader :logger
   attr_accessor :title
+
+  def self.reset
+    @@quizzes = []
+    @@options = {}
+  end
+  def self.quizzes ; @@quizzes ; end
+  def self.options ; @@options ; end
 
   def initialize(title, options={})
     @output = ''
