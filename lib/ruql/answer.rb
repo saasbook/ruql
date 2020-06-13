@@ -13,4 +13,9 @@ class Answer
     @correct = !!correct # ensure boolean
     @explanation = explanation
   end
+
+  def as_json
+    Hash(:text => @answer_text, :correct => @correct,:explanation => @explanation).compact
+  end
+
 end

@@ -11,6 +11,7 @@ module Ruql
   class QuizContentError < StandardError ;  end
 end
 
+require 'json'
 # question types
 require 'ruql/quiz'
 require 'ruql/question'
@@ -25,4 +26,6 @@ require 'ruql/open_assessment/criterion'
 require 'ruql/open_assessment/option'
 require 'ruql/open_assessment/training'
 require 'ruql/open_assessment/training_criterion'
+# 2 built in "renderers"
 require 'ruql/stats'
+require 'ruql/json'

@@ -12,6 +12,19 @@ class Question
     @question_comment = ''
   end
 
+  def as_json
+    Hash(
+      :question_text => @question_text,
+      :question_tags => @question_tags.compact,
+      :question_group => @question_group,
+      :answers => @answers.map(&:as_json),
+      :question_type => self.class.to_s,
+      :raw => !!@raw,
+      :name => @name,
+      :points => @points
+      ).compact
+  end
+
   def uid(str); @uid = str; end
 
   def raw? ; !!@raw ; end

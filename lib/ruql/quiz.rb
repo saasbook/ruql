@@ -28,6 +28,13 @@ class Quiz
     #@quiz_yaml = yaml
   end
 
+  def as_json
+    Hash(:title => @title,
+      :questions => @questions.map(&:as_json),
+      :seed => @seed
+      )
+  end
+
   def render_with(renderer,options={})
     srand @seed
     @renderer = renderer.send(:new,self,options)
@@ -142,4 +149,5 @@ class Quiz
     quiz.instance_eval(&block)
     @@quizzes << quiz
   end
+
 end

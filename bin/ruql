@@ -24,10 +24,12 @@ module Ruql
 
     def load_renderer
       renderer = ARGV.shift
+      @help = ''
+      @additional_options = []
       if renderer == 'stats'
         @renderer = Ruql::Stats
-        @help = ''
-        @additional_options = []
+      elsif renderer == 'json'
+        @renderer = Ruql::Json
       else
         begin
           require "ruql/#{renderer}"
