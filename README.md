@@ -242,8 +242,14 @@ future tools that can use this information.
 3. The optional `comment` clause is followed by a string and allows a
 free-text comment to be added to a question.
 
+4. The optional `group` clause, which takes a single string, names
+a "pool" of questions of which this question is a part.  Some formatters
+such as the Canvas importer will turn this into a "quiz question group"
+so that one question from the pool will be randomly chosen to show the
+student.  See each formatter's documentation for how/whether it uses this property.
 
-Adding your own renderer
+
+Adding your own formatter
 ========================
 
 **This documentation is incomplete**
@@ -286,7 +292,7 @@ minimum:
 
 ```ruby
 module Ruql
-  module Foobar
+  class Foobar
     def initialize(quiz, options={})
       # initialize yourself, given a Quiz object and command-line
       # options in Getoptlong format
