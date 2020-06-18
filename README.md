@@ -17,8 +17,7 @@ features cannot be expressed in RuQL.
 Installation
 ============
 
-`gem install ruql` to install this from RubyGems.  It works with Ruby
->=1.9.2
+`gem install ruql` to install this from RubyGems.  It works with Ruby 1.9 or later.
 
 You'll also need to install one or more formatters to produce quiz output.
 
