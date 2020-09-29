@@ -13,6 +13,10 @@ Some types of questions or question elements that can be expressed in
 RuQL cannot be expressed by some LMSs, and some LMS-specific question
 features cannot be expressed in RuQL.
 
+[Registered ESaaS instructors](http://www.saasbook.info/instructors) can access
+[this repo](/saasbook/csw169a-quizzes) of questions, grouped by
+chapter of the [ESaaS textbook](http://www.saasbook.info).
+
 
 Installation
 ============
