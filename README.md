@@ -24,9 +24,10 @@ You'll also need to install one or more formatters to produce quiz output.
 Installation: Current Formatters
 ================================
 
-* [ruql-html](https://github.com/saasbook/ruql-html): produces HTML 5 output using a default or user-supplied HTML
+* [ruql-html](/saasbook/ruql-html): produces HTML 5 output using a default or user-supplied HTML
 template
-* [ruql-canvas](https://github.com/saasbook/ruql-canvas): creates a quiz in Canvas LMS using its REST API
+* [ruql-canvas](/saasbook/ruql-canvas): creates a quiz in Canvas LMS using its REST API
+* [ruql-olx](/saasbook/ruql-olx): creates a quiz in edX's Open Learning XML
 
 
 Running RuQL
