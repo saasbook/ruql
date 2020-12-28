@@ -13,21 +13,25 @@ Some types of questions or question elements that can be expressed in
 RuQL cannot be expressed by some LMSs, and some LMS-specific question
 features cannot be expressed in RuQL.
 
+[Registered ESaaS instructors](http://www.saasbook.info/instructors) can access
+[this repo](/saasbook/csw169a-quizzes) of questions, grouped by
+chapter of the [ESaaS textbook](http://www.saasbook.info).
+
 
 Installation
 ============
 
-`gem install ruql` to install this from RubyGems.  It works with Ruby
->=1.9.2
+`gem install ruql` to install this from RubyGems.  It works with Ruby 1.9 or later.
 
 You'll also need to install one or more formatters to produce quiz output.
 
 Installation: Current Formatters
 ================================
 
-* [ruql-html](https://github.com/saasbook/ruql-html): produces HTML 5 output using a default or user-supplied HTML
+* [ruql-html](/saasbook/ruql-html): produces HTML 5 output using a default or user-supplied HTML
 template
-* [ruql-canvas](https://github.com/saasbook/ruql-canvas): creates a quiz in Canvas LMS using its REST API
+* [ruql-canvas](/saasbook/ruql-canvas): creates a quiz in Canvas LMS using its REST API
+* [ruql-olx](/saasbook/ruql-olx): creates a quiz in edX's Open Learning XML
 
 
 Running RuQL
@@ -243,8 +247,14 @@ future tools that can use this information.
 3. The optional `comment` clause is followed by a string and allows a
 free-text comment to be added to a question.
 
+4. The optional `group` clause, which takes a single string, names
+a "pool" of questions of which this question is a part.  Some formatters
+such as the Canvas importer will turn this into a "quiz question group"
+so that one question from the pool will be randomly chosen to show the
+student.  See each formatter's documentation for how/whether it uses this property.
 
-Adding your own renderer
+
+Adding your own formatter
 ========================
 
 **This documentation is incomplete**
@@ -287,7 +297,7 @@ minimum:
 
 ```ruby
 module Ruql
-  module Foobar
+  class Foobar
     def initialize(quiz, options={})
       # initialize yourself, given a Quiz object and command-line
       # options in Getoptlong format
