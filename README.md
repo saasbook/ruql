@@ -31,6 +31,7 @@ Installation: Current Formatters
 * [ruql-html](/saasbook/ruql-html): produces HTML 5 output using a default or user-supplied HTML
 template
 * [ruql-canvas](/saasbook/ruql-canvas): creates a quiz in Canvas LMS using its REST API
+* [ruql-prairielearn](/saasbook/ruql-prairielearn): creates [PrairieLearn](prairielearn.org) questions out of each RuQL question
 * [ruql-olx](/saasbook/ruql-olx): creates a quiz in edX's Open Learning XML
 
 
@@ -170,7 +171,7 @@ Short-answer fill-in-the-blanks questions
 
 Put three or more hyphens in a row where you want the "blanks" to be,
 and provide a string or regexp to check the answer; all regexps are 
-case-INSENSITIVE unless :case_sensitive => true is passed.  
+**case-insensitive** unless `:case_sensitive => true` is passed.  
 
 ```ruby
 fill_in :points => 2 do
@@ -187,7 +188,7 @@ explanatory text accompanying the correct answer.
 
 ```ruby
 fill_in do
-  text 'The visionary founder of Apple is ---'
+  text 'The visionary cofounder of Apple and NeXT is ---'
   answer /^ste(ve|phen)\s+jobs$/
   distractor /^steve\s+wozniak/, :explanation => 'Almost, but not quite.'
 end
@@ -225,7 +226,7 @@ dropdown do
   text "Arguably the world's first theme park was"
   choice 0, ['Disneyland', 'Mickey World', 'Teenage Mutant Ninja Turtles Park']
   label "located in"
-  choice 2, ['Beijing, China', 'Paris, France', 'California, USA']
+  choice 2, ['Beijing', 'Paris', 'California']
 end
 ```
 
