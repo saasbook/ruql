@@ -31,8 +31,11 @@ Installation: Current Formatters
 * [ruql-html](/saasbook/ruql-html): produces HTML 5 output using a default or user-supplied HTML
 template
 * [ruql-canvas](/saasbook/ruql-canvas): creates a quiz in Canvas LMS using its REST API
+* [ruql-gradescope](/saasbook/ruql-gradescope): allows formatting RuQL quizzes for use with [Gradescope](gradescope.com).
 * [ruql-prairielearn](/saasbook/ruql-prairielearn): creates [PrairieLearn](prairielearn.org) questions out of each RuQL question
 * [ruql-olx](/saasbook/ruql-olx): creates a quiz in edX's Open Learning XML
+* [ruql-json](/saasbook/ruql-json): allows formatting RuQL quizzes as simple JSON objects.  This
+capability is mostly used by Course Question Bank, which is deprecated.
 
 
 Running RuQL
